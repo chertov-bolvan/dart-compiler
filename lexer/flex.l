@@ -7,23 +7,17 @@
 
 
 %x MULTILINE_COMMENT_STATE
-%{
-    int commentDepth = 0;
-}%
 
 %%
 
 
 
 
-"/*"  {BEGIN(MULTILINE_COMMENT_STATE); commentDepth++; printf("Start of a multi-line comment\n");}
-<MULTILINE_COMMENT_STATE>"*/" {
-    commentDepth--; if(commentDepth == 0) { 
-        BEGIN(INITIAL); 
-        printf("End of multi-line comment\n");
-    }}
+"/*"  {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment\n");}
+<MULTILINE_COMMENT_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment\n");}
+<MULTILINE_COMMENT_STATE>"*/" {yy_pop_state(); printf("End of multi-line comment\n");}
 <MULTILINE_COMMENT_STATE>(.|\n) {}
-<MULTILINE_COMMENT_STATE><<EOF>> {printf("Error: multi-line comment not closed (line #%d)\n", yylineno); BEGIN(INITIAL);}
+<MULTILINE_COMMENT_STATE><<EOF>> {printf("Error: multi-line comment not closed (line #%d)\n", yylineno); yy_pop_state();}
 
 "//"[^\n]* {printf("A standard comment\n");}
 
