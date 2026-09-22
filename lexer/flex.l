@@ -173,4 +173,7 @@ void main( int argc, char** argv )
         yyin = stdin;
 
     yylex();
+
+    if (yyin != stdin)
+        fclose(yyin);
 }
