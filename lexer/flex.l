@@ -151,8 +151,7 @@
 <INTERPOLATION_STATE>"//"[^\n]* {printf("A standard comment\n");}
 <INTERPOLATION_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment\n");}
 
-<INTERPOLATION_STATE>. {}
-<INTERPOLATION_STATE>\n {}
+<INTERPOLATION_STATE>(.|\n) {}
 <INTERPOLATION_STATE><<EOF>> {
     printf("printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);
     while (peekStringChar() != '"' && peekStringChar() != '\'' && peekStringChar() != 0) {
