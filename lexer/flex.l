@@ -11,8 +11,10 @@
 %x STRING_STATE
 %x RAW_STRING_STATE
 
+%x INTERPOLATION_STATE
+
 %{
-    #define MAX_STRING_LENGTH 100;
+    #define MAX_STRING_LENGTH 200
     static char stringStack[MAX_STRING_LENGTH];
     static int stringStackTop = -1;
 
@@ -69,7 +71,7 @@
     }
 }
 <RAW_STRING_STATE>[^"'] {}
-<RAW_STRING_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n, yylineno"); }
+<RAW_STRING_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n", yylineno); yy_pop_state();}
 
 
 
@@ -107,8 +109,57 @@
     }
 }
 
+// правило интерполяции
+<STRING_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation\n"); }
+<STRING_STATE>"\${" {pushStringChar('\$'); yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION\n"); }
+
 <STRING_STATE>[^'"\\] {}
-<STRING_STATE><<EOF>> {printf("Error: no end of STRING in (line #%d)\n", yylineno); popStringChar(); yy_pop_state(); }
+<STRING_STATE><<EOF>> {
+    printf("Error: no end of STRING in (line #%d)\n", yylineno);
+    while (peekStringChar() != 0) {
+        popStringChar();
+    } 
+    yy_pop_state(); }
+
+
+
+/*Состояние интерполяции*/
+
+<INTERPOLATION_STATE>"{" {pushStringChar('{'); printf("Opening curly brace in interpolation\n");}
+<INTERPOLATION_STATE>"}" {
+    if (peekStringChar() == '{') {
+        popStringChar();
+        printf("Closing curly brace in interpolation\n");
+    }
+    else if (peekStringChar() == '\$') {
+        popStringChar();
+        yy_pop_state();
+        printf("END of INTERPOLATION\n");
+    }
+    else {
+        printf("Unexpected } in interpolation");
+    }
+}
+
+// строки внутри интерполяции
+
+<INTERPOLATION_STATE>"'" {pushStringChar('\''); yy_push_state(STRING_STATE); printf("START of a STRING with a SINGLE quote in INTERPOLATION\n");}
+<INTERPOLATION_STATE>"\"" {pushStringChar('"'); yy_push_state(STRING_STATE); printf("START of a STRING with a DOUBLE quote in INTERPOLATION\n");}
+
+// комментарии внутри интерполяции
+
+<INTERPOLATION_STATE>"//"[^\n]* {printf("A standard comment\n");}
+<INTERPOLATION_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment\n");}
+
+<INTERPOLATION_STATE>. {}
+<INTERPOLATION_STATE>\n {}
+<INTERPOLATION_STATE><<EOF>> {
+    printf("printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);
+    while (peekStringChar() != '"' && peekStringChar() != '\'' && peekStringChar() != 0) {
+        popStringChar();
+    }
+    yy_pop_state();
+}
 
 %%
 
