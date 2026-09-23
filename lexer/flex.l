@@ -22,7 +22,7 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 %x STRING_STATE
 %x RAW_STRING_STATE
 
-%x INTERPOLATION_STATE
+%s INTERPOLATION_STATE
 
 
 %{
@@ -326,6 +326,7 @@ List        { printf("type: %s\n", yytext); }
         yy_pop_state();
         printf("END of a RAW string with a SINGLE quote (yytext = %s)\n", yytext);
     }
+    else {}
 }
 <RAW_STRING_STATE>"\"" {
     if (peekStringChar() == '"') {
@@ -333,6 +334,7 @@ List        { printf("type: %s\n", yytext); }
         yy_pop_state();
         printf("END of a RAW string with a DOUBLE quote (yytext = %s)\n", yytext);
     }
+    else {}
 }
 <RAW_STRING_STATE>[^"'] {}
 <RAW_STRING_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n", yylineno); yy_pop_state();}
@@ -362,6 +364,7 @@ List        { printf("type: %s\n", yytext); }
         yy_pop_state();
         printf("END of a STRING with a SINGLE quote (yytext = %s)\n", yytext);
     }
+    else {}
 }
 <STRING_STATE>"\"" {
     if (peekStringChar() == '"') {
@@ -369,6 +372,7 @@ List        { printf("type: %s\n", yytext); }
         yy_pop_state();
         printf("END of a STRING with a DOUBLE quote (yytext = %s)\n", yytext);
     }
+    else {}
 }
 
 <STRING_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
@@ -409,7 +413,7 @@ List        { printf("type: %s\n", yytext); }
 <INTERPOLATION_STATE>"//"[^\n]* {printf("A standard comment (yytext = %s)\n", yytext);}
 <INTERPOLATION_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
 
-<INTERPOLATION_STATE>(.|\n) {}
+<INTERPOLATION_STATE>(.|\n) {printf("%c", yytext[0]);}
 <INTERPOLATION_STATE><<EOF>> {
     printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);
     while (peekStringChar() != '"' && peekStringChar() != '\'' && peekStringChar() != 0) {
