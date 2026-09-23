@@ -1,0 +1,229 @@
+void main() {
+  //=========================
+  //INT CORRECT
+  //=========================
+
+  int intValue = 0;
+  intValue = 1;
+  intValue = 123;
+  intValue = 0123;
+  intValue = 000123;
+  intValue = 1_000;
+  intValue = 1__000;
+  intValue = 1___000;
+  intValue = 0_0;
+  intValue = 0__0;
+  intValue = 123_456;
+  intValue = 123__456;
+  intValue = 999_999_999;
+
+
+  //=========================
+  //INT UNCORRECT
+  //=========================
+
+  intValue = 1_;
+  intValue = 1__;
+  intValue = 1___;
+  intValue = 123_;
+  intValue = 123__;
+  intValue = 123___;
+  intValue = 1_000_;
+  intValue = 1__000_;
+  intValue = 1___000_;
+
+
+  //=========================
+  //HEX CORRECT
+  //=========================
+
+  intValue = 0x0;
+  intValue = 0x1;
+  intValue = 0xF;
+  intValue = 0xFF;
+  intValue = 0xABC;
+  intValue = 0xabcdef;
+  intValue = 0xABCDEF;
+  intValue = 0X0;
+  intValue = 0X1;
+  intValue = 0XFF;
+  intValue = 0x0000FF;
+  intValue = 0x00AB;
+  intValue = 0xF_F;
+  intValue = 0xFF_FF;
+  intValue = 0xFF__FF;
+  intValue = 0xF___F;
+  intValue = 0x1_2_3_4;
+  intValue = 0xA__B__C;
+
+
+  //=========================
+  //HEX UNCORRECT
+  //=========================
+
+  intValue = 0x;
+  intValue = 0X;
+  intValue = 0x_;
+  intValue = 0x__;
+  intValue = 0x___;
+  intValue = 0x_F;
+  intValue = 0x__F;
+  intValue = 0x___F;
+  intValue = 0xF_;
+  intValue = 0xF__;
+  intValue = 0xF___;
+  intValue = 0xFF_;
+  intValue = 0xFF__;
+  intValue = 0xFF___;
+  intValue = 0x_1_2;
+  intValue = 0x1_2_;
+  intValue = 0x1__2__;
+
+
+  //=========================
+  //DOUBLE CORRECT
+  //=========================
+
+  double doubleValue = 0.0;
+  doubleValue = 1.0;
+  doubleValue = 1.5;
+  doubleValue = 123.456;
+  doubleValue = 01.5;
+  doubleValue = 0001.500;
+  doubleValue = 1_000.5;
+  doubleValue = 1__000.5;
+  doubleValue = 1___000.5;
+  doubleValue = 123_456.789;
+  doubleValue = 1.2_3;
+  doubleValue = 1.2__3;
+  doubleValue = 1.2___3;
+
+  doubleValue = .0;
+  doubleValue = .1;
+  doubleValue = .5;
+  doubleValue = .123;
+  doubleValue = .1_2;
+  doubleValue = .1__2;
+  doubleValue = .1___2;
+
+  doubleValue = 1e0;
+  doubleValue = 1e1;
+  doubleValue = 1e10;
+  doubleValue = 1e100;
+  doubleValue = 1e+10;
+  doubleValue = 1e-10;
+  doubleValue = 1e+1_0;
+  doubleValue = 1e+1__0;
+  doubleValue = 1e-1_0;
+  doubleValue = 1e-1__0;
+  doubleValue = 1__000e10;
+
+  doubleValue = 1.5e0;
+  doubleValue = 1.5e10;
+  doubleValue = 1.5e100;
+  doubleValue = 1.5e+10;
+  doubleValue = 1.5e-10;
+  doubleValue = 1.5e+1_0;
+  doubleValue = 1.5e-1_0;
+  doubleValue = 1__000.5e10;
+
+  doubleValue = .5e0;
+  doubleValue = .5e10;
+  doubleValue = .5e100;
+  doubleValue = .5e+10;
+  doubleValue = .5e-10;
+  doubleValue = .5e+1_0;
+  doubleValue = .5e-1_0;
+  doubleValue = .5__0e10;
+
+
+  //=========================
+  //DOUBLE UNCORRECT
+  //=========================
+
+  doubleValue = 0.;
+  doubleValue = 1.;
+  doubleValue = 5.;
+  doubleValue = 123.;
+  doubleValue = 0001.;
+
+  doubleValue = 5._;
+  doubleValue = 5.__;
+  doubleValue = 5.___;
+  doubleValue = 5._5;
+  doubleValue = 5.__5;
+
+  doubleValue = 1.5_;
+  doubleValue = 1.5__;
+  doubleValue = 1.5___;
+  doubleValue = 1.5_6_;
+  doubleValue = 1.5__6_;
+
+  doubleValue = .5_;
+  doubleValue = .5__;
+  doubleValue = .5___;
+  doubleValue = .5_6_;
+  doubleValue = .5__6_;
+
+  doubleValue = 1._;
+  doubleValue = 1.__;
+  doubleValue = 1._5;
+  doubleValue = 1.__5;
+
+  doubleValue = 1e;
+  doubleValue = 1e+;
+  doubleValue = 1e-;
+  doubleValue = 1e_;
+  doubleValue = 1e__;
+  doubleValue = 1e___;
+  doubleValue = 1e+_;
+  doubleValue = 1e+__;
+  doubleValue = 1e-_;
+  doubleValue = 1e-__;
+
+  doubleValue = 1e10_;
+  doubleValue = 1e10__;
+  doubleValue = 1e10___;
+  doubleValue = 1e+10_;
+  doubleValue = 1e-10_;
+
+  doubleValue = 1.5e;
+  doubleValue = 1.5e+;
+  doubleValue = 1.5e-;
+  doubleValue = 1.5e_;
+  doubleValue = 1.5e__;
+  doubleValue = 1.5e+_;
+  doubleValue = 1.5e-_;
+  doubleValue = 1.5e10_;
+  doubleValue = 1.5e+10_;
+  doubleValue = 1.5e-10_;
+
+  doubleValue = .5e;
+  doubleValue = .5e+;
+  doubleValue = .5e-;
+  doubleValue = .5e_;
+  doubleValue = .5e__;
+  doubleValue = .5e+_;
+  doubleValue = .5e-_;
+  doubleValue = .5e10_;
+  doubleValue = .5e+10_;
+  doubleValue = .5e-10_;
+
+  doubleValue = 5.e10;
+  doubleValue = 5.e+10;
+  doubleValue = 5.e-10;
+  doubleValue = 5.e_;
+  doubleValue = 5.e+_;
+  doubleValue = 5.e-_;
+  doubleValue = 5.e_5;
+  doubleValue = 5.e+_5;
+  doubleValue = 5.e-_5;
+
+  doubleValue = 5.5e_5;
+  doubleValue = 5.5e+_5;
+  doubleValue = 5.5e-_5;
+
+  doubleValue = .e5;
+  doubleValue = .e+5;
+  doubleValue = .e-5;
+}

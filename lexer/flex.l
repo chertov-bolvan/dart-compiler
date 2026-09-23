@@ -7,6 +7,7 @@
 %option yylineno
 %option noyywrap
 %option never-interactive
+%option stack
 
 
 DIGIT     [0-9]
@@ -22,15 +23,15 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 %x STRING_STATE
 %x RAW_STRING_STATE
 
-%s INTERPOLATION_STATE
+%x INTERPOLATION_STATE
 
 
 %{
-    void deleteUnderscores(char* str);
+    void deleteUnderscores(char* src, char* result);
 %}
 
 %{
-    char tmp[1000] = 0;
+    char tmp[1000] = "";
 %}
 
 %{

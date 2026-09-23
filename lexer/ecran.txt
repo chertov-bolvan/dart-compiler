@@ -1,0 +1,20 @@
+// basic_escapes.dart
+void main() {
+  String s1 = "Line1\nLine2";
+  String s2 = "Col1\tCol2";
+  String s3 = "Carriage\rReturn";
+  String s4 = "Back\bspace";
+  String s5 = "Back\\slash";
+  String s6 = "Single \' quote";
+  String s7 = "Double \" quote";
+  String s8 = "Dollar \$ sign";
+
+	String s1 = 'Line1\nLine2';
+  String s2 = 'Tab\there';
+  String s3 = 'CR\rhere';
+  String s4 = 'BS\bhere';
+  String s5 = 'Backslash\\here';
+  String s6 = 'Single \' quote';
+  String s7 = 'Double \" quote';
+  String s8 = 'Dollar \$ sign';
+}
