@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 %}
 
 
@@ -90,8 +91,8 @@ var          { printf("keyword: %s\n", yytext); }
 void         { printf("keyword: %s\n", yytext); }
 with         { printf("keyword: %s\n", yytext); }
 while        { printf("keyword: %s\n", yytext); }
-true         { printf("boolean_literal: %s\n", yytext); }
-false        { printf("boolean_literal: %s\n", yytext); }
+true         { printf("boolean_literal: %d\n", true); }
+false        { printf("boolean_literal: %d\n", false); }
 null         { printf("null_literal: %s\n", yytext); }
 
 await        { printf("keyword_contextual: %s\n", yytext); }
