@@ -247,32 +247,8 @@ bool        { printf("type: %s\n", yytext); }
     printf("ERROR: invalid hexadecimal integer literal: %s\n", yytext);
 }
 
-{INT_DEC}\._+{INT_DEC} {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\._+ {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\. {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\.[eE][+-]?_+{INT_DEC} {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\.[eE][+-]?_+ {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\.[eE][+-]? {
-    printf("ERROR: invalid double literal: %s\n", yytext);
-}
-
-{INT_DEC}\.{EXPONENT} {
-    printf("ERROR: invalid double literal: %s\n", yytext);
+0[xX][0-9a-zA-Z_]+ {
+    printf("ERROR: invalid hexadecimal integer literal: %s\n", yytext);
 }
 
 ({INT_DEC}|{INT_DEC}\.{INT_DEC}|\.{INT_DEC})[eE][+-]?_+{INT_DEC} {
