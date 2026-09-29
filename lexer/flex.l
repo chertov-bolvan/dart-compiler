@@ -22,7 +22,7 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 
 %x STRING_SINGLE_STATE
 %x STRING_DOUBLE_STATE
-%x RAW_STRING_SINGL_STATE
+%x RAW_STRING_SINGLE_STATE
 %x RAW_STRING_DOUBLE_STATE
 
 %s INTERPOLATION_STATE
@@ -336,24 +336,24 @@ List        { printf("type: %s\n", yytext); }
 <RAW_STRING_SINGLE_STATE>[^'] {}
 <RAW_STRING_DOUBLE_STATE>[^"] {}
 
-<RAW_STRING_SINGLE_STATE, RAW_STRING_DOUBLE_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n", yylineno); yy_pop_state();}
+<RAW_STRING_SINGLE_STATE,RAW_STRING_DOUBLE_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n", yylineno); yy_pop_state();}
 
 
 "'" {pushStringChar('\''); yy_push_state(STRING_SINGLE_STATE); printf("START of a STRING with a SINGLE quote (yytext = %s)\n", yytext); }
 "\"" {pushStringChar('\"'); yy_push_state(STRING_DOUBLE_STATE); printf("START of a STRING with a DOUBLE quote (yytext = %s)\n", yytext); }
 
 
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\n" {printf("Control characters \\n Newline (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\t" {printf("Control characters \\t Tab (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\r" {printf("Control characters \\r Carriage return (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\b" {printf("Control characters \\b Backspace (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\\\" {printf("Control characters \\\\ Backlash (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\'" {printf("Control characters \\' Single quote (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\\"" {printf("Control characters \\\" Double quote (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\\$" {printf("Control characters \\$ Dollar (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\u"[0-9a-fA-F]{4} {printf("Control characters unicod (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\u{"[0-9a-fA-F]+"}" {printf("Control characters unicod extended (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\\". {printf("Control characters \\. escaping (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\n" {printf("Control characters \\n Newline (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\t" {printf("Control characters \\t Tab (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\r" {printf("Control characters \\r Carriage return (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\b" {printf("Control characters \\b Backspace (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\\" {printf("Control characters \\\\ Backlash (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\'" {printf("Control characters \\' Single quote (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\"" {printf("Control characters \\\" Double quote (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\$" {printf("Control characters \\$ Dollar (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u"[0-9a-fA-F]{4} {printf("Control characters unicod (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u{"[0-9a-fA-F]+"}" {printf("Control characters unicod extended (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\". {printf("Control characters \\. escaping (yytext = %s)\n", yytext); }
 
 <STRING_SINGLE_STATE>"'" {
     popStringChar();
@@ -366,13 +366,13 @@ List        { printf("type: %s\n", yytext); }
     printf("END of a STRING with a DOUBLE quote (yytext = %s)\n", yytext);
 }
 
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE>"\${" {pushStringChar('\$'); yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${" {pushStringChar('\$'); yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION (yytext = %s)\n", yytext); }
 
 <STRING_SINGLE_STATE>[^'\\] {}
 <STRING_DOUBLE_STATE>[^"\\] {}
 
-<STRING_SINGLE_STATE, STRING_DOUBLE_STATE><<EOF>> {
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE><<EOF>> {
     printf("Error: no end of STRING in (line #%d)\n", yylineno);
     while (peekStringChar() != 0) {
         popStringChar();
@@ -398,9 +398,6 @@ List        { printf("type: %s\n", yytext); }
     }
 }
 
-
-<INTERPOLATION_STATE>"//"[^\n]* {printf("A standard comment (yytext = %s)\n", yytext);}
-<INTERPOLATION_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
 
 <INTERPOLATION_STATE>(.|\n) {printf("%c", yytext[0]);}
 <INTERPOLATION_STATE><<EOF>> {
