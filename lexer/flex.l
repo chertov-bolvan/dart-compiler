@@ -141,13 +141,6 @@ double      { printf("type: %s\n", yytext); }
 String      { printf("type: %s\n", yytext); }
 bool        { printf("type: %s\n", yytext); }
 
-Runes       { printf("type: %s\n", yytext); }
-Symbol      { printf("type: %s\n", yytext); }
-
-Set         { printf("type: %s\n", yytext); }
-Map         { printf("type: %s\n", yytext); }
-List        { printf("type: %s\n", yytext); }
-
 
 "{"     { printf("curly_bracket_open: %s\n", yytext); }
 "}"     { printf("curly_bracket_close: %s\n", yytext); }
