@@ -312,7 +312,9 @@ List        { printf("type: %s\n", yytext); }
 "/*"  {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
 <MULTILINE_COMMENT_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
 <MULTILINE_COMMENT_STATE>"*/" {yy_pop_state(); printf("End of multi-line comment (yytext = %s)\n", yytext);}
-<MULTILINE_COMMENT_STATE>(.|\n) {}
+<MULTILINE_COMMENT_STATE>[^*/]+ {}
+<MULTILINE_COMMENT_STATE>"*"+[^*/]* {}
+<MULTILINE_COMMENT_STATE>"/"+[^*/]* {}
 <MULTILINE_COMMENT_STATE><<EOF>> {printf("Error: multi-line comment not closed (line #%d)\n", yylineno); yy_pop_state();}
 
 "//"[^\n]* {printf("A standard comment (yytext = %s)\n", yytext);}
@@ -369,8 +371,8 @@ List        { printf("type: %s\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${" {pushStringChar('\$'); yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION (yytext = %s)\n", yytext); }
 
-<STRING_SINGLE_STATE>[^'\\] {}
-<STRING_DOUBLE_STATE>[^"\\] {}
+<STRING_SINGLE_STATE>[^'\\]+ {}
+<STRING_DOUBLE_STATE>[^"\\]+ {}
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE><<EOF>> {
     printf("Error: no end of STRING in (line #%d)\n", yylineno);
@@ -398,8 +400,6 @@ List        { printf("type: %s\n", yytext); }
     }
 }
 
-
-<INTERPOLATION_STATE>(.|\n) {printf("%c", yytext[0]);}
 <INTERPOLATION_STATE><<EOF>> {
     printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);
     while (peekStringChar() != '"' && peekStringChar() != '\'' && peekStringChar() != 0) {
