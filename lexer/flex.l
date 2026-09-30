@@ -66,11 +66,11 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 
     void pushStringBuffer() {
         stringBufferTop++;
-        stringBuffers[MAX_STRING_BUFFER][0] = '\0';
+        stringBuffers[stringBufferTop][0] = '\0';
     }
 
     void popStringBuffer() {
-        if (stringStackTop > 0) {
+        if (stringBufferTop > 0) {
             stringBufferTop--;
         }
     }
@@ -90,7 +90,7 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 
     void clearTopStringBuffer() {
         if (stringBufferTop >= 0) {
-            stringBuffers[stringBufferTop][0] = '\0'
+            stringBuffers[stringBufferTop][0] = '\0';
         }
     }
 
