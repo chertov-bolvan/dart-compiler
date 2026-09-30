@@ -1,0 +1,1 @@
+"каааайф ${add("gwer ${add2("fjdsoihfgds")} test")} test2"
