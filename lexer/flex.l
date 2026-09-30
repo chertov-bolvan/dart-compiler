@@ -38,25 +38,62 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 
 %{
     #define MAX_STRING_LENGTH 200
-    static char stringStack[MAX_STRING_LENGTH];
-    static int stringStackTop = -1;
+    char stringStack[MAX_STRING_LENGTH];
+    int stringStackTop = -1;
 
-    static void pushStringChar(char c) {
+    void pushStringChar(char c) {
         if (stringStackTop < MAX_STRING_LENGTH - 1)
             stringStack[++stringStackTop] = c;
     }
 
-    static char popStringChar() {
+    char popStringChar() {
         if (stringStackTop >= 0)
             return stringStack[stringStackTop--];
         return 0;
     }
 
-    static char peekStringChar() {
+    char peekStringChar() {
         if (stringStackTop >= 0)
             return stringStack[stringStackTop];
         return 0;
     }
+%}
+
+%{
+    #define MAX_STRING_BUFFER 1000
+    char stringBuffers[100][MAX_STRING_BUFFER];
+    int stringBufferTop = -1;
+
+    void pushStringBuffer() {
+        stringBufferTop++;
+        stringBuffers[MAX_STRING_BUFFER][0] = '\0';
+    }
+
+    void popStringBuffer() {
+        if (stringStackTop > 0) {
+            stringBufferTop--;
+        }
+    }
+
+    void addTextToCurrentString(char* text) {
+        if (stringBufferTop >= 0) {
+            strcat(stringBuffers[stringBufferTop], text);
+        }
+    }
+
+    char* peekStringBuffer() {
+        if (stringBufferTop >= 0) {
+            return stringBuffers[stringBufferTop];
+        }
+        return NULL;
+    }
+
+    void clearTopStringBuffer() {
+        if (stringBufferTop >= 0) {
+            stringBuffers[stringBufferTop][0] = '\0'
+        }
+    }
+
 %}
 
 %%
@@ -322,48 +359,68 @@ List        { printf("type: %s\n", yytext); }
 
 
 
-"r'" {pushStringChar('\''); yy_push_state(RAW_STRING_SINGLE_STATE); printf("START of a RAW string with a SINGLE quote (yytext = %s)\n", yytext); }
-"r\"" {pushStringChar('\"'); yy_push_state(RAW_STRING_DOUBLE_STATE); printf("START of a RAW string with a DOUBLE quote (yytext = %s)\n", yytext); }
+"r'" {pushStringChar('\''); pushStringBuffer(); yy_push_state(RAW_STRING_SINGLE_STATE); printf("START of a RAW string with a SINGLE quote (yytext = %s)\n", yytext); }
+"r\"" {pushStringChar('\"'); pushStringBuffer(); yy_push_state(RAW_STRING_DOUBLE_STATE); printf("START of a RAW string with a DOUBLE quote (yytext = %s)\n", yytext); }
 
 <RAW_STRING_SINGLE_STATE>"'" {
     popStringChar();
+    char* str = peekStringBuffer();
+    if (str != NULL) 
+        printf("%s\n", str);
+
+    popStringBuffer();
     yy_pop_state();
     printf("END of a RAW string with a SINGLE quote (yytext = %s)\n", yytext);
 }
 <RAW_STRING_DOUBLE_STATE>"\"" {
     popStringChar();
+    char* str = peekStringBuffer();
+    if (str != NULL) 
+        printf("%s\n", str);
+
+    popStringBuffer();
     yy_pop_state();
     printf("END of a RAW string with a DOUBLE quote (yytext = %s)\n", yytext);
 }
-<RAW_STRING_SINGLE_STATE>[^'] {}
-<RAW_STRING_DOUBLE_STATE>[^"] {}
+<RAW_STRING_SINGLE_STATE>[^']+ {addTextToCurrentString(yytext);}
+<RAW_STRING_DOUBLE_STATE>[^"]+ {addTextToCurrentString(yytext);}
 
 <RAW_STRING_SINGLE_STATE,RAW_STRING_DOUBLE_STATE><<EOF>> {printf("Error: no end of RAW string in (line #%d)\n", yylineno); yy_pop_state();}
 
 
-"'" {pushStringChar('\''); yy_push_state(STRING_SINGLE_STATE); printf("START of a STRING with a SINGLE quote (yytext = %s)\n", yytext); }
-"\"" {pushStringChar('\"'); yy_push_state(STRING_DOUBLE_STATE); printf("START of a STRING with a DOUBLE quote (yytext = %s)\n", yytext); }
+"'" {pushStringChar('\''); pushStringBuffer(); yy_push_state(STRING_SINGLE_STATE); printf("START of a STRING with a SINGLE quote (yytext = %s)\n", yytext); }
+"\"" {pushStringChar('\"'); pushStringBuffer(); yy_push_state(STRING_DOUBLE_STATE); printf("START of a STRING with a DOUBLE quote (yytext = %s)\n", yytext); }
 
 
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\n" {printf("Control characters \\n Newline (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\t" {printf("Control characters \\t Tab (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\r" {printf("Control characters \\r Carriage return (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\b" {printf("Control characters \\b Backspace (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\\" {printf("Control characters \\\\ Backlash (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\'" {printf("Control characters \\' Single quote (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\"" {printf("Control characters \\\" Double quote (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\$" {printf("Control characters \\$ Dollar (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u"[0-9a-fA-F]{4} {printf("Control characters unicod (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u{"[0-9a-fA-F]+"}" {printf("Control characters unicod extended (yytext = %s)\n", yytext); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\". {printf("Control characters \\. escaping (yytext = %s)\n", yytext); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\n" {addTextToCurrentString("\n");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\t" {addTextToCurrentString("\t");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\r" {addTextToCurrentString("\r");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\b" {addTextToCurrentString("\b");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\\" {addTextToCurrentString("\\");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\'" {addTextToCurrentString("\'");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\"" {addTextToCurrentString("\"");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\$" {addTextToCurrentString("\$");}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u"[0-9a-fA-F]{4} {}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\u{"[0-9a-fA-F]+"}" {}
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\". {}
 
 <STRING_SINGLE_STATE>"'" {
     popStringChar();
+    char* str = peekStringBuffer();
+    if (str != NULL) 
+        printf("%s\n", str);
+
+    popStringBuffer();
     yy_pop_state();
     printf("END of a STRING with a SINGLE quote (yytext = %s)\n", yytext);
 }
 <STRING_DOUBLE_STATE>"\"" {
     popStringChar();
+    char* str = peekStringBuffer();
+    if (str != NULL) 
+        printf("%s\n", str);
+
+    popStringBuffer();
     yy_pop_state();
     printf("END of a STRING with a DOUBLE quote (yytext = %s)\n", yytext);
 }
@@ -371,8 +428,8 @@ List        { printf("type: %s\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${" {pushStringChar('\$'); yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION (yytext = %s)\n", yytext); }
 
-<STRING_SINGLE_STATE>[^'\\]+ {}
-<STRING_DOUBLE_STATE>[^"\\]+ {}
+<STRING_SINGLE_STATE>[^'\\]+ {addTextToCurrentString(yytext);}
+<STRING_DOUBLE_STATE>[^"\\]+ {addTextToCurrentString(yytext);}
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE><<EOF>> {
     printf("Error: no end of STRING in (line #%d)\n", yylineno);

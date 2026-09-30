@@ -1,1 +1,1 @@
-"каааайф ${add("gwer ${add2()} test")} test2"
+"каааайф ${add("gwer ${add2("fjdsoihfgds")} test")} test2"
