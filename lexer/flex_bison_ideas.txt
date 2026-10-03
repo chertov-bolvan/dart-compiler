@@ -1,0 +1,142 @@
+%{
+	static char stringStack[..];
+	static Token token_stack[..];
+%}
+
+%%
+
+%{
+	char tmp[...];
+	if (token_stack.size() != 0) {
+		Token token = token_stack.pop();
+		return token;
+	}
+%}
+
+struct Token {
+	int code;
+	YYSTYPE semantic_value;
+};
+
+Token { INT_LITERAL }
+
+%union {
+}
+
+
+
+int yyparse() {
+	YYSTYPE semantic_values_stack[200];
+}
+
+
+[0-9]+ { yylval.liter_int = std::atoi(yytext); return INT_LITERAL; }
+
+int yylex(void) {
+	char tmp[...];
+	if (token_stack.size() != 0) {
+		Token token = token_stack.pop();
+		yylval = token.semantic_value;
+		return token.code;
+	}
+	
+	// LEXER RULES
+}
+{{}}
+
+/*
+[^*]+
+\*+[^/*]+
+\*+\/
+
+
+*******a
+*******/
+
+<STRING>\$\{ {
+	token_stack.push(Token { '+' });
+	token_stack.push(Token('('));
+	buffer.clear();
+	return Token(buffer);
+}
+
+<INTERPOLATION>\} {
+	if (validCount) {
+		token_stack.push(Token('.'));
+		Token id = { ID };
+		id.semantic_value.f_id = new std::string("toString");
+		token_stack.push(id);
+		token_stack.push(Token('('));
+		token_stack.push(Token(')'));
+		token_stack.push(Token('+'));
+		buffer.clear();
+		return Token(')');
+	}
+}
+
+<STRING>\$[a-zA-Z_]\w* {
+	token_stack.push(Token('+'));
+	token_stack.push(Token('('));
+	token_stack.push(Token(')'));
+	token_stack.push(Token("toString"));
+	token_stack.push(Token('.'));
+	token_stack.push(Token(yytext+1));
+	token_stack.push(Token('+'));
+	return YYerror;
+	return Token(buffer);
+}
+
+"a $var b" -> "a " + var . toString() + " b"
+
+"aaa ${add("bbb")} aaa" -> "aaa " + (add("bbb")).toString() + " aaa"
+
+"a ${1 + "1${1 + 2}2")} b" ->
+"a "
+ - +
+ - (
+1
++
+"1"
+ - +
+ - (
+1
++
+2
+)
+ - .
+ - toString
+ - (
+ - )
+ - +
+"2"
+)
+ - .
+ - toString
+ - (
+ - )
+ - +
+" b"
+
+"aaa ", '+' '(' add '(' "bbb" ')' ')' '.' toString '(' ')' '+' " aaa"
+
+
+"aaa "
++
+(
+add
+(
+"bbb"
+)
+)
+.
+toString
+(
+)
++
+" aaa"
+
+
+bbb
+aaa  aaa
+
+printf("");

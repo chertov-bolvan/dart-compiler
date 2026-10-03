@@ -332,8 +332,8 @@ List        { printf("type: %s\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {printf("Simple interpolation (yytext = %s)\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${"yy_push_state(INTERPOLATION_STATE); printf("START of INTERPOLATION (yytext = %s)\n", yytext); }
 
-<STRING_SINGLE_STATE>[^'\\]+ {}
-<STRING_DOUBLE_STATE>[^"\\]+ {}
+<STRING_SINGLE_STATE>[^'\\$]+ {}
+<STRING_DOUBLE_STATE>[^"\\$]+ {}
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE><<EOF>> { printf("Error: no end of STRING in (line #%d)\n", yylineno); }
 
