@@ -100,7 +100,6 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 %%
 
 
-assert       { printf("keyword: %s\n", yytext); }
 break        { printf("keyword: %s\n", yytext); }
 case         { printf("keyword: %s\n", yytext); }
 catch        { printf("keyword: %s\n", yytext); }
@@ -128,48 +127,21 @@ throw        { printf("keyword: %s\n", yytext); }
 try          { printf("keyword: %s\n", yytext); }
 var          { printf("keyword: %s\n", yytext); }
 void         { printf("keyword: %s\n", yytext); }
-with         { printf("keyword: %s\n", yytext); }
 while        { printf("keyword: %s\n", yytext); }
 true         { printf("boolean_literal: %d\n", true); }
 false        { printf("boolean_literal: %d\n", false); }
 null         { printf("null_literal: %s\n", yytext); }
 
-await        { printf("keyword_contextual: %s\n", yytext); }
-yield        { printf("keyword_contextual: %s\n", yytext); }
-
 abstract     { printf("keyword: %s\n", yytext); }
 as           { printf("keyword: %s\n", yytext); }
-covariant    { printf("keyword: %s\n", yytext); }
-deferred     { printf("keyword: %s\n", yytext); }
-dynamic      { printf("keyword: %s\n", yytext); }
 export       { printf("keyword: %s\n", yytext); }
-extension    { printf("keyword: %s\n", yytext); }
-external     { printf("keyword: %s\n", yytext); }
 factory      { printf("keyword: %s\n", yytext); }
 get          { printf("keyword: %s\n", yytext); }
-implements   { printf("keyword: %s\n", yytext); }
 import       { printf("keyword: %s\n", yytext); }
-interface    { printf("keyword: %s\n", yytext); }
-late         { printf("keyword: %s\n", yytext); }
-library      { printf("keyword: %s\n", yytext); }
-mixin        { printf("keyword: %s\n", yytext); }
-operator     { printf("keyword: %s\n", yytext); }
-part         { printf("keyword: %s\n", yytext); }
 required     { printf("keyword: %s\n", yytext); }
 set          { printf("keyword: %s\n", yytext); }
 static       { printf("keyword: %s\n", yytext); }
-type         { printf("keyword: %s\n", yytext); }
-typedef      { printf("keyword: %s\n", yytext); }
-Function     { printf("builtin_type: %s\n", yytext); }
 
-async        { printf("keyword_contextual: %s\n", yytext); }
-base         { printf("keyword_contextual: %s\n", yytext); }
-hide         { printf("keyword_contextual: %s\n", yytext); }
-of           { printf("keyword_contextual: %s\n", yytext); }
-on           { printf("keyword_contextual: %s\n", yytext); }
-sealed       { printf("keyword_contextual: %s\n", yytext); }
-show         { printf("keyword_contextual: %s\n", yytext); }
-sync         { printf("keyword_contextual: %s\n", yytext); }
 when         { printf("keyword_contextual: %s\n", yytext); }
 
 
@@ -191,23 +163,11 @@ bool        { printf("type: %s\n", yytext); }
 "++"    { printf("increment: %s\n", yytext); }
 "--"    { printf("decrement: %s\n", yytext); }
 
-"??="   { printf("null_coalescing_assignment: %s\n", yytext); }
-">>>="  { printf("unsigned_shift_right_assignment: %s\n", yytext); }
-"<<="   { printf("shift_left_assignment: %s\n", yytext); }
-">>="   { printf("shift_right_assignment: %s\n", yytext); }
-"~/="   { printf("integer_division_assignment: %s\n", yytext); }
 "*="    { printf("multiplication_assignment: %s\n", yytext); }
 "/="    { printf("division_assignment: %s\n", yytext); }
 "+="    { printf("addition_assignment: %s\n", yytext); }
 "-="    { printf("subtraction_assignment: %s\n", yytext); }
-"&="    { printf("bitwise_and_assignment: %s\n", yytext); }
-"^="    { printf("bitwise_xor_assignment: %s\n", yytext); }
 "%="    { printf("remainder_assignment: %s\n", yytext); }
-"|="    { printf("bitwise_or_assignment: %s\n", yytext); }
-
-">>>"   { printf("unsigned_shift_right: %s\n", yytext); }
-"<<"    { printf("shift_left: %s\n", yytext); }
-">>"    { printf("shift_right: %s\n", yytext); }
 
 "~/"    { printf("integer_division: %s\n", yytext); }
 "*"     { printf("multiplication: %s\n", yytext); }
@@ -215,11 +175,6 @@ bool        { printf("type: %s\n", yytext); }
 "+"     { printf("addition: %s\n", yytext); }
 "-"     { printf("subtraction: %s\n", yytext); }
 "%"     { printf("remainder: %s\n", yytext); }
-
-"&"     { printf("bitwise_and: %s\n", yytext); }
-"^"     { printf("bitwise_xor: %s\n", yytext); }
-"|"     { printf("bitwise_or: %s\n", yytext); }
-"~"     { printf("bitwise_not: %s\n", yytext); }
 
 ">="    { printf("greater_equal: %s\n", yytext); }
 "<="    { printf("less_equal: %s\n", yytext); }
@@ -232,12 +187,6 @@ bool        { printf("type: %s\n", yytext); }
 "||"    { printf("logical_or: %s\n", yytext); }
 "!"     { printf("logical_not: %s\n", yytext); }
 
-"??"    { printf("null_coalescing: %s\n", yytext); }
-
-"=>"    { printf("function_arrow: %s\n", yytext); }
-
-"?."    { printf("null_aware_access: %s\n", yytext); }
-"?.."   { printf("null_aware_cascade: %s\n", yytext); }
 ".."    { printf("cascade: %s\n", yytext); }
 
 "="     { printf("assignment: %s\n", yytext); }
