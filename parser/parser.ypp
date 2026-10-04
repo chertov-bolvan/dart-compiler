@@ -7,12 +7,26 @@
 %token DOUBLE_LIT
 %token ID
 %token STRING_LIT
-%token BOOL_LIT
-%token NULL_LIT
 
-//Инкремент и декремент
-%token INC DEC
+// Ключевые слова
+%token BREAK_KW CASE_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
+%token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
+%token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW NEW_KW RETHROW_KW
+%token RETURN_KW SUPER_KW SWITCH_KW THIS_KW THROW_KW TRY_KW
+%token VAR_KW VOID_KW WHILE_KW TRUE_KW FALSE_KW NULL_KW
+%token ABSTRACT_KW AS_KW EXPORT_KW FACTORY_KW GET_KW
+%token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
 
+// Типы
+%token NUM_TYPE INT_TYPE DOUBLE_TYPE 
+%token BOOL_TYPE VOID_TYPE STRING_TYPE 
+
+%token EQ NEQ LEQ GEQ // == != <= >=
+%token LOG_AND LOG_OR && ||
+%token INC DEC ++ --
+%token INTDIV COSCADE ~/ ..
+
+%token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN // += -= *= /= %=
 
 %start program
 
@@ -27,5 +41,33 @@
 %%
 
 
+expr:
+    // базовые литиралы
+      INT_LIT
+    | DOUBLE_LIT
+    | ID
+    | STRING_LIT
+    | BOOL_LIT
+    | NULL_LIT
+
+;
+
+
+expr_list:
+      expr
+    | expr_list ',' expr
+;
+
+
+
+type:
+      NUM_TYPE
+    | INT_TYPE
+    | DOUBLE_TYPE
+    | BOOL_TYPE
+    | VOID_TYPE
+    | STRING_TYPE
+    | ID
+;
 
 %%
