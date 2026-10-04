@@ -1,0 +1,31 @@
+%{
+    #include <stdio.h>
+%}
+
+// Литералы
+%token INT_LIT
+%token DOUBLE_LIT
+%token ID
+%token STRING_LIT
+%token BOOL_LIT
+%token NULL_LIT
+
+//Инкремент и декремент
+%token INC DEC
+
+
+%start program
+
+
+%union {
+    int num;
+    double dbl;
+    char* str;
+}
+
+
+%%
+
+
+
+%%
