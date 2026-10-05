@@ -2,13 +2,13 @@
     #include <stdio.h>
 %}
 
-// Литералы
+/* Литералы */
 %token INT_LIT
 %token DOUBLE_LIT
 %token ID
 %token STRING_LIT
 
-// Ключевые слова
+/**/ Ключевые слова */
 %token BREAK_KW CASE_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
 %token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
 %token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW NEW_KW RETHROW_KW
@@ -17,16 +17,17 @@
 %token ABSTRACT_KW AS_KW EXPORT_KW FACTORY_KW GET_KW
 %token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
 
-// Типы
+/* Типы */
 %token NUM_TYPE INT_TYPE DOUBLE_TYPE 
 %token BOOL_TYPE VOID_TYPE STRING_TYPE 
 
-%token EQ NEQ LEQ GEQ // == != <= >=
-%token LOG_AND LOG_OR && ||
-%token INC DEC ++ --
-%token INTDIV COSCADE ~/ ..
+%token EQ NEQ LEQ GEQ /* == != <= >= */
+%token LOG_AND LOG_OR /* && || */
+%token INC DEC /* ++ -- */
+%token INTDIV COSCADE /* ~/ .. */
 
-%token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN // += -= *= /= %=
+%token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN /* += -= *= */
+%token DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* /= %= ~/= */
 
 %start program
 
@@ -42,14 +43,99 @@
 
 
 expr:
-    // базовые литиралы
+      conditional
+;
+
+ 
+conditional: /* тернарный оператор */
+      logical_or
+    | logical_or '?' expr ':' expr
+;
+
+
+logical_or: /* логическое или */
+      logical_and
+    | logical_or LOG_OR logical_and /* x||y */
+;
+
+
+logical_and: /* логическое и */
+      equality
+    | logical_and LOG_AND equality /* x&&y */
+;
+
+
+equality: /* равенство */
+      relational
+    | equality EQ relational /* x==y */
+    | equality NEQ relational /* x!=y */
+;
+
+
+relational: /* сравнение */
+      additive
+    | relational '<' additive /* x<y */
+    | relational '>' additive /* x>y */
+    | relational LEQ additive /* x<=y */
+    | relational GEQ additive /* x>=y */
+;
+
+
+additive: /* сложение вычитание */
+      multiplicative
+    | additive '+' multiplicative /* x+y */
+    | additive '-' multiplicative /* x-y */
+;
+
+
+multiplicative:
+      prefix
+    | multiplicative '*' prefix /* x*y */
+    | multiplicative '/' prefix /* x/y */
+    | multiplicative '%' prefix /* x%y */
+    | multiplicative INTDIV prefix /* x~/y */
+;
+
+
+prefix: /*опрерации перед операндом*/
+      postfix
+    | INC prefix /*++x*/
+    | DEC prefix /*--x*/
+    | '-' prefix /*-x*/
+    | '!' prefix /*!x*/
+    | '~' prefix /*~x*/
+;
+
+
+postfix: /*операции полсле операнда*/
+      primary
+    | postfix INC /* x++ */
+    | postfix DEC /* x-- */
+    | postfix '.' ID /* x.y */
+    | postfix '.' ID arguments /* x.y(...) */
+    | postfix '[' expr ']' /* x[i] */
+;
+
+
+primary: /*базовые литералы*/
       INT_LIT
     | DOUBLE_LIT
     | ID
     | STRING_LIT
-    | BOOL_LIT
-    | NULL_LIT
+    | TRUE_KW
+    | FALSE_KW
+    | NULL_KW
+;
 
+
+arguments: /*аргументы*/
+      '(' expr_list_empty ')'
+;
+
+
+expr_list_empty:
+      expr_list
+    | /*empty*/
 ;
 
 
@@ -59,13 +145,11 @@ expr_list:
 ;
 
 
-
-type:
+type: /*типы*/
       NUM_TYPE
     | INT_TYPE
     | DOUBLE_TYPE
     | BOOL_TYPE
-    | VOID_TYPE
     | STRING_TYPE
     | ID
 ;
