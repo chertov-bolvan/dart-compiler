@@ -45,10 +45,18 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
         tokenStack[tokenTop].semanticValue = sV;  
     }
 
+    static void pushTokenNoValue(int code) {
+        if (tokenTop >= MAX_TOKEN_STACK - 1)
+            return;
+        
+        tokenTop++;
+        tokenStack[tokenTop].code = code;
+        memset(&tokenStack[tokenTop].semanticValue, 0, sizeof(YYSTYPE));  
+    }
+
     static struct Token popToken() {
         return tokenStack[tokenTop--];
     }
-
 
     static YYSTYPE svNone() {
         YYSTYPE s;
@@ -87,19 +95,19 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
     void deleteUnderscores(char* src, char* result);
 %}
 
-%{
-    char tmp[1000] = "";
-%}
-
 %%
 
-%{
+{
+    char tmp[1000] = "";
+}
+
+{
     if (tokenTop > -1) {
         struct Token t = popToken();
         yylval = t.semanticValue;
         return t.code;
     }
-%}
+}
 
 assert       { printf("keyword: %s\n", yytext); }
 break        { printf("keyword: %s\n", yytext); }
@@ -350,7 +358,7 @@ List        { printf("type: %s\n", yytext); }
 
 "/*"  {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
 <MULTILINE_COMMENT_STATE>"/*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
-<MULTILINE_COMMENT_STATE>"*/" {yy_pop_state(); printf("End of multi-line comment (yytext = %s)\n", yytext);}
+<MULTILINE_COMMENT_STATE>"*"+"/" {yy_pop_state(); printf("End of multi-line comment (yytext = %s)\n", yytext);}
 <MULTILINE_COMMENT_STATE>[^*/]+ {}
 <MULTILINE_COMMENT_STATE>"*"+[^*/]* {}
 <MULTILINE_COMMENT_STATE>"/"+[^*/]* {}
@@ -396,20 +404,23 @@ List        { printf("type: %s\n", yytext); }
 <STRING_DOUBLE_STATE>"\"" {yy_pop_state(); clearStringBuffer(); printf("END of a STRING with a DOUBLE quote (yytext = %s)\n", yytext); }
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {
-    pushToken('+', svNone());
-    pushToken(')', svNone());
-    pushToken('(', svNone());
+    pushTokenNoValue('+');
+    pushTokenNoValue(')');
+    pushTokenNoValue('(');
     pushToken(ID, svID("toString"));
-    pushToken('.', svNone());
+    pushTokenNoValue('.');
     pushToken(ID, svID(yytext + 1));
-    pushToken('+', svNone());
+    pushTokenNoValue('+');
+    pushToken(STRING, svStr(stringBuffer));
+    clearStringBuffer();
 
     printf("Simple interpolation (yytext = %s)\n", yytext);
 }
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${" {
-    pushToken('(', svNone());
-    pushToken('+', svNone());
+    pushTokenNoValue('(');
+    pushTokenNoValue('+');
+    pushToken(STRING, svStr(stringBuffer));
     clearStringBuffer();
 
     yy_push_state(INTERPOLATION_STATE);
@@ -422,12 +433,12 @@ List        { printf("type: %s\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE><<EOF>> { printf("Error: no end of STRING in (line #%d)\n", yylineno); }
 
 <INTERPOLATION_STATE>"}" {
-    pushToken('+', svNone());
-    pushToken(')', svNone());
-    pushToken('(', svNone());
+    pushTokenNoValue('+');
+    pushTokenNoValue(')');
+    pushTokenNoValue('(');
     pushToken(ID, svID("toString"));
-    pushToken('.', svNone());
-    pushToken(')', svNone());
+    pushTokenNoValue('.');
+    pushTokenNoValue(')');
 
     clearStringBuffer();
     yy_pop_state();
