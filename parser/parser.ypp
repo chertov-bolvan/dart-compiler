@@ -38,7 +38,7 @@
 %nonassoc AS_KW IS_KW ISN_KW LEQ GEQ '<' '>'
 %left '+' '-'
 %left '*' '/' '%' INTDIV
-%nonassoc INC DEC
+%nonassoc INC DEC '.' '!' '['
 %nonassoc '('
 
 
