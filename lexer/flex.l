@@ -163,6 +163,8 @@ double      { printf("type: %s\n", yytext); }
 String      { printf("type: %s\n", yytext); }
 bool        { printf("type: %s\n", yytext); }
 
+List        { printf("type: %s\n", yytext); }
+
 
 <INITIAL>"{"     { printf("curly_bracket_open: %s\n", yytext); }
 <INITIAL>"}"     { printf("curly_bracket_close: %s\n", yytext); }
