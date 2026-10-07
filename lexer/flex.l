@@ -117,6 +117,7 @@ for          { printf("keyword: %s\n", yytext); }
 if           { printf("keyword: %s\n", yytext); }
 in           { printf("keyword: %s\n", yytext); }
 is           { printf("keyword: %s\n", yytext); }
+is!          { printf("keyword: %s\n", yytext); }
 new          { printf("keyword: %s\n", yytext); }
 rethrow      { printf("keyword: %s\n", yytext); }
 return       { printf("keyword: %s\n", yytext); }
@@ -168,6 +169,7 @@ bool        { printf("type: %s\n", yytext); }
 "+="    { printf("addition_assignment: %s\n", yytext); }
 "-="    { printf("subtraction_assignment: %s\n", yytext); }
 "%="    { printf("remainder_assignment: %s\n", yytext); }
+"~/="   { printf("integer_division_assignment: %s\n", yytext); }
 
 "~/"    { printf("integer_division: %s\n", yytext); }
 "*"     { printf("multiplication: %s\n", yytext); }
