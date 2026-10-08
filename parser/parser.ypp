@@ -9,7 +9,7 @@
 %token STRING_LIT
 %token BOOL_LIT
 
-/**/ Ключевые слова */
+/* Ключевые слова */
 %token BREAK_KW CASE_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
 %token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
 %token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW ISN_KW NEW_KW RETHROW_KW
@@ -23,23 +23,24 @@
 
 %token EQ NEQ LEQ GEQ /* == != <= >= */
 %token LOG_AND LOG_OR /* && || */
-%token INC DEC /* ++ -- */
-%token INTDIV COSCADE /* ~/ .. */
+%token INC DEC INTDIV/* ++ -- ~/ */
 
 %token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN /* += -= *= */
 %token DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* /= %= ~/= */
 
 
 /* приоритеты */
-%right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN
-%left LOG_OR
-%left LOG_AND
-%nonassoc EQ NEQ
-%nonassoc AS_KW IS_KW ISN_KW LEQ GEQ '<' '>'
-%left '+' '-'
-%left '*' '/' '%' INTDIV
-%nonassoc INC DEC '.' '!' '['
-%nonassoc '('
+%right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* assignment */
+%right '?'  /* тернарный оператор */
+%left LOG_OR /* logical OR */
+%left LOG_AND /* logical AND */
+%nonassoc EQ NEQ /* equality */
+%nonassoc AS_KW IS_KW ISN_KW LEQ GEQ '<' '>' /* relational */
+%left '+' '-' /* additive */
+%left '*' '/' '%' INTDIV /* multiplicative */
+%nonassoc '!' /* префикс */
+%nonassoc INC DEC '.' UMINUS '[' /* постфикс */
+%nonassoc '(' /* скобки */
 
 
 %start program
@@ -63,9 +64,8 @@ expr:
     | expr '[' expr ']' /* x[i] */
     | INC expr /*++x*/
     | DEC expr /*--x*/
-    | '-' expr /*-x*/
+    | '-' expr %prec UMINUS /*-x*/
     | '!' expr /*!x*/
-    | '~' expr /*~x*/
     | expr '*' expr /* x*y */
     | expr '/' expr /* x/y */
     | expr '%' expr /* x%y */
