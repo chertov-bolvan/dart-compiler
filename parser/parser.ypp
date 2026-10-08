@@ -7,6 +7,7 @@
 %token DOUBLE_LIT
 %token ID
 %token STRING_LIT
+%token BOOL_LIT
 
 /**/ Ключевые слова */
 %token BREAK_KW CASE_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
@@ -53,81 +54,36 @@
 
 
 expr:
-      conditional
-;
-
- 
-conditional: /* тернарный оператор */
-      logical_or
-    | logical_or '?' expr ':' expr
-;
-
-
-logical_or: /* логическое или */
-      logical_and
-    | logical_or LOG_OR logical_and /* x||y */
-;
-
-
-logical_and: /* логическое и */
-      equality
-    | logical_and LOG_AND equality /* x&&y */
-;
-
-
-equality: /* равенство */
-      relational
-    | equality EQ relational /* x==y */
-    | equality NEQ relational /* x!=y */
-;
-
-
-relational: /* сравнение */
-      additive
-    | relational '<' additive /* x<y */
-    | relational '>' additive /* x>y */
-    | relational LEQ additive /* x<=y */
-    | relational GEQ additive /* x>=y */
-    | relational IS_KW type /* x is y */
-    | relational AS_KW type /* x as y */
-    | relational ISN_KW type /* x is! */
-;
-
-
-additive: /* сложение вычитание */
-      multiplicative
-    | additive '+' multiplicative /* x+y */
-    | additive '-' multiplicative /* x-y */
-;
-
-
-multiplicative:
-      prefix
-    | multiplicative '*' prefix /* x*y */
-    | multiplicative '/' prefix /* x/y */
-    | multiplicative '%' prefix /* x%y */
-    | multiplicative INTDIV prefix /* x~/y */
-;
-
-
-prefix: /*опрерации перед операндом*/
-      postfix
-    | INC prefix /*++x*/
-    | DEC prefix /*--x*/
-    | '-' prefix /*-x*/
-    | '!' prefix /*!x*/
-    | '~' prefix /*~x*/
-;
-
-
-postfix: /*операции полсле операнда*/
       primary
-    | postfix INC /* x++ */
-    | postfix DEC /* x-- */
-    | postfix '.' ID /* x.y */
-    | postfix arguments /* x(...) */
-    | postfix '.' ID arguments /* x.y(...) */
-    | postfix '[' expr ']' /* x[i] */
+    | expr INC /* x++ */
+    | expr DEC /* x-- */
+    | expr '.' ID /* x.y */
+    | expr '(' expr_list_empty ')' /* x(...) */
+    | expr '.' ID '(' expr_list_empty ')' /* x.y(...) */
+    | expr '[' expr ']' /* x[i] */
+    | INC expr /*++x*/
+    | DEC expr /*--x*/
+    | '-' expr /*-x*/
+    | '!' expr /*!x*/
+    | '~' expr /*~x*/
+    | expr '*' expr /* x*y */
+    | expr '/' expr /* x/y */
+    | expr '%' expr /* x%y */
+    | expr INTDIV expr /* x~/y */
+    | expr '+' expr /* x+y */
+    | expr '-' expr /* x-y */
+    | expr '<' expr /* x<y */
+    | expr '>' expr /* x>y */
+    | expr LEQ expr /* x<=y */
+    | expr GEQ expr /* x>=y */
+    | expr IS_KW ID /* x is y */
+    | expr AS_KW ID /* x as y */
+    | expr ISN_KW ID /* x is! */
+    | expr EQ expr /* x==y */
+    | expr NEQ expr /* x!=y */
+    | expr LOG_AND expr /* x&&y */
+    | expr LOG_OR expr /* x||y */
+    | expr '?' expr ':' expr
 ;
 
 
@@ -136,23 +92,12 @@ primary: /*базовые литералы*/
     | DOUBLE_LIT
     | ID
     | STRING_LIT
-    | TRUE_KW
-    | FALSE_KW
+    | BOOL_LIT
     | NULL_KW
     | SUPER_KW
     | THIS_KW
     | '(' expr ')'
     | '[' expr_list_empty ']'
-;
-
-
-expr:
-     
-;
-
-
-arguments: /*аргументы*/
-      '(' expr_list_empty ')'
 ;
 
 
@@ -165,16 +110,6 @@ expr_list_empty:
 expr_list:
       expr
     | expr_list ',' expr
-;
-
-
-type: /*типы*/
-      NUM_TYPE
-    | INT_TYPE
-    | DOUBLE_TYPE
-    | BOOL_TYPE
-    | STRING_TYPE
-    | ID
 ;
 
 %%
