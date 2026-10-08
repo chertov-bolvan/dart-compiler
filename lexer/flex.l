@@ -133,16 +133,6 @@ static       { printf("keyword: %s\n", yytext); }
 when         { printf("keyword_contextual: %s\n", yytext); }
 
 
-num         { printf("type: %s\n", yytext); }
-int         { printf("type: %s\n", yytext); }
-double      { printf("type: %s\n", yytext); }
-
-String      { printf("type: %s\n", yytext); }
-bool        { printf("type: %s\n", yytext); }
-
-List        { printf("type: %s\n", yytext); }
-
-
 <INITIAL>"{"     { printf("curly_bracket_open: %s\n", yytext); }
 <INITIAL>"}"     { printf("curly_bracket_close: %s\n", yytext); }
 "("     { printf("round_bracket_open: %s\n", yytext); }
