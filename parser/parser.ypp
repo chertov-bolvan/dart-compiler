@@ -18,8 +18,7 @@
 %token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
 
 /* Типы */
-%token NUM_TYPE INT_TYPE DOUBLE_TYPE 
-%token BOOL_TYPE VOID_TYPE STRING_TYPE 
+%token VOID_TYPE
 
 %token EQ NEQ LEQ GEQ /* == != <= >= */
 %token LOG_AND LOG_OR /* && || */
@@ -144,6 +143,11 @@ primary: /*базовые литералы*/
     | THIS_KW
     | '(' expr ')'
     | '[' expr_list_empty ']'
+;
+
+
+expr:
+     
 ;
 
 
