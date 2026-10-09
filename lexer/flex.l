@@ -176,6 +176,7 @@ when         { printf("keyword_contextual: %s\n", yytext); }
 ","     { printf("comma: %s\n", yytext); }
 ":"     { printf("colon: %s\n", yytext); }
 ";"     { printf("semicolon: %s\n", yytext); }
+"?"     {}
 
 
 {DOUBLE}    { 
