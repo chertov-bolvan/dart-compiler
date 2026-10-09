@@ -168,8 +168,6 @@ when         { printf("keyword_contextual: %s\n", yytext); }
 "||"    { printf("logical_or: %s\n", yytext); }
 "!"     { printf("logical_not: %s\n", yytext); }
 
-".."    { printf("cascade: %s\n", yytext); }
-
 "="     { printf("assignment: %s\n", yytext); }
 
 "."     { printf("dot: %s\n", yytext); }
