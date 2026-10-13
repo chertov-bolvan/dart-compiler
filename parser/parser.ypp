@@ -253,6 +253,31 @@ param_list_em:
 ;
 
 
+getter_method_decl:
+      type GET_KW ID stmt_block
+;
+
+
+setter_method_decl:
+      SET_KW ID '(' type ID ')' stmt_block
+;
+
+
+static_method_decl:
+      STATIC_KW func_decl
+    | STATIC_KW getter_method_decl
+    | STATIC_KW setter_method_decl
+;
+
+
+abstract_method_decl:
+      type ID '(' param_list_em ')' ';'
+    | VOID_TYPE ID '(' param_list_em ')' ';'
+    | type GET_KW ID ';'
+    | SET_KW ID '(' TYPE ID ')' ';'
+;
+
+
 /* БЛОК КЛАССОВ */
 
 
