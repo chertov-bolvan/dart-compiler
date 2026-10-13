@@ -10,10 +10,10 @@
 %token BOOL_LIT
 
 /* Ключевые слова */
-%token BREAK_KW CASE_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
+%token BREAK_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
 %token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
 %token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW ISN_KW NEW_KW RETHROW_KW
-%token RETURN_KW SUPER_KW SWITCH_KW THIS_KW THROW_KW TRY_KW
+%token RETURN_KW SUPER_KW THIS_KW THROW_KW TRY_KW
 %token VAR_KW VOID_KW WHILE_KW TRUE_KW FALSE_KW NULL_KW
 %token ABSTRACT_KW AS_KW EXPORT_KW FACTORY_KW GET_KW
 %token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
@@ -54,13 +54,34 @@
 %%
 
 
-stmnt:
-      type ID ';'
+stmt:
+      var_decl ';'
     | expr ';'
+    | ';'
+    | for_stmt
+    | while_stmt
+    | do_while_stmt
+    | if_stmt
+    | return_stmt
+    | '{' stmt_list_em '}'
+    | BREAK_KW ';'
+    | CONTINUE_KW ';'
 ;
 
 
-expr:
+stmt_list:
+      stmt
+    | stmt_list stmt
+;
+
+
+stmt_list_em:
+      /* empty */
+    | stmt_list
+;
+
+
+expr: /* !!!РАССТАВИТЬ ПРИОРИТЕТЫ!!!, !!! */
       primary
     | expr INC /* x++ */
     | expr DEC /* x-- */
@@ -82,14 +103,21 @@ expr:
     | expr '>' expr /* x>y */
     | expr LEQ expr /* x<=y */
     | expr GEQ expr /* x>=y */
-    | expr IS_KW ID /* x is y */
-    | expr AS_KW ID /* x as y */
-    | expr ISN_KW ID /* x is! */
+    | expr IS_KW /* x is y */
+    | expr AS_KW /* x as y */
+    | expr ISN_KW /* x is! */
     | expr EQ expr /* x==y */
     | expr NEQ expr /* x!=y */
     | expr LOG_AND expr /* x&&y */
     | expr LOG_OR expr /* x||y */
     | expr '?' expr ':' expr
+    | expr '=' expr
+    | expr ADD_ASSIGN expr
+    | expr SUB_ASSIGN expr
+    | expr MUL_ASSIGN expr
+    | expr DIV_ASSIGN expr
+    | expr MOD_ASSIGN expr
+    | expr INTDIV_ASSIGN expr
 ;
 
 
@@ -122,5 +150,81 @@ expr_list:
       expr
     | expr_list ',' expr
 ;
+
+
+/* БЛОК stmt */
+
+
+if_stmt: /* оператор if */ 
+      IF_KW '(' expr ')' stmt /* расставить приоритеты */
+    | IF_KW '(' expr ')' stmt ELSE_KW stmt
+;
+
+
+while_stmt: /* оператор while */
+      WHILE_KW '(' expr ')' stmt
+;
+
+
+do_while_stmt: /* оператор do while */
+      DO_KW stmt WHILE_KW '(' expr ')' ';'
+;
+
+
+return_stmt:
+      RETURN_KW ';'
+    | RETURN_KW expr ';'
+;
+
+
+for_stmt: /* оператор for */
+      FOR_KW '(' for_init ';' for_expr ';' expr_list_empty ')' stmt
+    | FOR_KW '(' for_in_decl IN_KW expr ')' stmt
+;
+
+
+for_in_decl: /* объявление в for-in */ 
+      ID
+    | type ID
+    | VAR_KW ID
+    | FINAL_KW ID
+    | FINAL_KW type ID
+;
+
+
+for_expr: /* условие в for */
+      /* empty */
+    | expr
+;
+
+
+for_init: /* блок инициализации for*/
+      /* empty */
+    | var_decl
+    | expr
+;
+
+
+var_decl: /* полное объявление переменных, потом придумать всему блоку норм названия */
+      type var_declarator_list
+    | VAR_KW var_declarator_list
+    | CONST_KW var_declarator_list
+    | CONST_KW type var_declarator_list
+    | FINAL_KW var_declarator_list
+    | FINAL_KW type var_declarator_list
+;
+
+
+var_declarator: /* объявление переменной */
+      ID
+    | ID '=' expr
+;
+
+
+var_declarator_list: /* объявление нескольких переменных */
+      var_declarator
+    | var_declarator_list ',' var_declarator
+;
+
 
 %%
