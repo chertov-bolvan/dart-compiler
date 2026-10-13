@@ -14,7 +14,7 @@
 %token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
 %token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW ISN_KW NEW_KW RETHROW_KW
 %token RETURN_KW SUPER_KW THIS_KW THROW_KW TRY_KW
-%token VAR_KW VOID_KW WHILE_KW TRUE_KW FALSE_KW NULL_KW
+%token VAR_KW WHILE_KW TRUE_KW FALSE_KW NULL_KW
 %token ABSTRACT_KW AS_KW EXPORT_KW FACTORY_KW GET_KW
 %token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
 
@@ -63,9 +63,14 @@ stmt:
     | do_while_stmt
     | if_stmt
     | return_stmt
-    | '{' stmt_list_em '}'
+    | stmt_block
     | BREAK_KW ';'
     | CONTINUE_KW ';'
+;
+
+
+stmt_block:
+      '{' stmt_list_em '}'
 ;
 
 
@@ -103,9 +108,9 @@ expr: /* !!!РАССТАВИТЬ ПРИОРИТЕТЫ!!!, !!! */
     | expr '>' expr /* x>y */
     | expr LEQ expr /* x<=y */
     | expr GEQ expr /* x>=y */
-    | expr IS_KW /* x is y */
-    | expr AS_KW /* x as y */
-    | expr ISN_KW /* x is! */
+    | expr IS_KW type /* x is y */
+    | expr AS_KW type /* x as y */
+    | expr ISN_KW type /* x is! */
     | expr EQ expr /* x==y */
     | expr NEQ expr /* x!=y */
     | expr LOG_AND expr /* x&&y */
@@ -225,6 +230,32 @@ var_declarator_list: /* объявление нескольких перемен
       var_declarator
     | var_declarator_list ',' var_declarator
 ;
+
+
+/* БЛОК ФУНКЦИЙ */
+
+
+func_decl:
+      type ID '(' param_list_em ')' stmt_block
+    | VOID_TYPE ID '(' param_list_em ')' stmt_block
+;
+
+
+param_list:
+      type ID
+    | param_list ',' type ID
+;
+
+
+param_list_em:
+      /* empty */
+    | param_list
+;
+
+
+/* БЛОК КЛАССОВ */
+
+
 
 
 %%
