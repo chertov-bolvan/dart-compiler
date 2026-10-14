@@ -99,8 +99,8 @@ expr: /* !!!РАССТАВИТЬ ПРИОРИТЕТЫ!!!, !!! */
     | ID '(' expr_list_empty ')' /* x(...) */
     | expr '.' ID '(' expr_list_empty ')' /* x.y(...) */
     | expr '[' expr ']' /* x[i] */
-    | INC expr /*++x*/
-    | DEC expr /*--x*/
+    | INC expr %prec UMINUS /*++x*/
+    | DEC expr %prec UMINUS /*--x*/ 
     | '-' expr %prec UMINUS /*-x*/
     | '!' expr /*!x*/
     | expr '*' expr /* x*y */
