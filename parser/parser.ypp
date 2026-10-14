@@ -55,8 +55,16 @@
 
 
 program:
-      stmt
+      /* empty */
+    | program top_level_decl
+;
+
+
+top_level_decl:
+      var_decl ';'
     | func_decl
+    | class_decl
+;
 
 
 stmt:
@@ -266,7 +274,7 @@ getter_method_decl:
 
 setter_method_decl:
       SET_KW ID '(' type ID ')' stmt_block
-    | VOID SET_KW ID '(' type ID ')' stmt_block
+    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block
 ;
 
 
@@ -282,7 +290,7 @@ abstract_method_decl:
     | VOID_TYPE ID '(' param_list_em ')' ';'
     | type GET_KW ID ';'
     | SET_KW ID '(' type ID ')' ';'
-    | VOID SET_KW ID '(' type ID ')' ';'
+    | VOID_TYPE SET_KW ID '(' type ID ')' ';'
 ;
 
 
