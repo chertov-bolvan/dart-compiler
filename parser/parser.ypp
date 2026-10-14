@@ -38,8 +38,8 @@
 %nonassoc AS_KW IS_KW ISN_KW LEQ GEQ '<' '>' /* relational */
 %left '+' '-' /* additive */
 %left '*' '/' '%' INTDIV /* multiplicative */
-%nonassoc '!' /* префикс */
-%nonassoc INC DEC '.' UMINUS '[' /* постфикс */
+%nonassoc '!' UMINUS /* префикс */
+%nonassoc INC DEC '.' '[' /* постфикс */
 %nonassoc '(' /* скобки */
 
 
@@ -121,13 +121,13 @@ expr: /* !!!РАССТАВИТЬ ПРИОРИТЕТЫ!!!, !!! */
     | expr LOG_AND expr /* x&&y */
     | expr LOG_OR expr /* x||y */
     | expr '?' expr ':' expr
-    | expr '=' expr
-    | expr ADD_ASSIGN expr
-    | expr SUB_ASSIGN expr
-    | expr MUL_ASSIGN expr
-    | expr DIV_ASSIGN expr
-    | expr MOD_ASSIGN expr
-    | expr INTDIV_ASSIGN expr
+    | expr ADD_ASSIGN expr /* x+=y */
+    | expr SUB_ASSIGN expr /* x-=y */
+    | expr MUL_ASSIGN expr /* x*=y */
+    | expr DIV_ASSIGN expr /* x/=y */
+    | expr MOD_ASSIGN expr /* x%=y */
+    | expr INTDIV_ASSIGN expr /* x~/=y */
+    | expr '=' expr /* x=y */
 ;
 
 
@@ -143,6 +143,7 @@ primary: /*базовые литералы*/
     | '(' expr ')'
     | '[' expr_list_empty ']'
 ;
+
 
 type:
       ID
