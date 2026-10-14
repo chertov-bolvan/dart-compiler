@@ -11,7 +11,7 @@
 
 /* Ключевые слова */
 %token BREAK_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
-%token DEFAULT_KW DO_KW ELSE_KW ENAM_KW EXTENDS_KW FINAL_KW
+%token DEFAULT_KW DO_KW ELSE_KW ENUM_KW EXTENDS_KW FINAL_KW
 %token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW ISN_KW NEW_KW RETHROW_KW
 %token RETURN_KW SUPER_KW THIS_KW THROW_KW TRY_KW
 %token VAR_KW WHILE_KW TRUE_KW FALSE_KW NULL_KW
@@ -52,6 +52,11 @@
 }
 
 %%
+
+
+program:
+      stmt
+    | func_decl
 
 
 stmt:
@@ -274,13 +279,52 @@ abstract_method_decl:
       type ID '(' param_list_em ')' ';'
     | VOID_TYPE ID '(' param_list_em ')' ';'
     | type GET_KW ID ';'
-    | SET_KW ID '(' TYPE ID ')' ';'
+    | SET_KW ID '(' type ID ')' ';'
 ;
 
 
 /* БЛОК КЛАССОВ */
 
 
+class_decl:
+      class_modifiers_em CLASS_KW ID extend_em '{' class_member_list_em '}'
+;
 
+
+class_modifiers_em:
+      /* empty */
+    | ABSTRACT_KW
+    | FINAL_KW
+    | ABSTRACT_KW FINAL_KW
+;
+
+
+extend_em:
+      /* empty */
+    | EXTENDS_KW ID
+;
+
+
+class_member:
+      var_decl ';'
+    | STATIC_KW var_decl ';'
+    | func_decl
+    | getter_method_decl
+    | setter_method_decl
+    | static_method_decl
+    | abstract_method_decl
+;
+
+
+class_member_list:
+      class_member
+    | class_member_list class_member
+;
+
+
+class_member_list_em:
+      /* empty */
+    | class_member_list
+;
 
 %%
