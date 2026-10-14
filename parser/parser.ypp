@@ -90,6 +90,13 @@ expr:
     | expr LOG_AND expr /* x&&y */
     | expr LOG_OR expr /* x||y */
     | expr '?' expr ':' expr
+    | expr ADD_ASSIGN expr /* x+=y */
+    | expr SUB_ASSIGN expr /* x-=y */
+    | expr MUL_ASSIGN expr /* x*=y */
+    | expr DIV_ASSIGN expr /* x/=y */
+    | expr MOD_ASSIGN expr /* x%=y */
+    | expr INTDIV_ASSIGN expr /* x~/=y */
+    | expr '=' expr /* x=y */
 ;
 
 
@@ -105,6 +112,7 @@ primary: /*базовые литералы*/
     | '(' expr ')'
     | '[' expr_list_empty ']'
 ;
+
 
 type:
       ID
