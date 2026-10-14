@@ -38,8 +38,8 @@
 %nonassoc AS_KW IS_KW ISN_KW LEQ GEQ '<' '>' /* relational */
 %left '+' '-' /* additive */
 %left '*' '/' '%' INTDIV /* multiplicative */
-%nonassoc '!' /* префикс */
-%nonassoc INC DEC '.' UMINUS '[' /* постфикс */
+%nonassoc '!' UMINUS /* префикс */
+%nonassoc INC DEC '.' '[' /* постфикс */
 %nonassoc '(' /* скобки */
 
 
