@@ -99,11 +99,13 @@ stmt_list_em:
 ;
 
 
-expr: /* !!!РАССТАВИТЬ ПРИОРИТЕТЫ!!!, !!! */
+expr:
       primary
     | expr INC /* x++ */
     | expr DEC /* x-- */
     | expr '.' ID /* x.y */
+    | THIS_KW '(' expr_list_empty ')' /* x(...) */
+    | SUPER_KW '(' expr_list_empty ')' /* x(...) */
     | ID '(' expr_list_empty ')' /* x(...) */
     | expr '.' ID '(' expr_list_empty ')' /* x.y(...) */
     | expr '[' expr ']' /* x[i] */
