@@ -1,0 +1,38 @@
+// interpolation.dart
+void main() {
+  String name = "World";
+  int n = 42;
+  double pi = 3.14159;
+
+  // Простая интерполяция
+  String g1 = "Hello, $name!";
+  String g2 = 'Hello, $name!';
+
+  // Интерполяция с выражением
+  String g3 = "n = ${n}";
+  String g4 = "n + 1 = ${n + 1}";
+  String g5 = "pi ≈ ${pi.toStringAsFixed(2)}";
+
+  // Интерполяция + escape-последовательности
+  String g6 = "Line1\nHello, $name!";
+  String g7 = "Tab\t$name";
+  String g8 = "Dollar escaped: \$name (no interpolation)";
+  String g9 = "Literal \$ then interp: \$$name";
+
+  // Экранированный обратный слэш перед интерполяцией
+  String g10 = "Backslash then interp: \\$name";
+
+  // Интерполяция объекта
+  List<int> nums = [1, 2, 3];
+  String g11 = "List: ${nums}";
+  String g12 = "Length: ${nums.length}";
+
+  // Вложенные фигурные скобки в выражении
+  Map<String, int> m = {'a': 1, 'b': 2};
+  String g13 = "Map value: ${m['a']}";
+
+  print("${
+        //
+        _6
+        }");
+}

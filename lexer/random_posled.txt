@@ -1,0 +1,15 @@
+// misc_escapes.dart
+void main() {
+  // Dart разрешает escape для любого символа — сам символ остаётся,
+  // обратный слэш отбрасывается (с предупреждением анализатора).
+  String a = "Escape \a here";
+  String b = "Escape \q here";
+  String c = "Escape \z here";
+  String d = "Escape \1 here";
+  String e = "Escape \_ here";
+  print(a);
+  print(b);
+  print(c);
+  print(d);
+  print(e);
+}
