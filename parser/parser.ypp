@@ -2,12 +2,20 @@
     #include <stdio.h>
 %}
 
+%union {
+    int Int;
+    int Bool
+    double Double;
+    char* String;
+    char* Identifier
+}
+
 /* Литералы */
-%token INT_LIT
-%token DOUBLE_LIT
-%token ID
-%token STRING_LIT
-%token BOOL_LIT
+%token <Int> INT_LIT
+%token <Double> DOUBLE_LIT
+%token <Identifier> ID
+%token <String> STRING_LIT
+%token <Bool> BOOL_LIT
 
 /* Ключевые слова */
 %token BREAK_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
@@ -44,12 +52,6 @@
 
 
 %start program
-
-%union {
-    int Int;
-    double Dbl;
-    char* Str;
-}
 
 %%
 
