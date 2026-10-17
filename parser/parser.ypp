@@ -341,3 +341,21 @@ class_member_list_em:
 ;
 
 %%
+
+void yyerror(char const * s) {
+       printf("%s\n", s);
+}
+
+
+void main( int argc, char** argv ) {
+    ++argv, --argc;
+    if ( argc > 0 )
+        yyin = fopen( argv[0], "r" );
+    else
+        yyin = stdin;
+
+    yypars();
+
+    if (yyin != stdin)
+        fclose(yyin);
+}

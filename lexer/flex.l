@@ -354,17 +354,3 @@ void deleteUnderscores(char* src, char* result) {
 
   result[j] = '\0';
 }
-
-void main( int argc, char** argv )
-{
-    ++argv, --argc;
-    if ( argc > 0 )
-        yyin = fopen( argv[0], "r" );
-    else
-        yyin = stdin;
-
-    yylex();
-
-    if (yyin != stdin)
-        fclose(yyin);
-}
