@@ -104,7 +104,6 @@ for          { printf("keyword: %s\n", yytext); }
 if           { printf("keyword: %s\n", yytext); }
 in           { printf("keyword: %s\n", yytext); }
 is           { printf("keyword: %s\n", yytext); }
-is!          { printf("keyword: %s\n", yytext); }
 new          { printf("keyword: %s\n", yytext); }
 rethrow      { printf("keyword: %s\n", yytext); }
 return       { printf("keyword: %s\n", yytext); }
