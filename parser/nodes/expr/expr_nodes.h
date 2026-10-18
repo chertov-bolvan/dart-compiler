@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "type_nodes.h"
 
 typedef enum ExprNodeType {
     IntType, BoolType, DoubleType, StringType, 
-    IdType, NullType, SuperType, ThisType,
+    IdType, NullType, SuperType, ThisType, ListLiteralType,
     
     IncPostfixType, DecPostfixType, 
     AccessFieldType, ThisFuncType,
@@ -50,7 +51,7 @@ ExprNode* createIDExpr(char* value);
 ExprNode* createExpr(ExprNodeType type);
 ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode);
 ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right);
-ExprNode* createPrifixUnExpr(ExprNodeType type, ExprNode* expr);
+ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr);
 ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr);
 ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId);
 ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* arguments);

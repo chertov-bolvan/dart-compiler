@@ -59,6 +59,16 @@ ExprNode* createExpr(ExprNodeType type) {
 }
 
 
+ExprNode* createListLiteralExpr(ExprNode* expr) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->type = ListLiteralType;
+    result->left = expr;
+
+    return result;
+}
+
+
 ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
@@ -81,7 +91,7 @@ ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right) {
 }
 
 
-ExprNode* createPrifixUnExpr(ExprNodeType type, ExprNode* expr) {
+ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->type = type;

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef enum TypeNodeType {
-    IdType, ListType,
+    IdTType, ListTType,
 } TypeNodeType;
 
 
@@ -10,7 +10,7 @@ typedef struct TypeNode {
     TypeNodeType type;
 
     char* id;
-    TypeNode* innerType;
+    struct TypeNode* innerType;
 } TypeNode;
 
 
