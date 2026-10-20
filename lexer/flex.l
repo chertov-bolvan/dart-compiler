@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "parser.hpp"
 %}
 
 
@@ -244,15 +245,15 @@ when         { printf("keyword_contextual: %s\n", yytext); }
   }
 
 
-"/*"  {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
-<MULTILINE_COMMENT_STATE>"/"+"*" {yy_push_state(MULTILINE_COMMENT_STATE); printf("Start of a multi-line comment (yytext = %s)\n", yytext);}
-<MULTILINE_COMMENT_STATE>"*"+"/" {yy_pop_state(); printf("End of multi-line comment (yytext = %s)\n", yytext);}
+"/*"  {yy_push_state(MULTILINE_COMMENT_STATE);}
+<MULTILINE_COMMENT_STATE>"/"+"*" {yy_push_state(MULTILINE_COMMENT_STATE);}
+<MULTILINE_COMMENT_STATE>"*"+"/" {yy_pop_state();}
 <MULTILINE_COMMENT_STATE>[^*/]+ {}
 <MULTILINE_COMMENT_STATE>"*"+[^*/]* {}
 <MULTILINE_COMMENT_STATE>"/"+[^*/]* {}
 <MULTILINE_COMMENT_STATE><<EOF>> {printf("Error: multi-line comment not closed (line #%d)\n", yylineno);}
 
-"//"[^\n]* {printf("A standard comment (yytext = %s)\n", yytext);}
+"//"[^\n]* {}
 
 
 "r'" {yy_push_state(RAW_STRING_SINGLE_STATE); stringBuffer[0] = '\0';}
@@ -262,13 +263,15 @@ when         { printf("keyword_contextual: %s\n", yytext); }
     yy_pop_state();
     char* copy = strdup(stringBuffer);
     stringBuffer[0] = '\0';
-    return copy;
+    yylval.String = copy;
+    return STRING_LIT;
 }
 <RAW_STRING_DOUBLE_STATE>"\"" { 
     yy_pop_state();
     char* copy = strdup(stringBuffer);
     stringBuffer[0] = '\0';
-    return copy;
+    yylval.String = copy;
+    return STRING_LIT;
 }
 
 <RAW_STRING_SINGLE_STATE>[^']+ {strcat(stringBuffer, yytext);}
@@ -288,10 +291,22 @@ when         { printf("keyword_contextual: %s\n", yytext); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\'" {strcat(stringBuffer, "\'"); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\"" {strcat(stringBuffer, "\""); }
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\\$" {strcat(stringBuffer, "\$"); }
-<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\". {strcat(stringBuffer, yytext[1]); }
+<STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\\". {strncat(stringBuffer, &yytext[1], 1); }
 
-<STRING_SINGLE_STATE>"'" {yy_pop_state(); char* copy = strdup(stringBuffer); stringBuffer[0] = '\0'; return copy;}
-<STRING_DOUBLE_STATE>"\"" {yy_pop_state(); char* copy = strdup(stringBuffer); stringBuffer[0] = '\0'; return copy;}
+<STRING_SINGLE_STATE>"'" {
+    yy_pop_state();
+    char* copy = strdup(stringBuffer);
+    stringBuffer[0] = '\0';
+    yylval.String = copy;
+    return STRING_LIT;
+}
+<STRING_DOUBLE_STATE>"\"" {
+    yy_pop_state();
+    char* copy = strdup(stringBuffer);
+    stringBuffer[0] = '\0';
+    yylval.String = copy;
+    return STRING_LIT;
+}
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\$"[a-zA-Z_][a-zA-Z0-9_]* {
     pushTokenNoValue('+');
@@ -304,7 +319,8 @@ when         { printf("keyword_contextual: %s\n", yytext); }
     char* copy = strdup(stringBuffer);
 
     stringBuffer[0] = '\0';
-    return copy;
+    yylval.String = copy;
+    return STRING_LIT;
 }
 
 <STRING_SINGLE_STATE,STRING_DOUBLE_STATE>"\${" {
@@ -314,7 +330,8 @@ when         { printf("keyword_contextual: %s\n", yytext); }
     stringBuffer[0] = '\0';
 
     yy_push_state(INTERPOLATION_STATE);
-    return copy; 
+    yylval.String = copy;
+    return STRING_LIT;
 }
 
 <STRING_SINGLE_STATE>[^'\\$]+ {strcat(stringBuffer, yytext);}
@@ -333,7 +350,8 @@ when         { printf("keyword_contextual: %s\n", yytext); }
 
     stringBuffer[0] = '\0';
     yy_pop_state();
-    return copy;
+    yylval.String = copy;
+    return STRING_LIT;
 }
 
 <INTERPOLATION_STATE><<EOF>> {printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);}

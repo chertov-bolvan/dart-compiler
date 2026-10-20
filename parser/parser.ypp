@@ -11,10 +11,10 @@
 
 %union {
     int Int;
-    int Bool
+    int Bool;
     double Double;
     char* String;
-    char* Identifier
+    char* Identifier;
 
     ExprNode* Expr;
     TypeNode* Type;
