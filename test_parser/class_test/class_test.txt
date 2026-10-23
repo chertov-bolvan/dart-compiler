@@ -1,0 +1,18 @@
+class A {
+  int a;
+  String b;
+
+  void funcVoid() {}
+
+  int funcInt(int a, num b, double c, String d) {
+    return 1;
+  }
+}
+
+void main() {
+  A aClass1 = A();
+  aClass1.funcVoid();
+  aClass1.funcInt(1, 2, 3.3, "4Str");
+
+  A aClass2 = new A();
+}
