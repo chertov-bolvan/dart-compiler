@@ -84,34 +84,34 @@ top_level_decl:
 
 
 stmt:
-      var_decl ';'
-    | expr ';'
-    | ';'
-    | for_stmt
-    | while_stmt
-    | do_while_stmt
-    | if_stmt
-    | return_stmt
-    | stmt_block
-    | BREAK_KW ';'
-    | CONTINUE_KW ';'
+      var_decl ';'      {$$ = createVarDeclStmt($1);}
+    | expr ';'          {$$ = createExprStmt($1);}
+    | ';'               {$$ = createEmptyStmt();}
+    | for_stmt 
+    | while_stmt 
+    | do_while_stmt 
+    | if_stmt 
+    | return_stmt       {$$ = $1;}
+    | stmt_block        {$$ = $1;}
+    | BREAK_KW ';'      {$$ = createBreakStmt();}
+    | CONTINUE_KW ';'   {$$ = createContinueStmt();}
 ;
 
 
 stmt_block:
-      '{' stmt_list_em '}'
+      '{' stmt_list_em '}' {$$ = createBlockStmt($2);}
 ;
 
 
 stmt_list:
-      stmt
-    | stmt_list stmt
+      stmt            {$$ = $1;}
+    | stmt_list stmt  {$$ = addStmtToList($1, $2);}
 ;
 
 
 stmt_list_em:
-      /* empty */
-    | stmt_list
+      /* empty */     {$$ = NULL;}
+    | stmt_list       {$$ = $1;}
 ;
 
 
@@ -209,8 +209,8 @@ do_while_stmt: /* оператор do while */
 
 
 return_stmt:
-      RETURN_KW ';'
-    | RETURN_KW expr ';'
+      RETURN_KW ';'       {$$ = createReturnStmt(NULL);}
+    | RETURN_KW expr ';'  {$$ = createReturnStmt($2);}
 ;
 
 
@@ -243,24 +243,24 @@ for_init: /* блок инициализации for*/
 
 
 var_decl: /* полное объявление переменных, потом придумать всему блоку норм названия */
-      type var_declarator_list
-    | VAR_KW var_declarator_list
-    | CONST_KW var_declarator_list
-    | CONST_KW type var_declarator_list
-    | FINAL_KW var_declarator_list
-    | FINAL_KW type var_declarator_list
+      type var_declarator_list          {$$ = createVarDecl(NoModifier, $1, $2);}
+    | VAR_KW var_declarator_list        {$$ = createVarDecl(NoModifier, NULL, $2);}
+    | CONST_KW var_declarator_list      {$$ = createVarDecl(ConstModifier, NULL, $2);}
+    | CONST_KW type var_declarator_list {$$ = createVarDecl(ConstModifier, $2, $3);}
+    | FINAL_KW var_declarator_list      {$$ = createVarDecl(FinalModifier, NULL, $2);}
+    | FINAL_KW type var_declarator_list {$$ = createVarDecl(FinalModifier, $2, $3);}
 ;
 
 
 var_declarator: /* объявление переменной */
-      ID
-    | ID '=' expr
+      ID          {$$ = createVarDeclarator($1, NULL);}
+    | ID '=' expr {$$ = createVarDeclarator($1, $3);}
 ;
 
 
 var_declarator_list: /* объявление нескольких переменных */
-      var_declarator
-    | var_declarator_list ',' var_declarator
+      var_declarator                          {$$ = $1;}
+    | var_declarator_list ',' var_declarator  {$$ = addVarDeclaratorToList($1, $3);}
 ;
 
 
