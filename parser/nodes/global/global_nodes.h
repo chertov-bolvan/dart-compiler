@@ -19,7 +19,7 @@ typedef enum TopLevelDeclType {
 typedef struct TopLevelDeclNode {
   int nodeId;
 
-  GlobalDeclNodeType type;
+  TopLevelDeclType type;
 
   struct VarDeclNode* varDeclNode;
   struct FuncDeclNode* funcDeclNode;

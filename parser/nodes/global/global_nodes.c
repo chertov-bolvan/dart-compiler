@@ -12,7 +12,7 @@ ProgramNode* createProgram(TopLevelDeclNode* topLevelDeclNode) {
 
 
 TopLevelDeclNode* createTopLevelVarDecl(VarDeclNode* varDeclNode) {
-  TopLevelDeclNode result = calloc(1, sizeof(TopLevelDeclNode));
+  TopLevelDeclNode* result = calloc(1, sizeof(TopLevelDeclNode));
 
   result->nodeId = globalId++;
 
@@ -23,7 +23,7 @@ TopLevelDeclNode* createTopLevelVarDecl(VarDeclNode* varDeclNode) {
 }
 
 TopLevelDeclNode* createTopLevelFuncDecl(FuncDeclNode* funcDeclNode) {
-  TopLevelDeclNode result = calloc(1, sizeof(TopLevelDeclNode));
+  TopLevelDeclNode* result = calloc(1, sizeof(TopLevelDeclNode));
 
   result->nodeId = globalId++;
 
