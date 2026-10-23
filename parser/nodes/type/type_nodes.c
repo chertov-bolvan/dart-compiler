@@ -3,6 +3,8 @@
 TypeNode* createIdType(char* value) {
     TypeNode* result = calloc(1, sizeof(TypeNode));
 
+    result->nodeId = globalId++;
+
     result->type = IdTType;
     result->id = value;
 
@@ -13,8 +15,18 @@ TypeNode* createIdType(char* value) {
 TypeNode* createArrayType(TypeNode* innerType) {
     TypeNode* result = calloc(1, sizeof(TypeNode));
 
+    result->nodeId = globalId++;
+
     result->type = ListTType;
     result->innerType = innerType;
 
     return result;
+}
+
+TypeNode* createVoidType() {
+    TypeNode* result = calloc(1, sizeof(TypeNode));
+
+    result->nodeId = globalId++;
+
+    result->type = VoidTType;
 }

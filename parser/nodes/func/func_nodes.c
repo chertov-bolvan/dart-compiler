@@ -1,12 +1,12 @@
 #include "func_nodes.h"
 
-FuncDeclNode* createFuncDecl(TypeNode* type, char* identifier, ParamNode* parameters, StmtNode* body) {
+FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, StmtNode* body) {
   FuncDeclNode* result = calloc(1, sizeof(FuncDeclNode));
 
-  result->id = globalId++;
+  result->nodeId = globalId++;
 
   result->type = type;
-  result->identifier = identifier;
+  result->id = id;
   result->parameters = parameters;
   result->body = body;
 
@@ -14,13 +14,13 @@ FuncDeclNode* createFuncDecl(TypeNode* type, char* identifier, ParamNode* parame
 }
 
 
-ParamNode* createParam(TypeNode* type, char* identifier) {
+ParamNode* createParam(TypeNode* type, char* id) {
   ParamNode* result = calloc(1, sizeof(ParamNode));
 
-  result->id = globalId++;
+  result->nodeId = globalId++;
 
   result->type = type;
-  result->identifier = identifier;
+  result->id = id;
 
   return result;
 }

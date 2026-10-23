@@ -5,6 +5,8 @@
 StmtNode* createExprStmt(ExprNode* exprNode) {
   StmtNode* result = calloc(1, sizeof(StmtNode));
 
+  result->nodeId = globalId++;
+
   result->type = ExprType;
   result->exprNode = exprNode;
 
@@ -14,6 +16,8 @@ StmtNode* createExprStmt(ExprNode* exprNode) {
 StmtNode* createVarDeclStmt(VarDeclNode* varDeclNode) {
   StmtNode* result = calloc(1, sizeof(StmtNode));
 
+  result->nodeId = globalId++;
+
   result->type = VarDeclType;
   result->varDeclNode = varDeclNode;
   
@@ -22,6 +26,8 @@ StmtNode* createVarDeclStmt(VarDeclNode* varDeclNode) {
 
 StmtNode* createBlockStmt(StmtNode* body) {
   StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
 
   result->type = BlockType;
   result->body = body;
@@ -33,6 +39,8 @@ StmtNode* createBlockStmt(StmtNode* body) {
 StmtNode* createReturnStmt(ExprNode* exprNode) {
   StmtNode* result = calloc(1, sizeof(StmtNode));
 
+  result->nodeId = globalId++;
+
   result->type = ReturnType;
   result->exprNode = exprNode;
 
@@ -42,6 +50,8 @@ StmtNode* createReturnStmt(ExprNode* exprNode) {
 StmtNode* createBreakStmt() {
   StmtNode* result = calloc(1, sizeof(StmtNode));
 
+  result->nodeId = globalId++;
+
   result->type = BreakType;
 
   return result;
@@ -49,6 +59,8 @@ StmtNode* createBreakStmt() {
 
 StmtNode* createContinueStmt() {
   StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
 
   result->type = ContinueType;
 
@@ -58,6 +70,8 @@ StmtNode* createContinueStmt() {
 
 StmtNode* createEmptyStmt() {
   StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
 
   result->type = EmptyType;
 
@@ -75,6 +89,32 @@ StmtNode* addStmtToList(StmtNode* list, StmtNode* newStmt) {
   current->next = newStmt;
 
   return list;
+}
+
+
+StmtNode* createIfStmt(ExprNode* expr, StmtNode* trueBranch, StmtNode* falseBranch) {
+  StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
+
+  result->type = IfType;
+  result->exprNode = expr;
+  result->trueBranch = trueBranch;
+  result->falseBranch = falseBranch;
+
+  return result;
+}
+
+StmtNode* createWhileStmt(StmtNodeType type, ExprNode* expr, StmtNode* body) {
+  StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
+
+  result->type = type;
+  result->exprNode = expr;
+  result->body = body;
+
+  return result;
 }
 
 

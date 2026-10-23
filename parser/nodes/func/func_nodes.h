@@ -1,26 +1,27 @@
-
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct FuncDeclNode {
-  int id;
+  int nodeId;
 
-  char* identifier;
   struct TypeNode* type;
+  char* id;
 
   struct ParamNode* parameters;
   struct StmtNode* body;
 } FuncDeclNode;
 
-FuncDeclNode* createFuncDecl(TypeNode* type, char* identifier, ParamNode* parameters, StmtNode* body);
+FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, StmtNode* body);
 
 
 typedef struct ParamNode {
-  int id;
+  int nodeId;
 
   struct TypeNode* type;
-  char* identifier;
+  char* id;
 
   struct ParamNode* next;
 } ParamNode;
 
-ParamNode* createParam(TypeNode* type, char* identifier);
+ParamNode* createParam(TypeNode* type, char* id);
 ParamNode* addParamToList(ParamNode* list, ParamNode* newParam);

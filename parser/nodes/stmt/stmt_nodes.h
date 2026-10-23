@@ -40,6 +40,9 @@ StmtNode* createEmptyStmt();
 
 StmtNode* addStmtToList(StmtNode* list, StmtNode* newStmt);
 
+StmtNode* createIfStmt(ExprNode* expr, StmtNode* trueBranch, StmtNode* falseBranch);
+StmtNode* createWhileStmt(StmtNodeType type, ExprNode* expr, StmtNode* body);
+
 
 // ОБЪЯВДЕНИЕ ПЕРЕМЕННЫХ
 typedef struct VarDeclaratorNode {
