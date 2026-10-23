@@ -88,110 +88,111 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
     }
 %}
 
-break        { printf("keyword: %s\n", yytext); }
-case         { printf("keyword: %s\n", yytext); }
-catch        { printf("keyword: %s\n", yytext); }
-class        { printf("keyword: %s\n", yytext); }
-const        { printf("keyword: %s\n", yytext); }
-continue     { printf("keyword: %s\n", yytext); }
-default      { printf("keyword: %s\n", yytext); }
-do           { printf("keyword: %s\n", yytext); }
-else         { printf("keyword: %s\n", yytext); }
-enum         { printf("keyword: %s\n", yytext); }
-extends      { printf("keyword: %s\n", yytext); }
-final        { printf("keyword: %s\n", yytext); }
-finally      { printf("keyword: %s\n", yytext); }
-for          { printf("keyword: %s\n", yytext); }
-if           { printf("keyword: %s\n", yytext); }
-in           { printf("keyword: %s\n", yytext); }
-is           { printf("keyword: %s\n", yytext); }
-new          { printf("keyword: %s\n", yytext); }
-rethrow      { printf("keyword: %s\n", yytext); }
-return       { printf("keyword: %s\n", yytext); }
-super        { printf("keyword: %s\n", yytext); }
-switch       { printf("keyword: %s\n", yytext); }
-this         { printf("keyword: %s\n", yytext); }
-throw        { printf("keyword: %s\n", yytext); }
-try          { printf("keyword: %s\n", yytext); }
-var          { printf("keyword: %s\n", yytext); }
-void         { printf("keyword: %s\n", yytext); }
-while        { printf("keyword: %s\n", yytext); }
-true         { printf("boolean_literal: %d\n", true); }
-false        { printf("boolean_literal: %d\n", false); }
-null         { printf("null_literal: %s\n", yytext); }
+break        { return BREAK_KW; }
+catch        { return CATCH_KW; }
+class        { return CLASS_KW; }
+const        { return CONST_KW; }
+continue     { return CONTINUE_KW; }
+default      { return DEFAULT_KW; }
+do           { return DO_KW; }
+else         { return ELSE_KW; }
+enum         { return ENUM_KW; }
+extends      { return EXTENDS_KW; }
+final        { return FINAL_KW; }
+finally      { return FINALLY_KW; }
+for          { return FOR_KW; }
+if           { return IF_KW; }
+in           { return IN_KW; }
+is           { return IS_KW; }
+new          { return NEW_KW; }
+rethrow      { return RETHROW_KW; }
+return       { return RETURN_KW; }
+super        { return SUPER_KW; }
+this         { return THIS_KW; }
+throw        { return THROW_KW; }
+try          { return TRY_KW; }
+var          { return VAR_KW; }
+void         { return VOID_TYPE; }
+while        { return WHILE_KW; }
+true         { yylval.Bool = 1; return BOOL_LIT; }
+false        { yylval.Bool = 0; return BOOL_LIT; }
+null         { return NULL_KW; }
 
-abstract     { printf("keyword: %s\n", yytext); }
-as           { printf("keyword: %s\n", yytext); }
-export       { printf("keyword: %s\n", yytext); }
-factory      { printf("keyword: %s\n", yytext); }
-get          { printf("keyword: %s\n", yytext); }
-import       { printf("keyword: %s\n", yytext); }
-required     { printf("keyword: %s\n", yytext); }
-set          { printf("keyword: %s\n", yytext); }
-static       { printf("keyword: %s\n", yytext); }
+abstract     { return ABSTRACT_KW; }
+as           { return AS_KW; }
+export       { return EXPORT_KW; }
+factory      { return FACTORY_KW; }
+get          { return GET_KW; }
+import       { return IMPORT_KW; }
+required     { return REQUIRED_KW; }
+set          { return SET_KW; }
+static       { return STATIC_KW; }
 
-when         { printf("keyword_contextual: %s\n", yytext); }
+when         { return WHEN_KW; }
 
 
-<INITIAL>"{"     { printf("curly_bracket_open: %s\n", yytext); }
-<INITIAL>"}"     { printf("curly_bracket_close: %s\n", yytext); }
-"("     { printf("round_bracket_open: %s\n", yytext); }
-")"     { printf("round_bracket_close: %s\n", yytext); }
-"["     { printf("square_bracket_open: %s\n", yytext); }
-"]"     { printf("square_bracket_close: %s\n", yytext); }
+<INITIAL>"{"     { return '{'; }
+<INITIAL>"}"     { return '}'; }
+"("     { return '('; }
+")"     { return ')'; }
+"["     { return '['; }
+"]"     { return ']'; }
 
-"++"    { printf("increment: %s\n", yytext); }
-"--"    { printf("decrement: %s\n", yytext); }
+"++"    { return INC; }
+"--"    { return DEC; }
 
-"*="    { printf("multiplication_assignment: %s\n", yytext); }
-"/="    { printf("division_assignment: %s\n", yytext); }
-"+="    { printf("addition_assignment: %s\n", yytext); }
-"-="    { printf("subtraction_assignment: %s\n", yytext); }
-"%="    { printf("remainder_assignment: %s\n", yytext); }
-"~/="   { printf("integer_division_assignment: %s\n", yytext); }
+"*="    { return MUL_ASSIGN; }
+"/="    { return DIV_ASSIGN; }
+"+="    { return ADD_ASSIGN; }
+"-="    { return SUB_ASSIGN; }
+"%="    { return MOD_ASSIGN; }
+"~/="   { return INTDIV_ASSIGN; }
 
-"~/"    { printf("integer_division: %s\n", yytext); }
-"*"     { printf("multiplication: %s\n", yytext); }
-"/"     { printf("division: %s\n", yytext); }
-"+"     { printf("addition: %s\n", yytext); }
-"-"     { printf("subtraction: %s\n", yytext); }
-"%"     { printf("remainder: %s\n", yytext); }
+"~/"    { return INTDIV; }
+"*"     { return '*'; }
+"/"     { return '/'; }
+"+"     { return '+'; }
+"-"     { return '-'; }
+"%"     { return '%'; }
 
-">="    { printf("greater_equal: %s\n", yytext); }
-"<="    { printf("less_equal: %s\n", yytext); }
-"=="    { printf("equal: %s\n", yytext); }
-"!="    { printf("not_equal: %s\n", yytext); }
-">"     { printf("greater: %s\n", yytext); }
-"<"     { printf("less: %s\n", yytext); }
+">="    { return GEQ; }
+"<="    { return LEQ; }
+"=="    { return EQ; }
+"!="    { return NEQ; }
+">"     { return '>'; }
+"<"     { return '<'; }
 
-"&&"    { printf("logical_and: %s\n", yytext); }
-"||"    { printf("logical_or: %s\n", yytext); }
-"!"     { printf("logical_not: %s\n", yytext); }
+"&&"    { return LOG_AND; }
+"||"    { return LOG_OR; }
+"!"     { return '!'; }
 
-"="     { printf("assignment: %s\n", yytext); }
+"="     { return '='; }
 
-"."     { printf("dot: %s\n", yytext); }
-","     { printf("comma: %s\n", yytext); }
-":"     { printf("colon: %s\n", yytext); }
-";"     { printf("semicolon: %s\n", yytext); }
-"?"     {}
+"."     { return '.'; }
+","     { return ','; }
+":"     { return ':'; }
+";"     { return ';'; }
+"?"     { return '?'; }
 
 
 {DOUBLE}    { 
   deleteUnderscores(yytext, tmp);
-  double doubleValue = strtod(tmp, NULL);
-  printf("double_literal: %f\n", doubleValue); 
+
+  yylval.Double = strtod(tmp, NULL);
+  return DOUBLE_LIT;
   }
 
 {INT_HEX}   { 
   deleteUnderscores(yytext, tmp);
   long decimalValue = strtol(tmp + 2, NULL, 16);
-  printf("integer_literal: %ld\n", decimalValue); 
+   // DOOPISAT
   }
 
 {INT_DEC}   { 
   deleteUnderscores(yytext, tmp);
-  printf("integer_literal: %d\n", atoi(tmp)); 
+
+  yylval.Int = atoi(tmp);
+  return INT_LIT;
   }
 
 
@@ -241,7 +242,10 @@ when         { printf("keyword_contextual: %s\n", yytext); }
 
 
 {ID}        { 
-  printf("identifier: %s\n", yytext); 
+  char* copy = strdup(yytext);
+
+  yylval.Identifier = copy;
+  return ID;
   }
 
 
