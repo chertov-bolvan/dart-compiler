@@ -1,1 +1,1 @@
-int global_id = 0;
+int globalId = 0;
