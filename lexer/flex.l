@@ -185,7 +185,8 @@ when         { return WHEN_KW; }
 {INT_HEX}   { 
   deleteUnderscores(yytext, tmp);
   long decimalValue = strtol(tmp + 2, NULL, 16);
-   // DOOPISAT
+   yylval.Int = (int)decimalValue;
+   return INT_LIT;
   }
 
 {INT_DEC}   { 
