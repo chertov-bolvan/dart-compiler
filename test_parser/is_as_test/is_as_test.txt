@@ -1,0 +1,13 @@
+void main() {
+(employee as Person).firstName = 'Bob';
+
+if (employee is Person) {
+  employee.firstName = 'Bob';
+}
+
+if (employee is! Person);
+if (employee is ! Person);
+if (employee is !Person);
+
+if (employee is /*test*/ ! Person);
+}
