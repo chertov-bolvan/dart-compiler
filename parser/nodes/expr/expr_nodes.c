@@ -3,6 +3,7 @@
 ExprNode* createIntExpr(int value) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = IntType;
     result->intValue = value;
 
@@ -13,6 +14,7 @@ ExprNode* createIntExpr(int value) {
 ExprNode* createBoolExpr(int value) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = BoolType;
     result->boolValue = value;
 
@@ -23,6 +25,7 @@ ExprNode* createBoolExpr(int value) {
 ExprNode* createDoubleExpr(double value) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = DoubleType;
     result->doubleValue = value;
 
@@ -33,6 +36,7 @@ ExprNode* createDoubleExpr(double value) {
 ExprNode* createStringExpr(char* value) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = StringType;
     result->strValue = value;
 
@@ -43,6 +47,7 @@ ExprNode* createStringExpr(char* value) {
 ExprNode* createIDExpr(char* value) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = IdType;
     result->id = value;
 
@@ -53,6 +58,7 @@ ExprNode* createIDExpr(char* value) {
 ExprNode* createExpr(ExprNodeType type) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = type;
 
     return result;
@@ -62,6 +68,7 @@ ExprNode* createExpr(ExprNodeType type) {
 ExprNode* createListLiteralExpr(ExprNode* expr) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = ListLiteralType;
     result->left = expr;
 
@@ -72,6 +79,7 @@ ExprNode* createListLiteralExpr(ExprNode* expr) {
 ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = type;
     result->left = left;
     result->typeNode = typeNode;
@@ -83,6 +91,7 @@ ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* t
 ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = type;
     result->left = left;
     result->right = right;
@@ -94,6 +103,7 @@ ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right) {
 ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = type;
     result->right = expr;
 
@@ -105,6 +115,7 @@ ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr) {
 ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = type;
     result->left = expr;
 
@@ -115,6 +126,7 @@ ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr) {
 ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = AccessFieldType;
     result->left = expr;
     result->id = fieldId;
@@ -126,6 +138,7 @@ ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId) {
 ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = MethodType;
     result->left = expr;
     result->id = methodId;
@@ -138,6 +151,7 @@ ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* argumen
 ExprNode* createFuncCallExpr(char* funcId, ExprNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = FuncType;
     result->id = funcId;
     result->args = arguments;
@@ -149,6 +163,7 @@ ExprNode* createFuncCallExpr(char* funcId, ExprNode* arguments) {
 ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* right) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = TernaryOperatorType;
     result->left = left;
     result->center = center;
@@ -161,6 +176,7 @@ ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* 
 ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
+    result->nodeId = globalId++;
     result->type = AccessArrElementType;
     result->left = left;
     result->right = right;

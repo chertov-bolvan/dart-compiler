@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "type_nodes.h"
+#include "global_id.c"
 
 typedef enum ExprNodeType {
     IntType, BoolType, DoubleType, StringType, 
@@ -25,6 +26,7 @@ typedef enum ExprNodeType {
 typedef struct ExprNode {
     ExprNodeType type;
 
+    int nodeId;
     int intValue;
     double doubleValue;
     int boolValue;
