@@ -29,4 +29,6 @@ TypeNode* createVoidType() {
     result->nodeId = globalId++;
 
     result->type = VoidTType;
+
+    return result;
 }

@@ -1,5 +1,3 @@
-#include "type_nodes.h"
-#include "expr_nodes.h"
 #include "stmt_nodes.h"
 
 StmtNode* createExprStmt(ExprNode* exprNode) {
@@ -117,10 +115,39 @@ StmtNode* createWhileStmt(StmtNodeType type, ExprNode* expr, StmtNode* body) {
   return result;
 }
 
+StmtNode* createForStmt(StmtNode* forInit, ExprNode* forExpr, ExprNode* forUpd, StmtNode* body) {
+  StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
+
+  result->type = ForType;
+  result->forInit = forInit;
+  result->exprNode = forExpr;
+  result->forUpd = forUpd;
+  result->body = body;
+
+  return result;
+}
+
+StmtNode* createForInStmt(ForInVarNode* forInVar, ExprNode* expr, StmtNode* body) {
+  StmtNode* result = calloc(1, sizeof(StmtNode));
+
+  result->nodeId = globalId++;
+
+  result->type = ForInType;
+  result->forInVar = forInVar;
+  result->exprNode = expr;
+  result->body = body;
+
+  return result;
+}
+
 
 // ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ
 VarDeclaratorNode* createVarDeclarator(char* id, ExprNode* init) {
   VarDeclaratorNode* result = calloc(1, sizeof(VarDeclaratorNode));
+
+  result->nodeId = globalId++;
 
   result->id = id;
   result->init = init;
@@ -143,9 +170,27 @@ VarDeclaratorNode* addVarDeclaratorToList(VarDeclaratorNode* list, VarDeclarator
 VarDeclNode* createVarDecl(VarDeclModifier modifier, TypeNode* typeNode, VarDeclaratorNode* declarators) {
   VarDeclNode* result = calloc(1, sizeof(VarDeclNode));
 
+  result->nodeId = globalId++;
+
   result->modifier = modifier;
   result->type = typeNode;
   result->declarators = declarators;
+
+  return result;
+}
+
+
+// FOR IN
+
+ForInVarNode* createForInVar(ForInVarType varType, TypeNode* type, char* id, VarDeclModifier modifier) {
+  ForInVarNode* result = calloc(1, sizeof(ForInVarNode));
+
+  result->nodeId = globalId++;
+
+  result->varType = varType;
+  result->type = type;
+  result->id = id;
+  result->modifier = modifier;
 
   return result;
 }
