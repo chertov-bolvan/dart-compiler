@@ -27,6 +27,9 @@
     ForInVarNode* ForInVar;
     FuncDeclNode* FuncDecl;
     ParamNode* Param;
+
+    ProgramNode* Program;
+    TopLevelDeclNode* TopLevelDecl;
 }
 
 /* Литералы */
@@ -81,21 +84,33 @@
 %type <FuncDecl> func_decl
 %type <Param> param_list param_list_em
 
+%type <Program> program
+%type <TopLevelDecl> top_level_decl top_level_decl_list top_level_decl_list_em
+
 %start program
 
 %%
 
 
 program:
-      /* empty */
-    | program top_level_decl
+      top_level_decl_list_em  {$$ = createProgram($1);}
 ;
 
 
 top_level_decl:
-      var_decl ';'
-    | func_decl
-    | class_decl
+      var_decl ';'  {$$ = createTopLevelVarDecl($1);}
+    | func_decl     {$$ = createTopLevelFuncDecl($1);}
+    | class_decl    // {$$ = createTopLevelClassDecl($1);}
+;
+
+top_level_decl_list:
+      top_level_decl                      {$$ = $1;}
+    | top_level_decl_list top_level_decl  {$$ = addTopLevelDeclToList($1, $2);}
+;
+
+top_level_decl_list_em:
+      /* empty */         {$$ = NULL;}
+    | top_level_decl_list {$$ = $1;}
 ;
 
 
