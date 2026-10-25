@@ -350,13 +350,9 @@ when         { return WHEN_KW; }
     pushTokenNoValue('(');
     pushToken(ID, svID("toString"));
     pushTokenNoValue('.');
-    pushTokenNoValue(')');
-    char* copy = strdup(stringBuffer);
 
-    stringBuffer[0] = '\0';
     yy_pop_state();
-    yylval.String = copy;
-    return STRING_LIT;
+    return ')';
 }
 
 <INTERPOLATION_STATE><<EOF>> {printf("Error: no end of INTERPOLATION in (line #%d)\n", yylineno);}
