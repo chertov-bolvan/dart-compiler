@@ -185,6 +185,74 @@ ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right) {
 }
 
 
+ExprNode* createThisFuncExpr(ExprNode* right) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = ThisFuncType;
+    result->right = right;
+
+    return result;
+}
+
+
+ExprNode* createSuperFuncExpr(ExprNode* right) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = SuperFuncType;
+    result->right = right;
+
+    return result;
+}
+
+
+ExprNode* createThisAccessFieldExpr(char* fieldId) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = ThisAccessFieldType;
+    result->id = fieldId;
+
+    return result;
+}
+
+
+ExprNode* createThisMethodCallExpr(char* methodId, ExprNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = ThisMethodType;
+    result->id = methodId;
+    result->args = arguments;
+
+    return result;
+}
+
+
+ExprNode* createSuperAccessFieldExpr(char* fieldId) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = SuperAccessFieldType;
+    result->id = fieldId;
+
+    return result;
+}
+
+
+ExprNode* createSuperMethodCallExpr(char* methodId, ExprNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = SuperMethodType;
+    result->id = methodId;
+    result->args = arguments;
+
+    return result;
+}
+
+
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem) {
     ExprNode* result = list;
 

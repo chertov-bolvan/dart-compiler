@@ -20,7 +20,8 @@ typedef enum ExprNodeType {
     TernaryOperatorType, AddAssignType, 
     SubAssignType, MulAssignType, DivAssignType,
     ModAssignType, IntDivAssignType, EqType,
-
+    ThisAccessFieldType, ThisMethodType,
+    SuperAccessFieldType, SuperMethodType,
 } ExprNodeType;
 
 typedef struct ExprNode {
@@ -61,4 +62,10 @@ ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* argumen
 ExprNode* createFuncCallExpr(char* funcId, ExprNode* arguments);
 ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* right);
 ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right);
+ExprNode* createThisFuncExpr(ExprNode* right);
+ExprNode* createSuperFuncExpr(ExprNode* right);
+ExprNode* createThisAccessFieldExpr(char* fieldId);
+ExprNode* createThisMethodCallExpr(char* methodId, ExprNode* arguments);
+ExprNode* createSuperAccessFieldExpr(char* fieldId);
+ExprNode* createSuperMethodCallExpr(char* methodId, ExprNode* arguments);
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
