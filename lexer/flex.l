@@ -61,7 +61,7 @@ DOUBLE    ({INT_DEC}\.{INT_DEC}{EXPONENT}?)|(\.{INT_DEC}{EXPONENT}?)|({INT_DEC}{
 
     YYSTYPE svID(char* str) {
         YYSTYPE s;
-        s.f_id = strdup(str);
+        s.Identifier = strdup(str);
         return s;
     }
 %}
@@ -129,6 +129,8 @@ set          { return SET_KW; }
 static       { return STATIC_KW; }
 
 when         { return WHEN_KW; }
+
+List         { return LIST_KW; }
 
 
 <INITIAL>"{"     { return '{'; }

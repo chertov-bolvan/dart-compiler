@@ -2,9 +2,13 @@
     #include <stdio.h>
     #include "type_nodes.h"
     #include "expr_nodes.h"
+    #include "func_nodes.h"
+    #include "stmt_nodes.h"
+    #include "global_nodes.h"
 %}
 
 %{
+    extern FILE *yyin;
     int yylex();
     void yyerror(const char* s);
 %}
@@ -18,6 +22,15 @@
 
     ExprNode* Expr;
     TypeNode* Type;
+    StmtNode* Stmt;
+    VarDeclNode* VarDecl;
+    VarDeclaratorNode* VarDeclarator;
+    ForInVarNode* ForInVar;
+    FuncDeclNode* FuncDecl;
+    ParamNode* Param;
+
+    ProgramNode* Program;
+    TopLevelDeclNode* TopLevelDecl;
 }
 
 /* Литералы */
@@ -50,7 +63,7 @@
 /* приоритеты */
 %right ':' /* тернарный оператор */
 %right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* assignment */
-%right '?' ':' /* тернарный оператор */
+%right '?' /* тернарный оператор */
 %left LOG_OR /* logical OR */
 %left LOG_AND /* logical AND */
 %nonassoc EQ NEQ /* equality */
@@ -63,8 +76,17 @@
 
 
 
-%type <Expr> expr primary expr_list expr_list_empty
+%type <Expr> expr primary expr_list expr_list_empty for_expr
 %type <Type> type
+%type <Stmt> stmt stmt_block stmt_list stmt_list_em if_stmt while_stmt do_while_stmt return_stmt for_stmt for_init
+%type <VarDecl> var_decl
+%type <VarDeclarator> var_declarator var_declarator_list
+%type <ForInVar> for_in_decl
+%type <FuncDecl> func_decl
+%type <Param> param_list param_list_em
+
+%type <Program> program
+%type <TopLevelDecl> top_level_decl top_level_decl_list top_level_decl_list_em
 
 %start program
 
@@ -72,15 +94,24 @@
 
 
 program:
-      /* empty */
-    | program top_level_decl
+      top_level_decl_list_em  {$$ = createProgram($1);}
 ;
 
 
 top_level_decl:
-      var_decl ';'
-    | func_decl
-    | class_decl
+      var_decl ';'  {$$ = createTopLevelVarDecl($1);}
+    | func_decl     {$$ = createTopLevelFuncDecl($1);}
+    | class_decl    // {$$ = createTopLevelClassDecl($1);}
+;
+
+top_level_decl_list:
+      top_level_decl                      {$$ = $1;}
+    | top_level_decl_list top_level_decl  {$$ = addTopLevelDeclToList($1, $2);}
+;
+
+top_level_decl_list_em:
+      /* empty */         {$$ = NULL;}
+    | top_level_decl_list {$$ = $1;}
 ;
 
 
@@ -121,8 +152,8 @@ expr:
     | expr INC                              {$$ = createPostfixUnExpr(IncPostfixType, $1);}   /* x++ */
     | expr DEC                              {$$ = createPostfixUnExpr(DecPostfixType, $1);}   /* x-- */
     | expr '.' ID                           {$$ = createAccessFieldExpr($1, $3);}             /* x.y */
-    | THIS_KW '(' expr_list_empty ')'       {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
-    | SUPER_KW '(' expr_list_empty ')'      {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
+    | THIS_KW '(' expr_list_empty ')'       {$$ = createFuncCallExpr($1, $3);}                /* x(...) */  // ИСПРАВИТЬ
+    | SUPER_KW '(' expr_list_empty ')'      {$$ = createFuncCallExpr($1, $3);}                /* x(...) */  // ИСПРАВИТЬ
     | ID '(' expr_list_empty ')'            {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
     | expr '.' ID '(' expr_list_empty ')'   {$$ = createMethodCallExpr($1, $3, $5);}          /* x.y(...) */
     | expr '[' expr ']'                     {$$ = createAccessArrElementExpr($1, $3);}        /* x[i] */
@@ -216,30 +247,30 @@ return_stmt:
 
 
 for_stmt: /* оператор for */
-      FOR_KW '(' for_init ';' for_expr ';' expr_list_empty ')' stmt
-    | FOR_KW '(' for_in_decl IN_KW expr ')' stmt
+      FOR_KW '(' for_init ';' for_expr ';' expr_list_empty ')' stmt   {$$ = createForStmt($3, $5, $7, $9);}
+    | FOR_KW '(' for_in_decl IN_KW expr ')' stmt                      {$$ = createForInStmt($3, $5, $7);}
 ;
 
 
 for_in_decl: /* объявление в for-in */ 
-      ID
-    | type ID
-    | VAR_KW ID
-    | FINAL_KW ID
-    | FINAL_KW type ID
+      ID                  {$$ = createForInVar(ExistingVarType, NULL, $1, NoModifier);}
+    | type ID             {$$ = createForInVar(DeclVarType, $1, $2, NoModifier);}
+    | VAR_KW ID           {$$ = createForInVar(DeclVarType, NULL, $2, NoModifier);}
+    | FINAL_KW ID         {$$ = createForInVar(DeclVarType, NULL, $2, FinalModifier);}
+    | FINAL_KW type ID    {$$ = createForInVar(DeclVarType, $2, $3, FinalModifier);}
 ;
 
 
 for_expr: /* условие в for */
-      /* empty */
-    | expr
+      /* empty */   {$$ = NULL;}
+    | expr          {$$ = $1;}
 ;
 
 
 for_init: /* блок инициализации for*/
-      /* empty */
-    | var_decl
-    | expr
+      /* empty */   {$$ = NULL;}
+    | var_decl      {$$ = createVarDeclStmt($1);}
+    | expr          {$$ = createExprStmt($1);}
 ;
 
 

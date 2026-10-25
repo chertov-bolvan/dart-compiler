@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "global_id.c"
 
 typedef enum TypeNodeType {
     IdTType, ListTType, VoidTType,

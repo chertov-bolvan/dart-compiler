@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "type_nodes.h"
 #include "expr_nodes.h"
+#include "global_id.c"
 
 typedef enum StmtNodeType {
   VarDeclType, ExprType, EmptyType, 
-  ForType, WhileType, DoWhileType, IfType, 
+  ForType, ForInType, WhileType, DoWhileType, IfType, 
   ReturnType, BlockType, BreakType, ContinueType,
 
 } StmtNodeType;
@@ -23,10 +24,64 @@ typedef struct StmtNode {
   struct StmtNode* trueBranch;
   struct StmtNode* falseBranch;
 
+  struct StmtNode* forInit;
+  struct ExprNode* forUpd;
+
+  struct ForInVarNode* forInVar;
+
   struct StmtNode* body;
   struct StmtNode* next;
 
 } StmtNode;
+
+
+// ОБЪЯВДЕНИЕ ПЕРЕМЕННЫХ
+typedef struct VarDeclaratorNode {
+  int nodeId;
+
+  char* id;
+  struct ExprNode* init;
+  
+  struct VarDeclaratorNode* next;
+
+} VarDeclaratorNode;
+
+
+typedef enum VarDeclModifier {
+  NoModifier, FinalModifier, ConstModifier,
+} VarDeclModifier;
+
+
+typedef struct VarDeclNode {
+  int nodeId;
+
+  VarDeclModifier modifier;
+  struct TypeNode* type;
+
+  struct VarDeclaratorNode* declarators;
+} VarDeclNode;
+
+
+// НОДЫ ДЛЯ FORIN
+
+typedef enum ForInVarType {
+  ExistingVarType, DeclVarType
+} ForInVarType;
+
+
+typedef struct ForInVarNode {
+  int nodeId;
+
+  ForInVarType varType;
+
+  struct TypeNode* type;
+  char* id;
+
+  VarDeclModifier modifier;
+} ForInVarNode;
+
+
+// ФУНКЦИИ
 
 StmtNode* createExprStmt(ExprNode* exprNode);
 StmtNode* createVarDeclStmt(VarDeclNode* varDeclNode);
@@ -43,30 +98,13 @@ StmtNode* addStmtToList(StmtNode* list, StmtNode* newStmt);
 StmtNode* createIfStmt(ExprNode* expr, StmtNode* trueBranch, StmtNode* falseBranch);
 StmtNode* createWhileStmt(StmtNodeType type, ExprNode* expr, StmtNode* body);
 
+StmtNode* createForStmt(StmtNode* forInit, ExprNode* forExpr, ExprNode* forUpd, StmtNode* body);
+StmtNode* createForInStmt(ForInVarNode* forInVar, ExprNode* expr, StmtNode* body);
 
-// ОБЪЯВДЕНИЕ ПЕРЕМЕННЫХ
-typedef struct VarDeclaratorNode {
-  int nodeId;
-  char* id;
-  struct ExprNode* init;
-  
-  struct VarDeclaratorNode* next;
-
-} VarDeclaratorNode;
-
-
-typedef enum VarDeclModifier {
-  NoModifier, FinalModifier, ConstModifier,
-} VarDeclModifier;
-
-
-typedef struct VarDeclNode {
-  VarDeclModifier modifier;
-  struct TypeNode* type;
-
-  struct VarDeclaratorNode* declarators;
-} VarDeclNode;
 
 VarDeclaratorNode* createVarDeclarator(char* id, ExprNode* init);
 VarDeclaratorNode* addVarDeclaratorToList(VarDeclaratorNode* list, VarDeclaratorNode* newNode);
 VarDeclNode* createVarDecl(VarDeclModifier modifier, TypeNode* typeNode, VarDeclaratorNode* declarators);
+
+
+ForInVarNode* createForInVar(ForInVarType varType, TypeNode* type, char* id, VarDeclModifier modifier);

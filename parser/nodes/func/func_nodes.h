@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "type_nodes.h"
+#include "stmt_nodes.h"
+#include "global_id.c"
 
 typedef struct FuncDeclNode {
   int nodeId;
@@ -11,8 +14,6 @@ typedef struct FuncDeclNode {
   struct StmtNode* body;
 } FuncDeclNode;
 
-FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, StmtNode* body);
-
 
 typedef struct ParamNode {
   int nodeId;
@@ -22,6 +23,10 @@ typedef struct ParamNode {
 
   struct ParamNode* next;
 } ParamNode;
+
+
+FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, StmtNode* body);
+
 
 ParamNode* createParam(TypeNode* type, char* id);
 ParamNode* addParamToList(ParamNode* list, ParamNode* newParam);
