@@ -163,10 +163,6 @@ expr:
     | expr '.' ID                             {$$ = createAccessFieldExpr($1, $3);}             /* x.y */
     | THIS_KW '(' expr_list_empty ')'         {$$ = createThisFuncExpr($3);}                    /* this(...) */
     | SUPER_KW '(' expr_list_empty ')'        {$$ = createSuperFuncExpr($3);}                   /* super(...) */
-    | THIS_KW '.' ID '(' expr_list_empty ')'  {$$ = createThisMethodCallExpr($3, $5);}          /* this.x(...) */
-    | SUPER_KW '.' ID '(' expr_list_empty ')' {$$ = createSuperMethodCallExpr($3, $5);}         /* super.x(...) */
-    | THIS_KW '.' ID                          {$$ = createThisAccessFieldExpr($3);}             /* this.x */
-    | SUPER_KW '.' ID                         {$$ = createSuperAccessFieldExpr($3);}            /* super.x */
     | ID '(' expr_list_empty ')'              {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
     | expr '.' ID '(' expr_list_empty ')'     {$$ = createMethodCallExpr($1, $3, $5);}          /* x.y(...) */
     | expr '[' expr ']'                       {$$ = createAccessArrElementExpr($1, $3);}        /* x[i] */
