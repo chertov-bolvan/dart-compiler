@@ -29,6 +29,10 @@
     FuncDeclNode* FuncDecl;
     ParamNode* Param;
 
+    ClassDeclNode* ClassDecl;
+    ClassMemberNode* ClassMember;
+    ClassModifier ClassMod;
+
     ProgramNode* Program;
     TopLevelDeclNode* TopLevelDecl;
 }
@@ -76,14 +80,19 @@
 
 
 
+%type <Identifier> extend_em
 %type <Expr> expr primary expr_list expr_list_empty for_expr
 %type <Type> type
 %type <Stmt> stmt stmt_block stmt_list stmt_list_em if_stmt while_stmt do_while_stmt return_stmt for_stmt for_init
 %type <VarDecl> var_decl
 %type <VarDeclarator> var_declarator var_declarator_list
 %type <ForInVar> for_in_decl
-%type <FuncDecl> func_decl
+%type <FuncDecl> func_decl getter_method_decl setter_method_decl
 %type <Param> param_list param_list_em
+
+%type <ClassDecl> class_decl
+%type <ClassMember> static_method_decl abstract_method_decl class_member class_member_list class_member_list_em
+%type <ClassMod> class_modifiers_em
 
 %type <Program> program
 %type <TopLevelDecl> top_level_decl top_level_decl_list top_level_decl_list_em
@@ -101,7 +110,7 @@ program:
 top_level_decl:
       var_decl ';'  {$$ = createTopLevelVarDecl($1);}
     | func_decl     {$$ = createTopLevelFuncDecl($1);}
-    | class_decl    // {$$ = createTopLevelClassDecl($1);}
+    | class_decl    {$$ = createTopLevelClassDecl($1);}
 ;
 
 top_level_decl_list:
@@ -119,7 +128,7 @@ stmt:
       var_decl ';'      {$$ = createVarDeclStmt($1);}
     | expr ';'          {$$ = createExprStmt($1);}
     | ';'               {$$ = createEmptyStmt();}
-    | for_stmt          
+    | for_stmt          {$$ = $1;}
     | while_stmt        {$$ = $1;}
     | do_while_stmt     {$$ = $1;}
     | if_stmt           {$$ = $1;}
@@ -316,35 +325,35 @@ param_list:
 
 
 param_list_em:
-      /* empty */ {$$ = NULL;}
-    | param_list  {$$ = $1;}
+      /* empty */   {$$ = NULL;}
+    | param_list    {$$ = $1;}
 ;
 
 
 getter_method_decl:
-      type GET_KW ID stmt_block
+      type GET_KW ID stmt_block                       {$$ = createFuncDecl($1, $3, NULL, $4);}
 ;
 
 
 setter_method_decl:
-      SET_KW ID '(' type ID ')' stmt_block
-    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block
+      SET_KW ID '(' type ID ')' stmt_block            {$$ = createFuncDecl(createVoidType(), $2, createParam($4, $5), $7);}
+    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block  {$$ = createFuncDecl(createVoidType(), $3, createParam($5, $6), $8);}
 ;
 
 
 static_method_decl:
-      STATIC_KW func_decl
-    | STATIC_KW getter_method_decl
-    | STATIC_KW setter_method_decl
+      STATIC_KW func_decl           {$$ = createMethodMember(MethodType, 1, $2);}
+    | STATIC_KW getter_method_decl  {$$ = createMethodMember(GetterType, 1, $2);}
+    | STATIC_KW setter_method_decl  {$$ = createMethodMember(SetterType, 1, $2);}
 ;
 
 
 abstract_method_decl:
-      type ID '(' param_list_em ')' ';'
-    | VOID_TYPE ID '(' param_list_em ')' ';'
-    | type GET_KW ID ';'
-    | SET_KW ID '(' type ID ')' ';'
-    | VOID_TYPE SET_KW ID '(' type ID ')' ';'
+      type ID '(' param_list_em ')' ';'         {$$ = createMethodMember(MethodType, 0, createFuncDecl($1, $2, $4, NULL));}
+    | VOID_TYPE ID '(' param_list_em ')' ';'    {$$ = createMethodMember(MethodType, 0, createFuncDecl(createVoidType(), $2, $4, NULL));}
+    | type GET_KW ID ';'                        {$$ = createMethodMember(GetterType, 0 createFuncDecl($1, $3, NULL, NULL));}
+    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5), NULL));}
+    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6), NULL));}
 ;
 
 
@@ -352,44 +361,44 @@ abstract_method_decl:
 
 
 class_decl:
-      class_modifiers_em CLASS_KW ID extend_em '{' class_member_list_em '}'
+      class_modifiers_em CLASS_KW ID extend_em '{' class_member_list_em '}'   {$$ = createClassDecl($1, $3, $4, $6);}
 ;
 
 
 class_modifiers_em:
-      /* empty */
-    | ABSTRACT_KW
-    | FINAL_KW
-    | ABSTRACT_KW FINAL_KW
+      /* empty */           {$$ = NoClassModifier;}
+    | ABSTRACT_KW           {$$ = AbstractClassModifier;}
+    | FINAL_KW              {$$ = FinalClassModifier;}
+    | ABSTRACT_KW FINAL_KW  {$$ = AbstractFinalClassModifier;}
 ;
 
 
 extend_em:
-      /* empty */
-    | EXTENDS_KW ID
+      /* empty */     {$$ = NULL;}
+    | EXTENDS_KW ID   {$$ = $2;}
 ;
 
 
 class_member:
-      var_decl ';'
-    | STATIC_KW var_decl ';'
-    | func_decl
-    | getter_method_decl
-    | setter_method_decl
-    | static_method_decl
-    | abstract_method_decl
+      var_decl ';'            {$$ = createFieldMember(0, $1);}
+    | STATIC_KW var_decl ';'  {$$ = createFieldMember(1, $2);}
+    | func_decl               {$$ = createMethodMember(MethodType, 0, $1);}
+    | getter_method_decl      {$$ = createMethodMember(GetterType, 0, $1);}
+    | setter_method_decl      {$$ = createMethodMember(SetterType, 0, $1);}
+    | static_method_decl      {$$ = $1;}
+    | abstract_method_decl    {$$ = $1;}
 ;
 
 
 class_member_list:
-      class_member
-    | class_member_list class_member
+      class_member                    {$$ = $1;}
+    | class_member_list class_member  {$$ = addClassMemberToList($1, $2);}
 ;
 
 
 class_member_list_em:
-      /* empty */
-    | class_member_list
+      /* empty */         {$$ = NULL;}
+    | class_member_list   {$$ = $1;}
 ;
 
 %%

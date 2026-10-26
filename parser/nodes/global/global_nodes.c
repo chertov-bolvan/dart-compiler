@@ -33,16 +33,16 @@ TopLevelDeclNode* createTopLevelFuncDecl(FuncDeclNode* funcDeclNode) {
   return result;
 }
 
-// TopLevelDeclNode* createTopLevelClassDecl(ClassDeclNode* classDeclNode) {
-//   TopLevelDeclNode result = calloc(1, sizeof(TopLevelDeclNode));
+TopLevelDeclNode* createTopLevelClassDecl(ClassDeclNode* classDeclNode) {
+  TopLevelDeclNode* result = calloc(1, sizeof(TopLevelDeclNode));
 
-//   result->nodeId = globalId++;
+  result->nodeId = globalId++;
 
-//   result->type = TopLevelClassDeclType;
-//   result->classDeclNode = classDeclNode;
+  result->type = TopLevelClassDeclType;
+  result->classDeclNode = classDeclNode;
 
-//   return result;
-// }
+  return result;
+}
 
 TopLevelDeclNode* addTopLevelDeclToList(TopLevelDeclNode* list, TopLevelDeclNode* newTopLevelDecl) {
   TopLevelDeclNode* current = list;
