@@ -157,7 +157,16 @@ stmt_list_em:
 
 
 expr:
-      primary
+      INT_LIT                                 {$$ = createIntExpr($1);}
+    | DOUBLE_LIT                              {$$ = createDoubleExpr($1);}
+    | ID                                      {$$ = createIDExpr($1);}
+    | STRING_LIT                              {$$ = createStringExpr($1);}
+    | BOOL_LIT                                {$$ = createBoolExpr($1);}
+    | NULL_KW                                 {$$ = createExpr(NullType);}
+    | SUPER_KW                                {$$ = createExpr(SuperType);}
+    | THIS_KW                                 {$$ = createExpr(ThisType);}
+    | '(' expr ')'                            {$$ = $2; $$->insideParens = 1;}
+    | '[' expr_list_empty ']'                 {$$ = createListLiteralExpr($2);}
     | expr INC                                {$$ = createPostfixUnExpr(IncPostfixType, $1);}   /* x++ */
     | expr DEC                                {$$ = createPostfixUnExpr(DecPostfixType, $1);}   /* x-- */
     | expr '.' ID                             {$$ = createAccessFieldExpr($1, $3);}             /* x.y */
@@ -199,20 +208,6 @@ expr:
     | expr MOD_ASSIGN expr                    {$$ = createBinExpr(ModAssignType, $1, $3);}      /* x%=y */
     | expr INTDIV_ASSIGN expr                 {$$ = createBinExpr(IntDivAssignType, $1, $3);}   /* x~/=y */
     | expr '=' expr                           {$$ = createBinExpr(EqType, $1, $3);}             /* x=y */
-;
-
-
-primary: /*базовые литералы*/
-      INT_LIT                   {$$ = createIntExpr($1);}
-    | DOUBLE_LIT                {$$ = createDoubleExpr($1);}
-    | ID                        {$$ = createIDExpr($1);}
-    | STRING_LIT                {$$ = createStringExpr($1);}
-    | BOOL_LIT                  {$$ = createBoolExpr($1);}
-    | NULL_KW                   {$$ = createExpr(NullType);}
-    | SUPER_KW                  {$$ = createExpr(SuperType);}
-    | THIS_KW                   {$$ = createExpr(ThisType);}
-    | '(' expr ')'              {$$ = $2; $$->insideParens = 1;}
-    | '[' expr_list_empty ']'   {$$ = createListLiteralExpr($2);}
 ;
 
 
