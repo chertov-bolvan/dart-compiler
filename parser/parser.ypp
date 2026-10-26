@@ -333,18 +333,18 @@ setter_method_decl:
 
 
 static_method_decl:
-      STATIC_KW func_decl           {$$ = createMethodMember(MethodType, 1, $2);}
-    | STATIC_KW getter_method_decl  {$$ = createMethodMember(GetterType, 1, $2);}
-    | STATIC_KW setter_method_decl  {$$ = createMethodMember(SetterType, 1, $2);}
+      STATIC_KW func_decl           {$$ = createMethodMember(MethodMemberType, 1, $2);}
+    | STATIC_KW getter_method_decl  {$$ = createMethodMember(GetterMemberType, 1, $2);}
+    | STATIC_KW setter_method_decl  {$$ = createMethodMember(SetterMemberType, 1, $2);}
 ;
 
 
 abstract_method_decl:
-      type ID '(' param_list_em ')' ';'         {$$ = createMethodMember(MethodType, 0, createFuncDecl($1, $2, $4, NULL));}
-    | VOID_TYPE ID '(' param_list_em ')' ';'    {$$ = createMethodMember(MethodType, 0, createFuncDecl(createVoidType(), $2, $4, NULL));}
-    | type GET_KW ID ';'                        {$$ = createMethodMember(GetterType, 0 createFuncDecl($1, $3, NULL, NULL));}
-    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5), NULL));}
-    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6), NULL));}
+      type ID '(' param_list_em ')' ';'         {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl($1, $2, $4, NULL));}
+    | VOID_TYPE ID '(' param_list_em ')' ';'    {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl(createVoidType(), $2, $4, NULL));}
+    | type GET_KW ID ';'                        {$$ = createMethodMember(GetterMemberType, 0, createFuncDecl($1, $3, NULL, NULL));}
+    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5), NULL));}
+    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6), NULL));}
 ;
 
 
@@ -373,9 +373,9 @@ extend_em:
 class_member:
       var_decl ';'            {$$ = createFieldMember(0, $1);}
     | STATIC_KW var_decl ';'  {$$ = createFieldMember(1, $2);}
-    | func_decl               {$$ = createMethodMember(MethodType, 0, $1);}
-    | getter_method_decl      {$$ = createMethodMember(GetterType, 0, $1);}
-    | setter_method_decl      {$$ = createMethodMember(SetterType, 0, $1);}
+    | func_decl               {$$ = createMethodMember(MethodMemberType, 0, $1);}
+    | getter_method_decl      {$$ = createMethodMember(GetterMemberType, 0, $1);}
+    | setter_method_decl      {$$ = createMethodMember(SetterMemberType, 0, $1);}
     | static_method_decl      {$$ = $1;}
     | abstract_method_decl    {$$ = $1;}
 ;

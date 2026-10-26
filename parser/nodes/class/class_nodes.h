@@ -17,7 +17,7 @@ typedef struct ClassDeclNode {
 
 
 typedef enum ClassMemberType {
-  FieldType, MethodType, GetterType, SetterType,
+  FieldMemberType, MethodMemberType, GetterMemberType, SetterMemberType,
 } ClassMemberType;
 
 typedef struct ClassMemberNode {
