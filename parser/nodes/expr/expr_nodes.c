@@ -206,6 +206,17 @@ ExprNode* createSuperFuncExpr(ExprNode* right) {
     return result;
 }
 
+ExprNode* createNewClass(char* classId, ExprNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = NewClassType;
+    result->id = classId;
+    result->right = arguments;
+
+    return result;
+}
+
 
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem) {
     ExprNode* result = list;

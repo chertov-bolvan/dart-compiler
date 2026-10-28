@@ -6,7 +6,7 @@
 typedef enum ExprNodeType {
     IntType, BoolType, DoubleType, StringType, 
     IdType, NullType, SuperType, ThisType, ListLiteralType,
-    
+
     IncPostfixType, DecPostfixType, 
     AccessFieldType, ThisFuncType,
     SuperFuncType, FuncType, MethodType, 
@@ -22,6 +22,7 @@ typedef enum ExprNodeType {
     ModAssignType, IntDivAssignType, EqType,
     ThisAccessFieldType, ThisMethodType,
     SuperAccessFieldType, SuperMethodType,
+    NewClassType,
 } ExprNodeType;
 
 typedef struct ExprNode {
@@ -64,4 +65,5 @@ ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* 
 ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right);
 ExprNode* createThisFuncExpr(ExprNode* right);
 ExprNode* createSuperFuncExpr(ExprNode* right);
+ExprNode* createNewClass(char* classId, ExprNode* arguments);
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
