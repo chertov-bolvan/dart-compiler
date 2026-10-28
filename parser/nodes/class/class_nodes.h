@@ -1,4 +1,8 @@
-
+#include <stdio.h>
+#include <stdlib.h>
+#include "../stmt/stmt_nodes.h"
+#include "../func/func_nodes.h"
+#include "../global_id.h"
 
 typedef enum ClassModifier {
   NoClassModifier, AbstractClassModifier, FinalClassModifier, AbstractFinalClassModifier,

@@ -1,10 +1,11 @@
 %{
     #include <stdio.h>
-    #include "type_nodes.h"
-    #include "expr_nodes.h"
-    #include "func_nodes.h"
-    #include "stmt_nodes.h"
-    #include "global_nodes.h"
+    #include "parser/nodes/type/type_nodes.h"
+    #include "parser/nodes/expr/expr_nodes.h"
+    #include "parser/nodes/stmt/stmt_nodes.h"
+    #include "parser/nodes/func/func_nodes.h"
+    #include "parser/nodes/class/class_nodes.h"
+    #include "parser/nodes/global/global_nodes.h"
 %}
 
 %{

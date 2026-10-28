@@ -1,3 +1,5 @@
+#include "class_nodes.h"
+
 ClassDeclNode* createClassDecl(ClassModifier modifier, char* id, char* parentId, ClassMemberNode* classMembers) {
   ClassDeclNode* result = calloc(1, sizeof(ClassDeclNode));
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "type_nodes.h"
-#include "global_id.c"
+#include "../type/type_nodes.h"
+#include "../global_id.h"
 
 typedef enum ExprNodeType {
     IntType, BoolType, DoubleType, StringType, 
