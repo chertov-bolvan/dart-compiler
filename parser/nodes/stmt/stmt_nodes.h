@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "type_nodes.h"
-#include "expr_nodes.h"
-#include "global_id.c"
+#include "../type/type_nodes.h"
+#include "../expr/expr_nodes.h"
+#include "../global_id.h"
 
 typedef enum StmtNodeType {
   VarDeclType, ExprType, EmptyType, 

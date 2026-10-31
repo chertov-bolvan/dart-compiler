@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "type_nodes.h"
-#include "stmt_nodes.h"
-#include "global_id.c"
+#include "../type/type_nodes.h"
+#include "../stmt/stmt_nodes.h"
+#include "../global_id.h"
 
 typedef struct FuncDeclNode {
   int nodeId;

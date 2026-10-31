@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "stmt_nodes.h"
-#include "func_nodes.h"
-#include "class_nodes.h"
-#include "global_id.c"
+#include "../stmt/stmt_nodes.h"
+#include "../func/func_nodes.h"
+#include "../class/class_nodes.h"
+#include "../global_id.h"
 
 typedef struct ProgramNode {
   int nodeId;
