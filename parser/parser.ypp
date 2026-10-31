@@ -81,7 +81,7 @@
 
 
 %type <Identifier> extend_em
-%type <Expr> expr primary expr_list expr_list_empty for_expr
+%type <Expr> expr expr_list expr_list_empty for_expr
 %type <Type> type
 %type <Stmt> stmt stmt_block stmt_list stmt_list_em if_stmt while_stmt do_while_stmt return_stmt for_stmt for_init
 %type <VarDecl> var_decl
@@ -222,6 +222,7 @@ expr_list_empty:
 
 expr_list:
       expr                  {$$ = $1;}
+    | expr_list ','         {$$ = $1;}
     | expr_list ',' expr    {$$ = addExprToListExpr($1, $3);}
 ;
 
