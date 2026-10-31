@@ -1,0 +1,97 @@
+  
+    
+
+    
+    
+
+
+   
+    
+   
+
+     
+digraph {
+41 [label="PROGRAM" fontname="courier" shape=rect];
+41 -> 40 [label="declaration 1"];
+40 [label="Global function declaration" fontname="courier" shape=rect];
+40 -> 39 [label="function"];
+39 [label="Function: main" fontname="courier" shape=rect];
+39 -> 38 [label="return type"];
+38 [label="Type: void" fontname="courier" shape=rect];
+39 -> 37 [label="body"];
+37 [label="Block" fontname="courier" shape=rect];
+37 -> 6 [label="statement 1"];
+6 [label="Expression statement" fontname="courier" shape=rect];
+6 -> 5 [label="expression"];
+5 [label="=" fontname="courier" shape=rect];
+5 -> 3 [label="left"];
+3 [label="Field access: firstName" fontname="courier" shape=rect];
+3 -> 2 [label="left"];
+2 [label="as (parenthesized)" fontname="courier" shape=rect];
+2 -> 0 [label="left"];
+0 [label="Id: employee" fontname="courier" shape=rect];
+2 -> 1 [label="type"];
+1 [label="Type: Person" fontname="courier" shape=rect];
+5 -> 4 [label="right"];
+4 [label="String: \"Bob\"" fontname="courier" shape=rect];
+37 -> 16 [label="statement 2"];
+16 [label="if" fontname="courier" shape=rect];
+16 -> 9 [label="condition"];
+9 [label="is" fontname="courier" shape=rect];
+9 -> 7 [label="left"];
+7 [label="Id: employee" fontname="courier" shape=rect];
+9 -> 8 [label="type"];
+8 [label="Type: Person" fontname="courier" shape=rect];
+16 -> 15 [label="then"];
+15 [label="Block" fontname="courier" shape=rect];
+15 -> 14 [label="statement 1"];
+14 [label="Expression statement" fontname="courier" shape=rect];
+14 -> 13 [label="expression"];
+13 [label="=" fontname="courier" shape=rect];
+13 -> 11 [label="left"];
+11 [label="Field access: firstName" fontname="courier" shape=rect];
+11 -> 10 [label="left"];
+10 [label="Id: employee" fontname="courier" shape=rect];
+13 -> 12 [label="right"];
+12 [label="String: \"Bob\"" fontname="courier" shape=rect];
+37 -> 21 [label="statement 3"];
+21 [label="if" fontname="courier" shape=rect];
+21 -> 19 [label="condition"];
+19 [label="is!" fontname="courier" shape=rect];
+19 -> 17 [label="left"];
+17 [label="Id: employee" fontname="courier" shape=rect];
+19 -> 18 [label="type"];
+18 [label="Type: Person" fontname="courier" shape=rect];
+21 -> 20 [label="then"];
+20 [label="Empty statement ;" fontname="courier" shape=rect];
+37 -> 26 [label="statement 4"];
+26 [label="if" fontname="courier" shape=rect];
+26 -> 24 [label="condition"];
+24 [label="is!" fontname="courier" shape=rect];
+24 -> 22 [label="left"];
+22 [label="Id: employee" fontname="courier" shape=rect];
+24 -> 23 [label="type"];
+23 [label="Type: Person" fontname="courier" shape=rect];
+26 -> 25 [label="then"];
+25 [label="Empty statement ;" fontname="courier" shape=rect];
+37 -> 31 [label="statement 5"];
+31 [label="if" fontname="courier" shape=rect];
+31 -> 29 [label="condition"];
+29 [label="is!" fontname="courier" shape=rect];
+29 -> 27 [label="left"];
+27 [label="Id: employee" fontname="courier" shape=rect];
+29 -> 28 [label="type"];
+28 [label="Type: Person" fontname="courier" shape=rect];
+31 -> 30 [label="then"];
+30 [label="Empty statement ;" fontname="courier" shape=rect];
+37 -> 36 [label="statement 6"];
+36 [label="if" fontname="courier" shape=rect];
+36 -> 34 [label="condition"];
+34 [label="is!" fontname="courier" shape=rect];
+34 -> 32 [label="left"];
+32 [label="Id: employee" fontname="courier" shape=rect];
+34 -> 33 [label="type"];
+33 [label="Type: Person" fontname="courier" shape=rect];
+36 -> 35 [label="then"];
+35 [label="Empty statement ;" fontname="courier" shape=rect];
+}

@@ -1,0 +1,286 @@
+  
+       
+       
+       
+  
+      
+      
+    
+
+      
+    
+
+     
+     
+    
+
+         
+      
+    
+      
+    
+    
+
+    
+    
+    
+  
+
+     
+    
+  
+
+     
+         
+      
+    
+      
+    
+    
+  
+
+     
+        
+      
+           
+        
+      
+    
+  
+digraph {
+117 [label="PROGRAM" fontname="courier" shape=rect];
+117 -> 116 [label="declaration 1"];
+116 [label="Global class declaration" fontname="courier" shape=rect];
+116 -> 115 [label="class"];
+115 [label="class Biz" fontname="courier" shape=rect];
+115 -> 5 [label="member 1"];
+5 [label="static Field" fontname="courier" shape=rect];
+5 -> 4 [label="declaration"];
+4 [label="Variable declaration: final " fontname="courier" shape=rect];
+4 -> 1 [label="type"];
+1 [label="Type: List (array)" fontname="courier" shape=rect];
+1 -> 0 [label="element type"];
+0 [label="Type: int" fontname="courier" shape=rect];
+4 -> 3 [label="variable 1"];
+3 [label="Variable: onEventInitFinish" fontname="courier" shape=rect];
+3 -> 2 [label="initializer"];
+2 [label="List literal" fontname="courier" shape=rect];
+115 -> 11 [label="member 2"];
+11 [label="static Field" fontname="courier" shape=rect];
+11 -> 10 [label="declaration"];
+10 [label="Variable declaration: final " fontname="courier" shape=rect];
+10 -> 7 [label="type"];
+7 [label="Type: List (array)" fontname="courier" shape=rect];
+7 -> 6 [label="element type"];
+6 [label="Type: bool" fontname="courier" shape=rect];
+10 -> 9 [label="variable 1"];
+9 [label="Variable: onEventInitHomeFinish" fontname="courier" shape=rect];
+9 -> 8 [label="initializer"];
+8 [label="List literal" fontname="courier" shape=rect];
+115 -> 17 [label="member 3"];
+17 [label="static Field" fontname="courier" shape=rect];
+17 -> 16 [label="declaration"];
+16 [label="Variable declaration: final " fontname="courier" shape=rect];
+16 -> 13 [label="type"];
+13 [label="Type: List (array)" fontname="courier" shape=rect];
+13 -> 12 [label="element type"];
+12 [label="Type: num" fontname="courier" shape=rect];
+16 -> 15 [label="variable 1"];
+15 [label="Variable: onEventInitAllFinish" fontname="courier" shape=rect];
+15 -> 14 [label="initializer"];
+14 [label="List literal" fontname="courier" shape=rect];
+115 -> 22 [label="member 4"];
+22 [label="static Field" fontname="courier" shape=rect];
+22 -> 21 [label="declaration"];
+21 [label="Variable declaration: " fontname="courier" shape=rect];
+21 -> 18 [label="type"];
+18 [label="Type: bool" fontname="courier" shape=rect];
+21 -> 20 [label="variable 1"];
+20 [label="Variable: _initFinish" fontname="courier" shape=rect];
+20 -> 19 [label="initializer"];
+19 [label="Bool: false" fontname="courier" shape=rect];
+115 -> 27 [label="member 5"];
+27 [label="static Field" fontname="courier" shape=rect];
+27 -> 26 [label="declaration"];
+26 [label="Variable declaration: " fontname="courier" shape=rect];
+26 -> 23 [label="type"];
+23 [label="Type: bool" fontname="courier" shape=rect];
+26 -> 25 [label="variable 1"];
+25 [label="Variable: _initHomeFinish" fontname="courier" shape=rect];
+25 -> 24 [label="initializer"];
+24 [label="Bool: false" fontname="courier" shape=rect];
+115 -> 31 [label="member 6"];
+31 [label="static Field" fontname="courier" shape=rect];
+31 -> 30 [label="declaration"];
+30 [label="Variable declaration: " fontname="courier" shape=rect];
+30 -> 28 [label="type"];
+28 [label="Type: ReturnResultError" fontname="courier" shape=rect];
+30 -> 29 [label="variable 1"];
+29 [label="Variable: onEventRequestStartVPN" fontname="courier" shape=rect];
+115 -> 71 [label="member 7"];
+71 [label="static Method" fontname="courier" shape=rect];
+71 -> 70 [label="declaration"];
+70 [label="Function: init" fontname="courier" shape=rect];
+70 -> 69 [label="return type"];
+69 [label="Type: void" fontname="courier" shape=rect];
+70 -> 33 [label="parameter 1"];
+33 [label="Parameter: launchAtStartup" fontname="courier" shape=rect];
+33 -> 32 [label="type"];
+32 [label="Type: bool" fontname="courier" shape=rect];
+70 -> 68 [label="body"];
+68 [label="Block" fontname="courier" shape=rect];
+68 -> 36 [label="statement 1"];
+36 [label="Expression statement" fontname="courier" shape=rect];
+36 -> 35 [label="expression"];
+35 [label="Method call: init" fontname="courier" shape=rect];
+35 -> 34 [label="left"];
+34 [label="Id: ServerManager" fontname="courier" shape=rect];
+68 -> 39 [label="statement 2"];
+39 [label="Expression statement" fontname="courier" shape=rect];
+39 -> 38 [label="expression"];
+38 [label="Method call: init" fontname="courier" shape=rect];
+38 -> 37 [label="left"];
+37 [label="Id: VPNService" fontname="courier" shape=rect];
+68 -> 42 [label="statement 3"];
+42 [label="Expression statement" fontname="courier" shape=rect];
+42 -> 41 [label="expression"];
+41 [label="Method call: init" fontname="courier" shape=rect];
+41 -> 40 [label="left"];
+40 [label="Id: MainChannel" fontname="courier" shape=rect];
+68 -> 48 [label="statement 4"];
+48 [label="for-in" fontname="courier" shape=rect];
+48 -> 43 [label="binding"];
+43 [label="Declared variable: var callback" fontname="courier" shape=rect];
+48 -> 44 [label="iterable"];
+44 [label="Id: onEventInitFinish" fontname="courier" shape=rect];
+48 -> 47 [label="body"];
+47 [label="Block" fontname="courier" shape=rect];
+47 -> 46 [label="statement 1"];
+46 [label="Expression statement" fontname="courier" shape=rect];
+46 -> 45 [label="expression"];
+45 [label="Function call: callback" fontname="courier" shape=rect];
+68 -> 52 [label="statement 5"];
+52 [label="Expression statement" fontname="courier" shape=rect];
+52 -> 51 [label="expression"];
+51 [label="=" fontname="courier" shape=rect];
+51 -> 49 [label="left"];
+49 [label="Id: _initFinish" fontname="courier" shape=rect];
+51 -> 50 [label="right"];
+50 [label="Bool: true" fontname="courier" shape=rect];
+68 -> 56 [label="statement 6"];
+56 [label="Expression statement" fontname="courier" shape=rect];
+56 -> 55 [label="expression"];
+55 [label="Method call: d" fontname="courier" shape=rect];
+55 -> 53 [label="left"];
+53 [label="Id: Log" fontname="courier" shape=rect];
+55 -> 54 [label="argument 1"];
+54 [label="String: \"initFinish\"" fontname="courier" shape=rect];
+68 -> 58 [label="statement 7"];
+58 [label="Expression statement" fontname="courier" shape=rect];
+58 -> 57 [label="expression"];
+57 [label="Function call: initAllFinish" fontname="courier" shape=rect];
+68 -> 61 [label="statement 8"];
+61 [label="Expression statement" fontname="courier" shape=rect];
+61 -> 60 [label="expression"];
+60 [label="Method call: init" fontname="courier" shape=rect];
+60 -> 59 [label="left"];
+59 [label="Id: AppLifecycleStateNofity" fontname="courier" shape=rect];
+68 -> 64 [label="statement 9"];
+64 [label="Expression statement" fontname="courier" shape=rect];
+64 -> 63 [label="expression"];
+63 [label="Method call: init" fontname="courier" shape=rect];
+63 -> 62 [label="left"];
+62 [label="Id: NoticeManager" fontname="courier" shape=rect];
+68 -> 67 [label="statement 10"];
+67 [label="Expression statement" fontname="courier" shape=rect];
+67 -> 66 [label="expression"];
+66 [label="Method call: init" fontname="courier" shape=rect];
+66 -> 65 [label="left"];
+65 [label="Id: BoardProviderNoticeManager" fontname="courier" shape=rect];
+115 -> 75 [label="member 8"];
+75 [label="static Method" fontname="courier" shape=rect];
+75 -> 74 [label="declaration"];
+74 [label="Function: clearCache" fontname="courier" shape=rect];
+74 -> 73 [label="return type"];
+73 [label="Type: void" fontname="courier" shape=rect];
+74 -> 72 [label="body"];
+72 [label="Block" fontname="courier" shape=rect];
+115 -> 95 [label="member 9"];
+95 [label="static Method" fontname="courier" shape=rect];
+95 -> 94 [label="declaration"];
+94 [label="Function: initHomeFinish" fontname="courier" shape=rect];
+94 -> 93 [label="return type"];
+93 [label="Type: void" fontname="courier" shape=rect];
+94 -> 92 [label="body"];
+92 [label="Block" fontname="courier" shape=rect];
+92 -> 81 [label="statement 1"];
+81 [label="for-in" fontname="courier" shape=rect];
+81 -> 76 [label="binding"];
+76 [label="Declared variable: var callback" fontname="courier" shape=rect];
+81 -> 77 [label="iterable"];
+77 [label="Id: onEventInitHomeFinish" fontname="courier" shape=rect];
+81 -> 80 [label="body"];
+80 [label="Block" fontname="courier" shape=rect];
+80 -> 79 [label="statement 1"];
+79 [label="Expression statement" fontname="courier" shape=rect];
+79 -> 78 [label="expression"];
+78 [label="Function call: callback" fontname="courier" shape=rect];
+92 -> 85 [label="statement 2"];
+85 [label="Expression statement" fontname="courier" shape=rect];
+85 -> 84 [label="expression"];
+84 [label="=" fontname="courier" shape=rect];
+84 -> 82 [label="left"];
+82 [label="Id: _initHomeFinish" fontname="courier" shape=rect];
+84 -> 83 [label="right"];
+83 [label="Bool: true" fontname="courier" shape=rect];
+92 -> 89 [label="statement 3"];
+89 [label="Expression statement" fontname="courier" shape=rect];
+89 -> 88 [label="expression"];
+88 [label="Method call: d" fontname="courier" shape=rect];
+88 -> 86 [label="left"];
+86 [label="Id: Log" fontname="courier" shape=rect];
+88 -> 87 [label="argument 1"];
+87 [label="String: \"initHomeFinish\"" fontname="courier" shape=rect];
+92 -> 91 [label="statement 4"];
+91 [label="Expression statement" fontname="courier" shape=rect];
+91 -> 90 [label="expression"];
+90 [label="Function call: initAllFinish" fontname="courier" shape=rect];
+115 -> 114 [label="member 10"];
+114 [label="static Method" fontname="courier" shape=rect];
+114 -> 113 [label="declaration"];
+113 [label="Function: initAllFinish" fontname="courier" shape=rect];
+113 -> 112 [label="return type"];
+112 [label="Type: void" fontname="courier" shape=rect];
+113 -> 111 [label="body"];
+111 [label="Block" fontname="courier" shape=rect];
+111 -> 110 [label="statement 1"];
+110 [label="if" fontname="courier" shape=rect];
+110 -> 98 [label="condition"];
+98 [label="&&" fontname="courier" shape=rect];
+98 -> 96 [label="left"];
+96 [label="Id: _initFinish" fontname="courier" shape=rect];
+98 -> 97 [label="right"];
+97 [label="Id: _initHomeFinish" fontname="courier" shape=rect];
+110 -> 109 [label="then"];
+109 [label="Block" fontname="courier" shape=rect];
+109 -> 102 [label="statement 1"];
+102 [label="Expression statement" fontname="courier" shape=rect];
+102 -> 101 [label="expression"];
+101 [label="Method call: d" fontname="courier" shape=rect];
+101 -> 99 [label="left"];
+99 [label="Id: Log" fontname="courier" shape=rect];
+101 -> 100 [label="argument 1"];
+100 [label="String: \"initAllFinish\"" fontname="courier" shape=rect];
+109 -> 108 [label="statement 2"];
+108 [label="for-in" fontname="courier" shape=rect];
+108 -> 103 [label="binding"];
+103 [label="Declared variable: var callback" fontname="courier" shape=rect];
+108 -> 104 [label="iterable"];
+104 [label="Id: onEventInitAllFinish" fontname="courier" shape=rect];
+108 -> 107 [label="body"];
+107 [label="Block" fontname="courier" shape=rect];
+107 -> 106 [label="statement 1"];
+106 [label="Expression statement" fontname="courier" shape=rect];
+106 -> 105 [label="expression"];
+105 [label="Function call: callback" fontname="courier" shape=rect];
+}

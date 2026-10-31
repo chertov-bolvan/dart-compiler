@@ -1,0 +1,109 @@
+//import 'package:karing/tray.dart';
+
+
+List<String> processArgs = [];
+StartFailedReason startFailedReason;
+String startFailedReasonDesc;
+bool windowBoundsDirty = false;
+
+
+// Restores the window to its last saved position/size
+bool _loadWindowBounds() {
+  final windowConfig = SettingManager.getConfig().window;
+  if (windowConfig.width <= 0 || windowConfig.height <= 0) {
+    return false;
+  }
+  if (windowConfig.x < 0) {
+    windowConfig.x = 0;
+  }
+  if (windowConfig.y < 0) {
+    windowConfig.y = 0;
+  }
+  if (windowConfig.width < SettingConfigItemWindow.kMinWindowSize.width) {
+    windowConfig.width = SettingConfigItemWindow.kMinWindowSize.width;
+  }
+  if (windowConfig.height < SettingConfigItemWindow.kMinWindowSize.height) {
+    windowConfig.height = SettingConfigItemWindow.kMinWindowSize.height;
+  }
+  final bounds = Rect.fromLTWH(
+    windowConfig.x,
+    windowConfig.y,
+    windowConfig.width,
+    windowConfig.height
+  );
+  {
+    final displays = screenRetriever.getAllDisplays();
+    final fitsAnyDisplay = displays.any(display);
+    if (!fitsAnyDisplay) {
+      return false;
+    }
+  } 
+  {
+    return false;
+  }
+
+  windowManager.setBounds(bounds);
+  return true;
+} 
+
+void _saveWindowBounds() {
+  if (!windowBoundsDirty) {
+    return;
+  }
+  windowBoundsDirty = false;
+  SettingManager.save();
+}
+
+
+
+
+class MyAppState extends State {
+  static const kMenuConnect = "connect";
+  static const kMenuDisconnect = "disconnect";
+  static const kMenuOpen = "show_window";
+  static const kMenuExit = "exit_app";
+  bool _launchAtStartup = false;
+  bool _windowVisibleForMac = false;
+  //Tray? _tray;
+  bool _trayGrey = true;
+  final Themes _themes = Themes();
+
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    if (PlatformUtils.isPC()) {
+      windowManager.addListener(this);
+      windowManager.setPreventClose(true);
+      /*_tray = Tray();
+      _tray!.init(
+        onOpen: () async {
+          if (await windowManager.isMinimized()) {
+            await windowManager.restore();
+          } else {
+            await windowManager.show();
+            onWindowRestore();
+          }
+        },
+        onExit: () async {
+          await _quit();
+        },
+      );*/
+      trayManager.addListener(this);
+      _setTray(true, false, true);
+    }
+    AppLifecycleStateNofity.init();
+    //LocaleSettings.getLocaleStream().listen((event) {});
+    String launchStartupArg = processArgs.firstWhere(element, AppArgs.launchStartup, orElse
+    );
+    _launchAtStartup = launchStartupArg.isNotEmpty;
+    /*AnalyticsUtils.logEvent(
+      analyticsEventType: analyticsEventTypeApp,
+      name: 'launch',
+      parameters: {"value": _launchAtStartup},
+      forceSubmit: true,
+    );*/
+
+    AppLifecycleStateNofity.stateLaunch(_launchAtStartup);
+    _init();
+  }
+}

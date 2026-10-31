@@ -1,0 +1,583 @@
+
+
+
+   
+ 
+ 
+   
+
+
+
+  
+     
+          
+     
+  
+      
+      
+  
+      
+      
+  
+      
+      
+  
+      
+      
+  
+     
+    
+    
+    
+    
+  
+  
+       
+       
+      
+       
+    
+   
+  
+     
+  
+
+  
+   
+ 
+
+  
+    
+    
+  
+    
+  
+
+
+
+
+
+    
+      
+      
+      
+      
+     
+     
+  
+     
+      
+
+    
+    
+    
+      
+      
+      
+      
+      
+        
+    
+    
+    
+         
+    
+      
+    
+
+    
+    
+  
+digraph {
+245 [label="PROGRAM" fontname="courier" shape=rect];
+245 -> 5 [label="declaration 1"];
+5 [label="Global variable declaration" fontname="courier" shape=rect];
+5 -> 4 [label="declaration"];
+4 [label="Variable declaration: " fontname="courier" shape=rect];
+4 -> 1 [label="type"];
+1 [label="Type: List (array)" fontname="courier" shape=rect];
+1 -> 0 [label="element type"];
+0 [label="Type: String" fontname="courier" shape=rect];
+4 -> 3 [label="variable 1"];
+3 [label="Variable: processArgs" fontname="courier" shape=rect];
+3 -> 2 [label="initializer"];
+2 [label="List literal" fontname="courier" shape=rect];
+245 -> 9 [label="declaration 2"];
+9 [label="Global variable declaration" fontname="courier" shape=rect];
+9 -> 8 [label="declaration"];
+8 [label="Variable declaration: " fontname="courier" shape=rect];
+8 -> 6 [label="type"];
+6 [label="Type: StartFailedReason" fontname="courier" shape=rect];
+8 -> 7 [label="variable 1"];
+7 [label="Variable: startFailedReason" fontname="courier" shape=rect];
+245 -> 13 [label="declaration 3"];
+13 [label="Global variable declaration" fontname="courier" shape=rect];
+13 -> 12 [label="declaration"];
+12 [label="Variable declaration: " fontname="courier" shape=rect];
+12 -> 10 [label="type"];
+10 [label="Type: String" fontname="courier" shape=rect];
+12 -> 11 [label="variable 1"];
+11 [label="Variable: startFailedReasonDesc" fontname="courier" shape=rect];
+245 -> 18 [label="declaration 4"];
+18 [label="Global variable declaration" fontname="courier" shape=rect];
+18 -> 17 [label="declaration"];
+17 [label="Variable declaration: " fontname="courier" shape=rect];
+17 -> 14 [label="type"];
+14 [label="Type: bool" fontname="courier" shape=rect];
+17 -> 16 [label="variable 1"];
+16 [label="Variable: windowBoundsDirty" fontname="courier" shape=rect];
+16 -> 15 [label="initializer"];
+15 [label="Bool: false" fontname="courier" shape=rect];
+245 -> 133 [label="declaration 5"];
+133 [label="Global function declaration" fontname="courier" shape=rect];
+133 -> 132 [label="function"];
+132 [label="Function: _loadWindowBounds" fontname="courier" shape=rect];
+132 -> 19 [label="return type"];
+19 [label="Type: bool" fontname="courier" shape=rect];
+132 -> 131 [label="body"];
+131 [label="Block" fontname="courier" shape=rect];
+131 -> 25 [label="statement 1"];
+25 [label="Variable statement" fontname="courier" shape=rect];
+25 -> 24 [label="declaration"];
+24 [label="Variable declaration: final inferred" fontname="courier" shape=rect];
+24 -> 23 [label="variable 1"];
+23 [label="Variable: windowConfig" fontname="courier" shape=rect];
+23 -> 22 [label="initializer"];
+22 [label="Field access: window" fontname="courier" shape=rect];
+22 -> 21 [label="left"];
+21 [label="Method call: getConfig" fontname="courier" shape=rect];
+21 -> 20 [label="left"];
+20 [label="Id: SettingManager" fontname="courier" shape=rect];
+131 -> 38 [label="statement 2"];
+38 [label="if" fontname="courier" shape=rect];
+38 -> 34 [label="condition"];
+34 [label="||" fontname="courier" shape=rect];
+34 -> 29 [label="left"];
+29 [label="<=" fontname="courier" shape=rect];
+29 -> 27 [label="left"];
+27 [label="Field access: width" fontname="courier" shape=rect];
+27 -> 26 [label="left"];
+26 [label="Id: windowConfig" fontname="courier" shape=rect];
+29 -> 28 [label="right"];
+28 [label="Int: 0" fontname="courier" shape=rect];
+34 -> 33 [label="right"];
+33 [label="<=" fontname="courier" shape=rect];
+33 -> 31 [label="left"];
+31 [label="Field access: height" fontname="courier" shape=rect];
+31 -> 30 [label="left"];
+30 [label="Id: windowConfig" fontname="courier" shape=rect];
+33 -> 32 [label="right"];
+32 [label="Int: 0" fontname="courier" shape=rect];
+38 -> 37 [label="then"];
+37 [label="Block" fontname="courier" shape=rect];
+37 -> 36 [label="statement 1"];
+36 [label="return" fontname="courier" shape=rect];
+36 -> 35 [label="value"];
+35 [label="Bool: false" fontname="courier" shape=rect];
+131 -> 49 [label="statement 3"];
+49 [label="if" fontname="courier" shape=rect];
+49 -> 42 [label="condition"];
+42 [label="<" fontname="courier" shape=rect];
+42 -> 40 [label="left"];
+40 [label="Field access: x" fontname="courier" shape=rect];
+40 -> 39 [label="left"];
+39 [label="Id: windowConfig" fontname="courier" shape=rect];
+42 -> 41 [label="right"];
+41 [label="Int: 0" fontname="courier" shape=rect];
+49 -> 48 [label="then"];
+48 [label="Block" fontname="courier" shape=rect];
+48 -> 47 [label="statement 1"];
+47 [label="Expression statement" fontname="courier" shape=rect];
+47 -> 46 [label="expression"];
+46 [label="=" fontname="courier" shape=rect];
+46 -> 44 [label="left"];
+44 [label="Field access: x" fontname="courier" shape=rect];
+44 -> 43 [label="left"];
+43 [label="Id: windowConfig" fontname="courier" shape=rect];
+46 -> 45 [label="right"];
+45 [label="Int: 0" fontname="courier" shape=rect];
+131 -> 60 [label="statement 4"];
+60 [label="if" fontname="courier" shape=rect];
+60 -> 53 [label="condition"];
+53 [label="<" fontname="courier" shape=rect];
+53 -> 51 [label="left"];
+51 [label="Field access: y" fontname="courier" shape=rect];
+51 -> 50 [label="left"];
+50 [label="Id: windowConfig" fontname="courier" shape=rect];
+53 -> 52 [label="right"];
+52 [label="Int: 0" fontname="courier" shape=rect];
+60 -> 59 [label="then"];
+59 [label="Block" fontname="courier" shape=rect];
+59 -> 58 [label="statement 1"];
+58 [label="Expression statement" fontname="courier" shape=rect];
+58 -> 57 [label="expression"];
+57 [label="=" fontname="courier" shape=rect];
+57 -> 55 [label="left"];
+55 [label="Field access: y" fontname="courier" shape=rect];
+55 -> 54 [label="left"];
+54 [label="Id: windowConfig" fontname="courier" shape=rect];
+57 -> 56 [label="right"];
+56 [label="Int: 0" fontname="courier" shape=rect];
+131 -> 75 [label="statement 5"];
+75 [label="if" fontname="courier" shape=rect];
+75 -> 66 [label="condition"];
+66 [label="<" fontname="courier" shape=rect];
+66 -> 62 [label="left"];
+62 [label="Field access: width" fontname="courier" shape=rect];
+62 -> 61 [label="left"];
+61 [label="Id: windowConfig" fontname="courier" shape=rect];
+66 -> 65 [label="right"];
+65 [label="Field access: width" fontname="courier" shape=rect];
+65 -> 64 [label="left"];
+64 [label="Field access: kMinWindowSize" fontname="courier" shape=rect];
+64 -> 63 [label="left"];
+63 [label="Id: SettingConfigItemWindow" fontname="courier" shape=rect];
+75 -> 74 [label="then"];
+74 [label="Block" fontname="courier" shape=rect];
+74 -> 73 [label="statement 1"];
+73 [label="Expression statement" fontname="courier" shape=rect];
+73 -> 72 [label="expression"];
+72 [label="=" fontname="courier" shape=rect];
+72 -> 68 [label="left"];
+68 [label="Field access: width" fontname="courier" shape=rect];
+68 -> 67 [label="left"];
+67 [label="Id: windowConfig" fontname="courier" shape=rect];
+72 -> 71 [label="right"];
+71 [label="Field access: width" fontname="courier" shape=rect];
+71 -> 70 [label="left"];
+70 [label="Field access: kMinWindowSize" fontname="courier" shape=rect];
+70 -> 69 [label="left"];
+69 [label="Id: SettingConfigItemWindow" fontname="courier" shape=rect];
+131 -> 90 [label="statement 6"];
+90 [label="if" fontname="courier" shape=rect];
+90 -> 81 [label="condition"];
+81 [label="<" fontname="courier" shape=rect];
+81 -> 77 [label="left"];
+77 [label="Field access: height" fontname="courier" shape=rect];
+77 -> 76 [label="left"];
+76 [label="Id: windowConfig" fontname="courier" shape=rect];
+81 -> 80 [label="right"];
+80 [label="Field access: height" fontname="courier" shape=rect];
+80 -> 79 [label="left"];
+79 [label="Field access: kMinWindowSize" fontname="courier" shape=rect];
+79 -> 78 [label="left"];
+78 [label="Id: SettingConfigItemWindow" fontname="courier" shape=rect];
+90 -> 89 [label="then"];
+89 [label="Block" fontname="courier" shape=rect];
+89 -> 88 [label="statement 1"];
+88 [label="Expression statement" fontname="courier" shape=rect];
+88 -> 87 [label="expression"];
+87 [label="=" fontname="courier" shape=rect];
+87 -> 83 [label="left"];
+83 [label="Field access: height" fontname="courier" shape=rect];
+83 -> 82 [label="left"];
+82 [label="Id: windowConfig" fontname="courier" shape=rect];
+87 -> 86 [label="right"];
+86 [label="Field access: height" fontname="courier" shape=rect];
+86 -> 85 [label="left"];
+85 [label="Field access: kMinWindowSize" fontname="courier" shape=rect];
+85 -> 84 [label="left"];
+84 [label="Id: SettingConfigItemWindow" fontname="courier" shape=rect];
+131 -> 103 [label="statement 7"];
+103 [label="Variable statement" fontname="courier" shape=rect];
+103 -> 102 [label="declaration"];
+102 [label="Variable declaration: final inferred" fontname="courier" shape=rect];
+102 -> 101 [label="variable 1"];
+101 [label="Variable: bounds" fontname="courier" shape=rect];
+101 -> 100 [label="initializer"];
+100 [label="Method call: fromLTWH" fontname="courier" shape=rect];
+100 -> 91 [label="left"];
+91 [label="Id: Rect" fontname="courier" shape=rect];
+100 -> 93 [label="argument 1"];
+93 [label="Field access: x" fontname="courier" shape=rect];
+93 -> 92 [label="left"];
+92 [label="Id: windowConfig" fontname="courier" shape=rect];
+100 -> 95 [label="argument 2"];
+95 [label="Field access: y" fontname="courier" shape=rect];
+95 -> 94 [label="left"];
+94 [label="Id: windowConfig" fontname="courier" shape=rect];
+100 -> 97 [label="argument 3"];
+97 [label="Field access: width" fontname="courier" shape=rect];
+97 -> 96 [label="left"];
+96 [label="Id: windowConfig" fontname="courier" shape=rect];
+100 -> 99 [label="argument 4"];
+99 [label="Field access: height" fontname="courier" shape=rect];
+99 -> 98 [label="left"];
+98 [label="Id: windowConfig" fontname="courier" shape=rect];
+131 -> 121 [label="statement 8"];
+121 [label="Block" fontname="courier" shape=rect];
+121 -> 108 [label="statement 1"];
+108 [label="Variable statement" fontname="courier" shape=rect];
+108 -> 107 [label="declaration"];
+107 [label="Variable declaration: final inferred" fontname="courier" shape=rect];
+107 -> 106 [label="variable 1"];
+106 [label="Variable: displays" fontname="courier" shape=rect];
+106 -> 105 [label="initializer"];
+105 [label="Method call: getAllDisplays" fontname="courier" shape=rect];
+105 -> 104 [label="left"];
+104 [label="Id: screenRetriever" fontname="courier" shape=rect];
+121 -> 114 [label="statement 2"];
+114 [label="Variable statement" fontname="courier" shape=rect];
+114 -> 113 [label="declaration"];
+113 [label="Variable declaration: final inferred" fontname="courier" shape=rect];
+113 -> 112 [label="variable 1"];
+112 [label="Variable: fitsAnyDisplay" fontname="courier" shape=rect];
+112 -> 111 [label="initializer"];
+111 [label="Method call: any" fontname="courier" shape=rect];
+111 -> 109 [label="left"];
+109 [label="Id: displays" fontname="courier" shape=rect];
+111 -> 110 [label="argument 1"];
+110 [label="Id: display" fontname="courier" shape=rect];
+121 -> 120 [label="statement 3"];
+120 [label="if" fontname="courier" shape=rect];
+120 -> 116 [label="condition"];
+116 [label="!" fontname="courier" shape=rect];
+116 -> 115 [label="right"];
+115 [label="Id: fitsAnyDisplay" fontname="courier" shape=rect];
+120 -> 119 [label="then"];
+119 [label="Block" fontname="courier" shape=rect];
+119 -> 118 [label="statement 1"];
+118 [label="return" fontname="courier" shape=rect];
+118 -> 117 [label="value"];
+117 [label="Bool: false" fontname="courier" shape=rect];
+131 -> 124 [label="statement 9"];
+124 [label="Block" fontname="courier" shape=rect];
+124 -> 123 [label="statement 1"];
+123 [label="return" fontname="courier" shape=rect];
+123 -> 122 [label="value"];
+122 [label="Bool: false" fontname="courier" shape=rect];
+131 -> 128 [label="statement 10"];
+128 [label="Expression statement" fontname="courier" shape=rect];
+128 -> 127 [label="expression"];
+127 [label="Method call: setBounds" fontname="courier" shape=rect];
+127 -> 125 [label="left"];
+125 [label="Id: windowManager" fontname="courier" shape=rect];
+127 -> 126 [label="argument 1"];
+126 [label="Id: bounds" fontname="courier" shape=rect];
+131 -> 130 [label="statement 11"];
+130 [label="return" fontname="courier" shape=rect];
+130 -> 129 [label="value"];
+129 [label="Bool: true" fontname="courier" shape=rect];
+245 -> 149 [label="declaration 6"];
+149 [label="Global function declaration" fontname="courier" shape=rect];
+149 -> 148 [label="function"];
+148 [label="Function: _saveWindowBounds" fontname="courier" shape=rect];
+148 -> 147 [label="return type"];
+147 [label="Type: void" fontname="courier" shape=rect];
+148 -> 146 [label="body"];
+146 [label="Block" fontname="courier" shape=rect];
+146 -> 138 [label="statement 1"];
+138 [label="if" fontname="courier" shape=rect];
+138 -> 135 [label="condition"];
+135 [label="!" fontname="courier" shape=rect];
+135 -> 134 [label="right"];
+134 [label="Id: windowBoundsDirty" fontname="courier" shape=rect];
+138 -> 137 [label="then"];
+137 [label="Block" fontname="courier" shape=rect];
+137 -> 136 [label="statement 1"];
+136 [label="return" fontname="courier" shape=rect];
+146 -> 142 [label="statement 2"];
+142 [label="Expression statement" fontname="courier" shape=rect];
+142 -> 141 [label="expression"];
+141 [label="=" fontname="courier" shape=rect];
+141 -> 139 [label="left"];
+139 [label="Id: windowBoundsDirty" fontname="courier" shape=rect];
+141 -> 140 [label="right"];
+140 [label="Bool: false" fontname="courier" shape=rect];
+146 -> 145 [label="statement 3"];
+145 [label="Expression statement" fontname="courier" shape=rect];
+145 -> 144 [label="expression"];
+144 [label="Method call: save" fontname="courier" shape=rect];
+144 -> 143 [label="left"];
+143 [label="Id: SettingManager" fontname="courier" shape=rect];
+245 -> 244 [label="declaration 7"];
+244 [label="Global class declaration" fontname="courier" shape=rect];
+244 -> 243 [label="class"];
+243 [label="class MyAppState extends State" fontname="courier" shape=rect];
+243 -> 153 [label="member 1"];
+153 [label="static Field" fontname="courier" shape=rect];
+153 -> 152 [label="declaration"];
+152 [label="Variable declaration: const inferred" fontname="courier" shape=rect];
+152 -> 151 [label="variable 1"];
+151 [label="Variable: kMenuConnect" fontname="courier" shape=rect];
+151 -> 150 [label="initializer"];
+150 [label="String: \"connect\"" fontname="courier" shape=rect];
+243 -> 157 [label="member 2"];
+157 [label="static Field" fontname="courier" shape=rect];
+157 -> 156 [label="declaration"];
+156 [label="Variable declaration: const inferred" fontname="courier" shape=rect];
+156 -> 155 [label="variable 1"];
+155 [label="Variable: kMenuDisconnect" fontname="courier" shape=rect];
+155 -> 154 [label="initializer"];
+154 [label="String: \"disconnect\"" fontname="courier" shape=rect];
+243 -> 161 [label="member 3"];
+161 [label="static Field" fontname="courier" shape=rect];
+161 -> 160 [label="declaration"];
+160 [label="Variable declaration: const inferred" fontname="courier" shape=rect];
+160 -> 159 [label="variable 1"];
+159 [label="Variable: kMenuOpen" fontname="courier" shape=rect];
+159 -> 158 [label="initializer"];
+158 [label="String: \"show_window\"" fontname="courier" shape=rect];
+243 -> 165 [label="member 4"];
+165 [label="static Field" fontname="courier" shape=rect];
+165 -> 164 [label="declaration"];
+164 [label="Variable declaration: const inferred" fontname="courier" shape=rect];
+164 -> 163 [label="variable 1"];
+163 [label="Variable: kMenuExit" fontname="courier" shape=rect];
+163 -> 162 [label="initializer"];
+162 [label="String: \"exit_app\"" fontname="courier" shape=rect];
+243 -> 170 [label="member 5"];
+170 [label="Field" fontname="courier" shape=rect];
+170 -> 169 [label="declaration"];
+169 [label="Variable declaration: " fontname="courier" shape=rect];
+169 -> 166 [label="type"];
+166 [label="Type: bool" fontname="courier" shape=rect];
+169 -> 168 [label="variable 1"];
+168 [label="Variable: _launchAtStartup" fontname="courier" shape=rect];
+168 -> 167 [label="initializer"];
+167 [label="Bool: false" fontname="courier" shape=rect];
+243 -> 175 [label="member 6"];
+175 [label="Field" fontname="courier" shape=rect];
+175 -> 174 [label="declaration"];
+174 [label="Variable declaration: " fontname="courier" shape=rect];
+174 -> 171 [label="type"];
+171 [label="Type: bool" fontname="courier" shape=rect];
+174 -> 173 [label="variable 1"];
+173 [label="Variable: _windowVisibleForMac" fontname="courier" shape=rect];
+173 -> 172 [label="initializer"];
+172 [label="Bool: false" fontname="courier" shape=rect];
+243 -> 180 [label="member 7"];
+180 [label="Field" fontname="courier" shape=rect];
+180 -> 179 [label="declaration"];
+179 [label="Variable declaration: " fontname="courier" shape=rect];
+179 -> 176 [label="type"];
+176 [label="Type: bool" fontname="courier" shape=rect];
+179 -> 178 [label="variable 1"];
+178 [label="Variable: _trayGrey" fontname="courier" shape=rect];
+178 -> 177 [label="initializer"];
+177 [label="Bool: true" fontname="courier" shape=rect];
+243 -> 185 [label="member 8"];
+185 [label="Field" fontname="courier" shape=rect];
+185 -> 184 [label="declaration"];
+184 [label="Variable declaration: final " fontname="courier" shape=rect];
+184 -> 181 [label="type"];
+181 [label="Type: Themes" fontname="courier" shape=rect];
+184 -> 183 [label="variable 1"];
+183 [label="Variable: _themes" fontname="courier" shape=rect];
+183 -> 182 [label="initializer"];
+182 [label="Function call: Themes" fontname="courier" shape=rect];
+243 -> 242 [label="member 9"];
+242 [label="Method" fontname="courier" shape=rect];
+242 -> 241 [label="declaration"];
+241 [label="Function: initState" fontname="courier" shape=rect];
+241 -> 240 [label="return type"];
+240 [label="Type: void" fontname="courier" shape=rect];
+241 -> 239 [label="body"];
+239 [label="Block" fontname="courier" shape=rect];
+239 -> 188 [label="statement 1"];
+188 [label="Expression statement" fontname="courier" shape=rect];
+188 -> 187 [label="expression"];
+187 [label="Method call: initState" fontname="courier" shape=rect];
+187 -> 186 [label="left"];
+186 [label="super" fontname="courier" shape=rect];
+239 -> 193 [label="statement 2"];
+193 [label="Expression statement" fontname="courier" shape=rect];
+193 -> 192 [label="expression"];
+192 [label="Method call: addObserver" fontname="courier" shape=rect];
+192 -> 190 [label="left"];
+190 [label="Field access: instance" fontname="courier" shape=rect];
+190 -> 189 [label="left"];
+189 [label="Id: WidgetsBinding" fontname="courier" shape=rect];
+192 -> 191 [label="argument 1"];
+191 [label="this" fontname="courier" shape=rect];
+239 -> 214 [label="statement 3"];
+214 [label="if" fontname="courier" shape=rect];
+214 -> 195 [label="condition"];
+195 [label="Method call: isPC" fontname="courier" shape=rect];
+195 -> 194 [label="left"];
+194 [label="Id: PlatformUtils" fontname="courier" shape=rect];
+214 -> 213 [label="then"];
+213 [label="Block" fontname="courier" shape=rect];
+213 -> 199 [label="statement 1"];
+199 [label="Expression statement" fontname="courier" shape=rect];
+199 -> 198 [label="expression"];
+198 [label="Method call: addListener" fontname="courier" shape=rect];
+198 -> 196 [label="left"];
+196 [label="Id: windowManager" fontname="courier" shape=rect];
+198 -> 197 [label="argument 1"];
+197 [label="this" fontname="courier" shape=rect];
+213 -> 203 [label="statement 2"];
+203 [label="Expression statement" fontname="courier" shape=rect];
+203 -> 202 [label="expression"];
+202 [label="Method call: setPreventClose" fontname="courier" shape=rect];
+202 -> 200 [label="left"];
+200 [label="Id: windowManager" fontname="courier" shape=rect];
+202 -> 201 [label="argument 1"];
+201 [label="Bool: true" fontname="courier" shape=rect];
+213 -> 207 [label="statement 3"];
+207 [label="Expression statement" fontname="courier" shape=rect];
+207 -> 206 [label="expression"];
+206 [label="Method call: addListener" fontname="courier" shape=rect];
+206 -> 204 [label="left"];
+204 [label="Id: trayManager" fontname="courier" shape=rect];
+206 -> 205 [label="argument 1"];
+205 [label="this" fontname="courier" shape=rect];
+213 -> 212 [label="statement 4"];
+212 [label="Expression statement" fontname="courier" shape=rect];
+212 -> 211 [label="expression"];
+211 [label="Function call: _setTray" fontname="courier" shape=rect];
+211 -> 208 [label="argument 1"];
+208 [label="Bool: true" fontname="courier" shape=rect];
+211 -> 209 [label="argument 2"];
+209 [label="Bool: false" fontname="courier" shape=rect];
+211 -> 210 [label="argument 3"];
+210 [label="Bool: true" fontname="courier" shape=rect];
+239 -> 217 [label="statement 4"];
+217 [label="Expression statement" fontname="courier" shape=rect];
+217 -> 216 [label="expression"];
+216 [label="Method call: init" fontname="courier" shape=rect];
+216 -> 215 [label="left"];
+215 [label="Id: AppLifecycleStateNofity" fontname="courier" shape=rect];
+239 -> 227 [label="statement 5"];
+227 [label="Variable statement" fontname="courier" shape=rect];
+227 -> 226 [label="declaration"];
+226 [label="Variable declaration: " fontname="courier" shape=rect];
+226 -> 218 [label="type"];
+218 [label="Type: String" fontname="courier" shape=rect];
+226 -> 225 [label="variable 1"];
+225 [label="Variable: launchStartupArg" fontname="courier" shape=rect];
+225 -> 224 [label="initializer"];
+224 [label="Method call: firstWhere" fontname="courier" shape=rect];
+224 -> 219 [label="left"];
+219 [label="Id: processArgs" fontname="courier" shape=rect];
+224 -> 220 [label="argument 1"];
+220 [label="Id: element" fontname="courier" shape=rect];
+224 -> 222 [label="argument 2"];
+222 [label="Field access: launchStartup" fontname="courier" shape=rect];
+222 -> 221 [label="left"];
+221 [label="Id: AppArgs" fontname="courier" shape=rect];
+224 -> 223 [label="argument 3"];
+223 [label="Id: orElse" fontname="courier" shape=rect];
+239 -> 232 [label="statement 6"];
+232 [label="Expression statement" fontname="courier" shape=rect];
+232 -> 231 [label="expression"];
+231 [label="=" fontname="courier" shape=rect];
+231 -> 228 [label="left"];
+228 [label="Id: _launchAtStartup" fontname="courier" shape=rect];
+231 -> 230 [label="right"];
+230 [label="Field access: isNotEmpty" fontname="courier" shape=rect];
+230 -> 229 [label="left"];
+229 [label="Id: launchStartupArg" fontname="courier" shape=rect];
+239 -> 236 [label="statement 7"];
+236 [label="Expression statement" fontname="courier" shape=rect];
+236 -> 235 [label="expression"];
+235 [label="Method call: stateLaunch" fontname="courier" shape=rect];
+235 -> 233 [label="left"];
+233 [label="Id: AppLifecycleStateNofity" fontname="courier" shape=rect];
+235 -> 234 [label="argument 1"];
+234 [label="Id: _launchAtStartup" fontname="courier" shape=rect];
+239 -> 238 [label="statement 8"];
+238 [label="Expression statement" fontname="courier" shape=rect];
+238 -> 237 [label="expression"];
+237 [label="Function call: _init" fontname="courier" shape=rect];
+}
