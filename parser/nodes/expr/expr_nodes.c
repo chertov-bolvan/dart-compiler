@@ -65,12 +65,13 @@ ExprNode* createExpr(ExprNodeType type) {
 }
 
 
-ExprNode* createListLiteralExpr(ExprNode* expr) {
+ExprNode* createListLiteralExpr(ExprNode* expr, TypeNode* type) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
     result->type = ListLiteralType;
     result->left = expr;
+    result->typeNode = type;
 
     return result;
 }

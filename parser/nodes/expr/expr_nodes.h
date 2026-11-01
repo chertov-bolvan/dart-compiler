@@ -53,7 +53,7 @@ ExprNode* createDoubleExpr(double value);
 ExprNode* createStringExpr(char* value);
 ExprNode* createIDExpr(char* value);
 ExprNode* createExpr(ExprNodeType type);
-ExprNode* createListLiteralExpr(ExprNode* expr);
+ExprNode* createListLiteralExpr(ExprNode* expr, TypeNode* type);
 ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode);
 ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right);
 ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr);
