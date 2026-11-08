@@ -15,11 +15,18 @@ typedef struct FuncDeclNode {
 } FuncDeclNode;
 
 
+typedef enum ParamType {
+  RequiredPositionalType, OptionalPositionType, RequiredNamedType, OptionalNamedType
+} ParamType;
+
 typedef struct ParamNode {
   int nodeId;
 
   struct TypeNode* type;
   char* id;
+
+  ParamType paramType;
+  struct ExprNode* defaultValue;
 
   struct ParamNode* next;
 } ParamNode;
@@ -28,5 +35,5 @@ typedef struct ParamNode {
 FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, StmtNode* body);
 
 
-ParamNode* createParam(TypeNode* type, char* id);
+ParamNode* createParam(TypeNode* type, char* id, ParamType paramType, ExprNode* defaultValue);
 ParamNode* addParamToList(ParamNode* list, ParamNode* newParam);

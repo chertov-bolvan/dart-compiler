@@ -89,7 +89,7 @@
 %type <VarDeclarator> var_declarator var_declarator_list
 %type <ForInVar> for_in_decl
 %type <FuncDecl> func_decl getter_method_decl setter_method_decl
-%type <Param> param_list param_list_em
+%type <Param> param_list_em required_param_list optional_pos_param_group optional_pos_param optional_pos_param_list named_param_group named_param named_param_list
 
 %type <ClassDecl> class_decl
 %type <ClassMember> static_method_decl abstract_method_decl class_member class_member_list class_member_list_em
@@ -320,15 +320,57 @@ func_decl:
 ;
 
 
-param_list:
-      type ID                 {$$ = createParam($1, $2);}
-    | param_list ',' type ID  {$$ = addParamToList($1, createParam($3, $4));}
+param_list_em:
+      /* empty */                                         {$$ = NULL;}
+    | required_param_list ','                             {$$ = $1;}
+    | required_param_list                                 {$$ = $1;}
+    | optional_pos_param_group                            {$$ = $1;}
+    | named_param_group                                   {$$ = $1;}
+    | required_param_list ',' optional_pos_param_group    {$$ = addParamToList($1, $3);}
+    | required_param_list ',' named_param_group           {$$ = addParamToList($1, $3);}
 ;
 
 
-param_list_em:
-      /* empty */   {$$ = NULL;}
-    | param_list    {$$ = $1;}
+required_param_list:
+      type ID                           {$$ = createParam($1, $2, RequiredPositionalType, NULL);}
+    | required_param_list ',' type ID   {$$ = addParamToList($1, createParam($3, $4, RequiredPositionalType, NULL));}
+;
+
+
+optional_pos_param_group:
+      '[' optional_pos_param_list ',' ']'   {$$ = $2;}
+    | '[' optional_pos_param_list ']'       {$$ = $2;}
+;
+
+
+optional_pos_param:
+      type ID           {$$ = createParam($1, $2, OptionalPositionType, NULL);}
+    | type ID '=' expr  {$$ = createParam($1, $2, OptionalPositionType, $4);}
+;
+
+
+optional_pos_param_list:
+      optional_pos_param                                {$$ = $1;}
+    | optional_pos_param_list ',' optional_pos_param    {$$ = addParamToList($1, $3);}
+;
+
+
+named_param_group:
+      '{' named_param_list ',' '}'    {$$ = $2;}
+    | '{' named_param_list '}'        {$$ = $2;}
+;
+
+
+named_param:
+      type ID               {$$ = createParam($1, $2, OptionalNamedType, NULL);}
+    | type ID '=' expr      {$$ = createParam($1, $2, OptionalNamedType, $4);}
+    | REQUIRED_KW type ID   {$$ = createParam($2, $3, RequiredNamedType, NULL);}
+;
+
+
+named_param_list:
+      named_param                       {$$ = $1;}
+    | named_param_list ',' named_param  {$$ = addParamToList($1, $3);}
 ;
 
 
@@ -338,8 +380,8 @@ getter_method_decl:
 
 
 setter_method_decl:
-      SET_KW ID '(' type ID ')' stmt_block            {$$ = createFuncDecl(createVoidType(), $2, createParam($4, $5), $7);}
-    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block  {$$ = createFuncDecl(createVoidType(), $3, createParam($5, $6), $8);}
+      SET_KW ID '(' type ID ')' stmt_block            {$$ = createFuncDecl(createVoidType(), $2, createParam($4, $5, RequiredPositionalType, NULL), $7);}
+    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block  {$$ = createFuncDecl(createVoidType(), $3, createParam($5, $6, RequiredPositionalType, NULL), $8);}
 ;
 
 
@@ -354,8 +396,8 @@ abstract_method_decl:
       type ID '(' param_list_em ')' ';'         {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl($1, $2, $4, NULL));}
     | VOID_TYPE ID '(' param_list_em ')' ';'    {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl(createVoidType(), $2, $4, NULL));}
     | type GET_KW ID ';'                        {$$ = createMethodMember(GetterMemberType, 0, createFuncDecl($1, $3, NULL, NULL));}
-    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5), NULL));}
-    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6), NULL));}
+    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5, RequiredPositionalType, NULL), NULL));}
+    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6, RequiredPositionalType, NULL), NULL));}
 ;
 
 

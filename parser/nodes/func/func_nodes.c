@@ -14,13 +14,15 @@ FuncDeclNode* createFuncDecl(TypeNode* type, char* id, ParamNode* parameters, St
 }
 
 
-ParamNode* createParam(TypeNode* type, char* id) {
+ParamNode* createParam(TypeNode* type, char* id, ParamType paramType, ExprNode* defaultValue) {
   ParamNode* result = calloc(1, sizeof(ParamNode));
 
   result->nodeId = globalId++;
 
   result->type = type;
   result->id = id;
+  result->paramType = paramType;
+  result->defaultValue = defaultValue;
 
   return result;
 }
