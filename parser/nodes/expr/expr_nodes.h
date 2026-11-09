@@ -34,9 +34,10 @@ typedef struct ExprNode {
     int boolValue;
     char* strValue;
     char* id;
+    char* constructName;
     
     struct TypeNode* typeNode;
-    struct ExprNode* args;
+    struct ArgNode* args;
     struct ExprNode* left;
     struct ExprNode* center;
     struct ExprNode* right;
@@ -59,11 +60,24 @@ ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right);
 ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr);
 ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr);
 ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId);
-ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* arguments);
-ExprNode* createFuncCallExpr(char* funcId, ExprNode* arguments);
+ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ArgNode* arguments);
+ExprNode* createFuncCallExpr(char* funcId, ArgNode* arguments);
 ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* right);
 ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right);
-ExprNode* createThisFuncExpr(ExprNode* right);
-ExprNode* createSuperFuncExpr(ExprNode* right);
-ExprNode* createNewClass(char* classId, ExprNode* arguments);
+ExprNode* createThisFuncExpr(ArgNode* arguments);
+ExprNode* createSuperFuncExpr(ArgNode* arguments);
+ExprNode* createNewClass(char* classId, char* constructName, ArgNode* arguments);
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
+
+
+typedef struct ArgNode {
+    int nodeId;
+
+    char* name;
+    struct ExprNode* value;
+
+    struct ArgNode* next;
+} ArgNode;
+
+ArgNode* createArg(char* name, ExprNode* value);
+ArgNode* addArgToList(ArgNode* list, ArgNode* elem);

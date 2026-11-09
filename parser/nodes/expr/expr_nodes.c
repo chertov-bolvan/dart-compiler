@@ -136,7 +136,7 @@ ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId) {
 }
 
 
-ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* arguments) {
+ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ArgNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
@@ -149,7 +149,7 @@ ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ExprNode* argumen
 }
 
 
-ExprNode* createFuncCallExpr(char* funcId, ExprNode* arguments) {
+ExprNode* createFuncCallExpr(char* funcId, ArgNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
@@ -186,34 +186,35 @@ ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right) {
 }
 
 
-ExprNode* createThisFuncExpr(ExprNode* right) {
+ExprNode* createThisFuncExpr(ArgNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
     result->type = ThisFuncType;
-    result->right = right;
+    result->args = arguments;
 
     return result;
 }
 
 
-ExprNode* createSuperFuncExpr(ExprNode* right) {
+ExprNode* createSuperFuncExpr(ArgNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
     result->type = SuperFuncType;
-    result->right = right;
+    result->args = arguments;
 
     return result;
 }
 
-ExprNode* createNewClass(char* classId, ExprNode* arguments) {
+ExprNode* createNewClass(char* classId, char* constructName, ExprNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;
     result->type = NewClassType;
     result->id = classId;
-    result->right = arguments;
+    result->constructName = constructName;
+    result->args = arguments;
 
     return result;
 }
@@ -228,3 +229,26 @@ ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem) {
 
     return result;
 }
+
+
+ArgNode* createArg(char* name, ExprNode* value) {
+    ArgNode* result = calloc(1, sizeof(ArgNode));
+
+    result->nodeId = globalId++;
+    result->name = name;
+    result->value = value;
+
+    return result;
+}
+
+
+ArgNode* addArgToList(ArgNode* list, ArgNode* elem) {
+    ArgNode* result = list;
+
+    while (list->next != NULL)
+        list = list->next;
+    list->next = elem;
+
+    return result;
+}
+
