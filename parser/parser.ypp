@@ -32,6 +32,8 @@
 
     ClassDeclNode* ClassDecl;
     ClassMemberNode* ClassMember;
+    ConstructorDeclNode* ConstructorDecl;
+    SuperConstructorNode* SuperConstructor;
     ClassModifier ClassMod;
 
     ProgramNode* Program;
@@ -93,6 +95,8 @@
 
 %type <ClassDecl> class_decl
 %type <ClassMember> static_method_decl abstract_method_decl class_member class_member_list class_member_list_em
+%type <ConstructorDecl>
+%type <SuperConstructor>
 %type <ClassMod> class_modifiers_em
 
 %type <Program> program
@@ -271,7 +275,6 @@ for_in_decl: /* объявление в for-in */
       ID                  {$$ = createForInVar(ExistingVarType, NULL, $1, NoModifier);}
     | type ID             {$$ = createForInVar(DeclVarType, $1, $2, NoModifier);}
     | VAR_KW ID           {$$ = createForInVar(DeclVarType, NULL, $2, NoModifier);}
-    | FINAL_KW ID         {$$ = createForInVar(DeclVarType, NULL, $2, FinalModifier);}
     | FINAL_KW type ID    {$$ = createForInVar(DeclVarType, $2, $3, FinalModifier);}
 ;
 
@@ -294,7 +297,6 @@ var_decl: /* полное объявление переменных, потом 
     | VAR_KW var_declarator_list        {$$ = createVarDecl(NoModifier, NULL, $2);}
     | CONST_KW var_declarator_list      {$$ = createVarDecl(ConstModifier, NULL, $2);}
     | CONST_KW type var_declarator_list {$$ = createVarDecl(ConstModifier, $2, $3);}
-    | FINAL_KW var_declarator_list      {$$ = createVarDecl(FinalModifier, NULL, $2);}
     | FINAL_KW type var_declarator_list {$$ = createVarDecl(FinalModifier, $2, $3);}
 ;
 
@@ -431,6 +433,7 @@ class_member:
     | setter_method_decl      {$$ = createMethodMember(SetterMemberType, 0, $1);}
     | static_method_decl      {$$ = $1;}
     | abstract_method_decl    {$$ = $1;}
+    | constructor_decl        {$$ = createConstructorMember($1);}
 ;
 
 
@@ -444,6 +447,22 @@ class_member_list_em:
       /* empty */         {$$ = NULL;}
     | class_member_list   {$$ = $1;}
 ;
+
+
+constructor_decl:
+      ID '(' param_list_em ')' super_constructor_em stmt_block          {$$ = createConstructorDecl($1, NULL, $3, $5, $6);}
+    | ID '(' param_list_em ')' super_constructor_em ';'                 {$$ = createConstructorDecl($1, NULL, $3, $5, NULL);}
+    | ID '.' ID '(' param_list_em ')' super_constructor_em stmt_block   {$$ = createConstructorDecl($1, $3, $5, $7, $8);}
+    | ID '.' ID '(' param_list_em ')' super_constructor_em ';'          {$$ = createConstructorDecl($1, $3, $5, $7, NULL);}
+;
+
+
+super_constructor_em:
+      /* empty */                                       {$$ = NULL;}
+    | ':' SUPER_KW '(' argument_list_empty ')'          {$$ = createSuperConstructor(NULL, $4);}
+    | ':' SUPER_KW '.' ID '(' argument_list_empty ')'   {$$ = createSuperConstructor($4, $6);}
+;
+
 
 %%
 

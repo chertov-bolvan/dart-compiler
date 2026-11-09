@@ -20,8 +20,28 @@ typedef struct ClassDeclNode {
 } ClassDeclNode;
 
 
+typedef struct SuperConstructorNode {
+  int nodeId;
+
+  char* constructorName;
+  struct ArgNode* arguments;
+} SuperConstructorNode;
+
+
+typedef struct ConstructorDeclNode {
+  int nodeId;
+
+  char* id;
+  char* constructorName;
+
+  struct ParamNode* parameters;
+  struct SuperConstructorNode* superConstructor;
+  struct StmtNode* body;
+} ConstructorDeclNode;
+
+
 typedef enum ClassMemberType {
-  FieldMemberType, MethodMemberType, GetterMemberType, SetterMemberType,
+  FieldMemberType, MethodMemberType, GetterMemberType, SetterMemberType, ConstructorMemberType,
 } ClassMemberType;
 
 typedef struct ClassMemberNode {
@@ -33,9 +53,16 @@ typedef struct ClassMemberNode {
 
   struct VarDeclNode* varDeclNode;
   struct FuncDeclNode* funcDeclNode;
+  struct ConstructorDeclNode* constructorDeclNode;
   
   struct ClassMemberNode* next;
 } ClassMemberNode;
+
+
+SuperConstructorNode* createSuperConstructor(char* constructorName, ArgNode* arguments);
+
+
+ConstructorDeclNode* createConstructorDecl(char* id, char* constructorName, ParamNode* parameters, SuperConstructorNode* superConstructor, StmtNode* body);
 
 
 ClassDeclNode* createClassDecl(ClassModifier modifier, char* id, char* parentId, ClassMemberNode* classMembers);
@@ -43,5 +70,6 @@ ClassDeclNode* createClassDecl(ClassModifier modifier, char* id, char* parentId,
 
 ClassMemberNode* createFieldMember(int isStatic, VarDeclNode* varDeclNode);
 ClassMemberNode* createMethodMember(ClassMemberType type, int isStatic, FuncDeclNode* funcDeclNode);
+ClassMemberNode* createConstructorMember(ConstructorDeclNode* constructorDeclNode);
 
 ClassMemberNode* addClassMemberToList(ClassMemberNode* list, ClassMemberNode* newMember);
