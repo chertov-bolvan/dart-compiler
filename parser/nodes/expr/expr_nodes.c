@@ -207,7 +207,7 @@ ExprNode* createSuperFuncExpr(ArgNode* arguments) {
     return result;
 }
 
-ExprNode* createNewClass(char* classId, char* constructName, ExprNode* arguments) {
+ExprNode* createNewClass(char* classId, char* constructName, ArgNode* arguments) {
     ExprNode* result = calloc(1, sizeof(ExprNode));
 
     result->nodeId = globalId++;

@@ -90,15 +90,15 @@
 %type <Arg> argument argument_list argument_list_empty
 %type <Stmt> stmt stmt_block stmt_list stmt_list_em if_stmt while_stmt do_while_stmt return_stmt for_stmt for_init
 %type <VarDecl> var_decl
-%type <VarDeclarator> var_declarator var_declarator_list
+%type <VarDeclarator> var_declarator var_declarator_list initialized_var_declarator_list
 %type <ForInVar> for_in_decl
 %type <FuncDecl> func_decl getter_method_decl setter_method_decl
 %type <Param> param_list_em required_param_list optional_pos_param_group optional_pos_param optional_pos_param_list named_param_group named_param named_param_list
 
 %type <ClassDecl> class_decl
 %type <ClassMember> static_method_decl abstract_method_decl class_member class_member_list class_member_list_em
-%type <ConstructorDecl>
-%type <SuperConstructor>
+%type <ConstructorDecl> constructor_decl
+%type <SuperConstructor> super_constructor_em
 %type <ClassMod> class_modifiers_em
 
 %type <Program> program
@@ -179,7 +179,6 @@ expr:
     | assignable_expr DEC                          {$$ = createPostfixUnExpr(DecPostfixType, $1);}   /* x-- */
     | expr '.' ID                                  {$$ = createAccessFieldExpr($1, $3);}             /* x.y */
     | THIS_KW '(' argument_list_empty ')'          {$$ = createThisFuncExpr($3);}                    /* this(...) */
-    | SUPER_KW '(' argument_list_empty ')'         {$$ = createSuperFuncExpr($3);}                   /* super(...) */
     | ID '(' argument_list_empty ')'               {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
     | NEW_KW ID '(' argument_list_empty ')'        {$$ = createNewClass($2, NULL, $4);}              /* new x(...) */
     | NEW_KW ID '.' ID '(' argument_list_empty ')' {$$ = createNewClass($2, $4, $6);}                /* new x.y(...) */
@@ -232,7 +231,7 @@ type:
 
 argument:
       expr          {$$ = createArg(NULL, $1);}
-    | ID ':' expr   {$$ = createArg($1, $1);}
+    | ID ':' expr   {$$ = createArg($1, $3);}
 ;
 
 
@@ -315,11 +314,11 @@ for_init: /* блок инициализации for*/
 
 
 var_decl: /* полное объявление переменных, потом придумать всему блоку норм названия */
-      type var_declarator_list          {$$ = createVarDecl(NoModifier, $1, $2);}
-    | VAR_KW var_declarator_list        {$$ = createVarDecl(NoModifier, NULL, $2);}
-    | CONST_KW var_declarator_list      {$$ = createVarDecl(ConstModifier, NULL, $2);}
-    | CONST_KW type var_declarator_list {$$ = createVarDecl(ConstModifier, $2, $3);}
-    | FINAL_KW type var_declarator_list {$$ = createVarDecl(FinalModifier, $2, $3);}
+      type var_declarator_list                    {$$ = createVarDecl(NoModifier, $1, $2);}
+    | VAR_KW initialized_var_declarator_list      {$$ = createVarDecl(NoModifier, NULL, $2);}
+    | CONST_KW var_declarator_list                {$$ = createVarDecl(ConstModifier, NULL, $2);}
+    | CONST_KW type var_declarator_list           {$$ = createVarDecl(ConstModifier, $2, $3);}
+    | FINAL_KW type var_declarator_list           {$$ = createVarDecl(FinalModifier, $2, $3);}
 ;
 
 
@@ -333,6 +332,14 @@ var_declarator_list: /* объявление нескольких перемен
       var_declarator                          {$$ = $1;}
     | var_declarator_list ',' var_declarator  {$$ = addVarDeclaratorToList($1, $3);}
 ;
+
+
+initialized_var_declarator_list:
+      ID '=' expr                                       {$$ = createVarDeclarator($1, $3);}
+    | initialized_var_declarator_list ',' ID '=' expr   {$$ = addVarDeclaratorToList($1, createVarDeclarator($3, $5));}
+;
+
+
 
 
 /* БЛОК ФУНКЦИЙ */

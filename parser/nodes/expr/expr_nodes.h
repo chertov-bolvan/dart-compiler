@@ -3,6 +3,16 @@
 #include "../type/type_nodes.h"
 #include "../global_id.h"
 
+typedef struct ArgNode {
+    int nodeId;
+
+    char* name;
+    struct ExprNode* value;
+
+    struct ArgNode* next;
+} ArgNode;
+
+
 typedef enum ExprNodeType {
     IntType, BoolType, DoubleType, StringType, 
     IdType, NullType, SuperType, ThisType, ListLiteralType,
@@ -68,16 +78,6 @@ ExprNode* createThisFuncExpr(ArgNode* arguments);
 ExprNode* createSuperFuncExpr(ArgNode* arguments);
 ExprNode* createNewClass(char* classId, char* constructName, ArgNode* arguments);
 ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
-
-
-typedef struct ArgNode {
-    int nodeId;
-
-    char* name;
-    struct ExprNode* value;
-
-    struct ArgNode* next;
-} ArgNode;
 
 ArgNode* createArg(char* name, ExprNode* value);
 ArgNode* addArgToList(ArgNode* list, ArgNode* elem);
