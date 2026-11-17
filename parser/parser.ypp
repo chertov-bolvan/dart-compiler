@@ -66,28 +66,19 @@
 /* Типы */
 %token VOID_TYPE
 
-%token EQ NEQ LEQ GEQ /* == != <= >= */
-%token LOG_AND LOG_OR /* && || */
-%token INC DEC INTDIV /* ++ -- ~/ */
-
-%token ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN /* += -= *= */
-%token DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* /= %= ~/= */
-
-
 /* приоритеты */
 %right ':' /* тернарный оператор */
-%right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* assignment */
+%right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* assignment += -= *= /= %= ~/= */
 %right '?' /* тернарный оператор */
 %left LOG_OR /* logical OR */
 %left LOG_AND /* logical AND */
-%nonassoc EQ NEQ /* equality */
-%nonassoc AS_KW IS_KW LEQ GEQ '<' '>' /* relational */
+%nonassoc EQ NEQ /* equality == != */
+%nonassoc AS_KW IS_KW LEQ GEQ '<' '>' /* relational <= >= */
 %left '+' '-' /* additive */
-%left '*' '/' '%' INTDIV /* multiplicative */
+%left '*' '/' '%' INTDIV /* multiplicative ~/ */
 %nonassoc '!' UMINUS /* префикс */
-%nonassoc INC DEC '.' '[' /* постфикс */
+%nonassoc INC DEC '.' '[' /* постфикс ++ -- */
 %nonassoc '(' /* скобки */
-
 
 
 %type <Identifier> extend_em
