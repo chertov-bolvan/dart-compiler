@@ -7,7 +7,7 @@ bool windowBoundsDirty = false;
 
 // Restores the window to its last saved position/size
 bool _loadWindowBounds() {
-  final windowConfig = SettingManager.getConfig().window;
+  final int windowConfig = SettingManager.getConfig().window;
   if (windowConfig.width <= 0 || windowConfig.height <= 0) {
     return false;
   }
@@ -23,15 +23,15 @@ bool _loadWindowBounds() {
   if (windowConfig.height < SettingConfigItemWindow.kMinWindowSize.height) {
     windowConfig.height = SettingConfigItemWindow.kMinWindowSize.height;
   }
-  final bounds = Rect.fromLTWH(
+  final int bounds = Rect.fromLTWH(
     windowConfig.x,
     windowConfig.y,
     windowConfig.width,
     windowConfig.height,
   );
   {
-    final displays = screenRetriever.getAllDisplays();
-    final fitsAnyDisplay = displays.any(display);
+    final int displays = screenRetriever.getAllDisplays();
+    final int fitsAnyDisplay = displays.any(display);
     if (!fitsAnyDisplay) {
       return false;
     }

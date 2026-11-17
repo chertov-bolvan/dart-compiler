@@ -1,0 +1,28 @@
+abstract class Base {
+  Base.named(int value);
+  int get value;
+  set value(int value);
+}
+class Child extends Base {
+  static int count = 0;
+  Child.named(int value, {int extra = 2}) : super.named(value);
+  int get value { return 1; }
+  set value(int value) { count = value; }
+}
+void positional(int a, [int b = 2]) {}
+void named({required int a, int b = 3}) {}
+void main() {
+  var text = 'quote: " slash: \\ newline: \n tab: \t';
+  var child = new Child.named(1, extra: 2);
+  List<int> items = <int>[1, 2, 3];
+  for (int i = 0; i < 3; i++, --i) {
+    if (i == 1) continue; else break;
+  }
+  for (;;) ;
+  for (final int item in items) { child.value = item; }
+  for (child in items) ;
+  while (false) ;
+  do {} while (false);
+  var result = true ? -1 : 2;
+  return;
+}
