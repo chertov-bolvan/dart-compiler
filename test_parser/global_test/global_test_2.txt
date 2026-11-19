@@ -1,0 +1,50 @@
+class Biz {
+  static final List<int> onEventInitFinish = [];
+  static final List<bool> onEventInitHomeFinish = [];
+  static final List<num> onEventInitAllFinish = [];
+  //static void Function(String)? onEventSingletonInstance;
+  static bool _initFinish = false;
+  static bool _initHomeFinish = false;
+  static ReturnResultError onEventRequestStartVPN;
+
+  static void init(bool launchAtStartup) {
+    // PersistStorage.init();
+
+     ServerManager.init();
+     VPNService.init();
+    MainChannel.init();
+
+    for (var callback in onEventInitFinish) {
+      callback();
+    }
+    _initFinish = true;
+    Log.d("initFinish");
+    initAllFinish();
+
+    AppLifecycleStateNofity.init();
+    NoticeManager.init();
+    BoardProviderNoticeManager.init();
+  }
+
+  static void clearCache() {
+    //PersistStorage.cleanAll();
+  }
+
+  static void initHomeFinish() {
+    for (var callback in onEventInitHomeFinish) {
+      callback();
+    }
+    _initHomeFinish = true;
+    Log.d("initHomeFinish");
+    initAllFinish();
+  }
+
+  static void initAllFinish() {
+    if (_initFinish && _initHomeFinish) {
+      Log.d("initAllFinish");
+      for (var callback in onEventInitAllFinish) {
+        callback();
+      }
+    }
+  }
+}

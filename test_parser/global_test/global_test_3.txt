@@ -1,0 +1,114 @@
+int sum(int a, int b) {
+  return a + b;
+}
+
+int twice(int a) {
+  return a * 2;
+}
+
+void main() {
+  int a = 7;
+  int b = 3;
+  int c = 2;
+  int d = 5;
+
+  double x = 18.0;
+  double y = 4.0;
+
+  bool p = true;
+  bool q = false;
+
+  List<int> values = [4, 8, 12, 16, 20];
+
+  Object value = 9;
+
+  // Арифметика, вызовы, индексация, доступ через точку.
+  print(a + b * c - d ~/ c + a % b);
+  print(x / y * c + a - b);
+  print(a - b - c + d * c ~/ b % a);
+  print((a + b) * (d - c) ~/ c);
+
+  print(sum(a, b * c) - twice(d) + values[c]);
+  print(values[a % values.length] + twice(b) * c);
+  print(values[sum(1, 1)] * sum(a - b, c + d));
+
+  // Префиксные и постфиксные операции.
+  print(a++ + ++b * c - d--);
+  print(--a * b++ - c-- + ++d);
+  print(-a * b + -c - d);
+  print(-values[1] + twice(-b) * c);
+
+  print(values[0]++ + ++values[1] * c);
+  print(--values[2] - values[3]-- + a * b);
+
+  // приведение и проверки типа.
+  print((value as int) * c + values[0] - d);
+
+  print(value is int && a + b * c >= d);
+  print(value is! String || a - b <= c * d);
+  print(value is int == p);
+  print(value is! int != q);
+
+  // Сравнения, равенство, отрицание, && и ||.
+  print(a + b * c > d && a - b < d + c);
+  print(a >= b || c <= d && !q);
+  print(a + b == c * d || a - b != c && p);
+  print(!p == q || a * c > b + d && !q);
+  print(!(a < b || c > d) && a != b);
+
+  // Тернарный оператор и вложенные условия.
+  print(a + b * c > d && !q ? a - b : c + d * 2);
+  print(p || q && a < b ? values[0] : values[1]);
+  print(a < b ? 10 : c < d ? 20 : 30);
+  print(p ? q ? a : b : c);
+  print(value is int ? (value as int) + a * b : -d);
+
+  // Присваивания вместе с остальными операторами.
+  a = b = c + d * 2;
+  print(a);
+  print(b);
+
+  a += b * c - d ~/ 2;
+  b -= a % 5 + c * 2;
+  c *= a > b && !q ? 2 : 3;
+  d ~/= c % 3 + 1;
+
+  x /= y + c * 2;
+  y *= a > b || q ? 2.0 : 3.0;
+
+  a %= b > 0 ? b : 1;
+  b = c + d * 2;
+  c = a + b * 3;
+
+  values[0] = a + b * c;
+  values[1] += twice(d) - a;
+  values[2] *= p && !q ? 2 : 3;
+
+  print(a);
+  print(b);
+  print(c);
+  print(d);
+  print(x);
+  print(y);
+  print(values);
+
+  // Общие выражения с несколькими уровнями приоритета.
+  a = 8;
+  b = 3;
+  c = 2;
+  d = 5;
+
+  a += values[b % values.length] * --c - d++ > twice(b)
+      && value is int
+      || !p
+      ? sum(b++, c) + (value as int) * 2
+      : -values[0] + a ~/ b;
+
+  print(a);
+
+  x = a + b * c >= d && value is! String
+      ? sum(a, b) / (c + 1) + a % 4
+      : -x / y + values[0];
+
+  print(x);
+}

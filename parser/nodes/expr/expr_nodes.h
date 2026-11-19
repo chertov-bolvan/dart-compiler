@@ -1,0 +1,87 @@
+#pragma once
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "../type/type_nodes.h"
+#include "../global_id.h"
+
+typedef struct ArgNode {
+    int nodeId;
+
+    char* name;
+    struct ExprNode* value;
+
+    struct ArgNode* next;
+} ArgNode;
+
+
+typedef enum ExprNodeType {
+    IntType, BoolType, DoubleType, StringType, 
+    IdType, NullType, SuperType, ThisType, ListLiteralType,
+
+    IncPostfixType, DecPostfixType, 
+    AccessFieldType, ThisFuncType,
+    SuperFuncType, FuncType, MethodType, 
+    AccessArrElementType, 
+    IncPrefixType, DecPrefixType,
+    UminusType, NotType, MulType,
+    DivType, ModType, IntDivType, AddType, 
+    MinusType, LessType, GreaterType, 
+    LEqType, GEqType, IsType, AsType, NIsType,
+    EqEqType, NEqType, LogAndType, LogOrType,
+    TernaryOperatorType, AddAssignType, 
+    SubAssignType, MulAssignType, DivAssignType,
+    ModAssignType, IntDivAssignType, EqType,
+    ThisAccessFieldType, ThisMethodType,
+    SuperAccessFieldType, SuperMethodType,
+    NewClassType,
+} ExprNodeType;
+
+typedef struct ExprNode {
+    ExprNodeType type;
+
+    int nodeId;
+    int intValue;
+    double doubleValue;
+    int boolValue;
+    char* strValue;
+    char* id;
+    char* constructName;
+    
+    struct TypeNode* typeNode;
+    struct ArgNode* args;
+    struct ExprNode* left;
+    struct ExprNode* center;
+    struct ExprNode* right;
+
+    int insideParens;
+
+    struct ExprNode* next;
+} ExprNode;
+
+
+ExprNode* createIntExpr(int value);
+ExprNode* createBoolExpr(int value);
+ExprNode* createDoubleExpr(double value);
+ExprNode* createStringExpr(char* value);
+ExprNode* createIDExpr(char* value);
+ExprNode* createExpr(ExprNodeType type);
+ExprNode* createListLiteralExpr(ExprNode* expr, TypeNode* type);
+ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode);
+ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right);
+ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr);
+ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr);
+ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId);
+ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ArgNode* arguments);
+ExprNode* createFuncCallExpr(char* funcId, ArgNode* arguments);
+ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* right);
+ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right);
+ExprNode* createThisFuncExpr(ArgNode* arguments);
+ExprNode* createSuperFuncExpr(ArgNode* arguments);
+ExprNode* createNewClass(char* classId, char* constructName, ArgNode* arguments);
+ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
+
+ArgNode* createArg(char* name, ExprNode* value);
+ArgNode* addArgToList(ArgNode* list, ArgNode* elem);
+
+int isAssignable(ExprNode* node);

@@ -1,0 +1,522 @@
+%code requires {
+    #include "parser/nodes/global/global_nodes.h"
+}
+
+%{
+    #include <stdio.h>
+    #include "parser/nodes/type/type_nodes.h"
+    #include "parser/nodes/expr/expr_nodes.h"
+    #include "parser/nodes/stmt/stmt_nodes.h"
+    #include "parser/nodes/func/func_nodes.h"
+    #include "parser/nodes/class/class_nodes.h"
+    #include "parser/nodes/global/global_nodes.h"
+    #include "parser/tree_dot_visual.h"
+    static ProgramNode* result = NULL;
+%}
+
+%{
+    extern FILE *yyin;
+    int yylex();
+    void yyerror(const char* s);
+%}
+
+%union {
+    int Int;
+    int Bool;
+    double Double;
+    char* String;
+    char* Identifier;
+
+    ExprNode* Expr;
+    TypeNode* Type;
+    ArgNode* Arg;
+    StmtNode* Stmt;
+    VarDeclNode* VarDecl;
+    VarDeclaratorNode* VarDeclarator;
+    ForInVarNode* ForInVar;
+    FuncDeclNode* FuncDecl;
+    ParamNode* Param;
+
+    ClassDeclNode* ClassDecl;
+    ClassMemberNode* ClassMember;
+    ConstructorDeclNode* ConstructorDecl;
+    SuperConstructorNode* SuperConstructor;
+    ClassModifier ClassMod;
+
+    ProgramNode* Program;
+    TopLevelDeclNode* TopLevelDecl;
+}
+
+/* Литералы */
+%token <Int> INT_LIT
+%token <Double> DOUBLE_LIT
+%token <Identifier> ID
+%token <String> STRING_LIT
+%token <Bool> BOOL_LIT
+
+/* Ключевые слова */
+%token BREAK_KW CATCH_KW CLASS_KW CONST_KW CONTINUE_KW
+%token DEFAULT_KW DO_KW ELSE_KW ENUM_KW EXTENDS_KW FINAL_KW
+%token FINALLY_KW FOR_KW IF_KW IN_KW IS_KW NEW_KW RETHROW_KW
+%token RETURN_KW SUPER_KW THIS_KW THROW_KW TRY_KW
+%token VAR_KW WHILE_KW NULL_KW
+%token ABSTRACT_KW AS_KW EXPORT_KW FACTORY_KW GET_KW
+%token IMPORT_KW REQUIRED_KW SET_KW STATIC_KW WHEN_KW LIST_KW
+
+/* Типы */
+%token VOID_TYPE
+
+/* приоритеты */
+%right ':' /* тернарный оператор */
+%right '=' ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN DIV_ASSIGN MOD_ASSIGN INTDIV_ASSIGN /* assignment += -= *= /= %= ~/= */
+%right '?' /* тернарный оператор */
+%left LOG_OR /* logical OR */
+%left LOG_AND /* logical AND */
+%nonassoc EQ NEQ /* equality == != */
+%nonassoc AS_KW IS_KW LEQ GEQ '<' '>' /* relational <= >= */
+%left '+' '-' /* additive */
+%left '*' '/' '%' INTDIV /* multiplicative ~/ */
+%nonassoc '!' UMINUS /* префикс */
+%nonassoc INC DEC '.' '[' /* постфикс ++ -- */
+%nonassoc '(' /* скобки */
+
+
+%type <Identifier> extend_em
+%type <Expr> expr assignable_expr expr_list expr_list_empty for_expr
+%type <Type> type
+%type <Arg> argument argument_list argument_list_empty
+%type <Stmt> stmt stmt_block stmt_list stmt_list_em if_stmt while_stmt do_while_stmt return_stmt for_stmt for_init
+%type <VarDecl> var_decl
+%type <VarDeclarator> var_declarator var_declarator_list initialized_var_declarator_list
+%type <ForInVar> for_in_decl
+%type <FuncDecl> func_decl getter_method_decl setter_method_decl
+%type <Param> param_list_em required_param_list optional_pos_param_group optional_pos_param optional_pos_param_list named_param_group named_param named_param_list
+
+%type <ClassDecl> class_decl
+%type <ClassMember> static_method_decl abstract_method_decl class_member class_member_list class_member_list_em
+%type <ConstructorDecl> constructor_decl
+%type <SuperConstructor> super_constructor_em
+%type <ClassMod> class_modifiers_em
+
+%type <Program> program
+%type <TopLevelDecl> top_level_decl top_level_decl_list top_level_decl_list_em
+
+%start program
+
+%%
+
+
+program:
+      top_level_decl_list_em  {$$ = createProgram($1); result = $$;}
+;
+
+
+top_level_decl:
+      var_decl ';'  {$$ = createTopLevelVarDecl($1);}
+    | func_decl     {$$ = createTopLevelFuncDecl($1);}
+    | class_decl    {$$ = createTopLevelClassDecl($1);}
+;
+
+top_level_decl_list:
+      top_level_decl                      {$$ = $1;}
+    | top_level_decl_list top_level_decl  {$$ = addTopLevelDeclToList($1, $2);}
+;
+
+top_level_decl_list_em:
+      /* empty */         {$$ = NULL;}
+    | top_level_decl_list {$$ = $1;}
+;
+
+
+stmt:
+      var_decl ';'      {$$ = createVarDeclStmt($1);}
+    | expr ';'          {$$ = createExprStmt($1);}
+    | ';'               {$$ = createEmptyStmt();}
+    | for_stmt          {$$ = $1;}
+    | while_stmt        {$$ = $1;}
+    | do_while_stmt     {$$ = $1;}
+    | if_stmt           {$$ = $1;}
+    | return_stmt       {$$ = $1;}
+    | stmt_block        {$$ = $1;}
+    | BREAK_KW ';'      {$$ = createBreakStmt();}
+    | CONTINUE_KW ';'   {$$ = createContinueStmt();}
+;
+
+
+stmt_block:
+      '{' stmt_list_em '}' {$$ = createBlockStmt($2);}
+;
+
+
+stmt_list:
+      stmt            {$$ = $1;}
+    | stmt_list stmt  {$$ = addStmtToList($1, $2);}
+;
+
+
+stmt_list_em:
+      /* empty */     {$$ = NULL;}
+    | stmt_list       {$$ = $1;}
+;
+
+
+expr:
+      INT_LIT                                      {$$ = createIntExpr($1);}
+    | DOUBLE_LIT                                   {$$ = createDoubleExpr($1);}
+    | ID                                           {$$ = createIDExpr($1);}
+    | STRING_LIT                                   {$$ = createStringExpr($1);}
+    | BOOL_LIT                                     {$$ = createBoolExpr($1);}
+    | NULL_KW                                      {$$ = createExpr(NullType);}
+    | SUPER_KW                                     {$$ = createExpr(SuperType);}
+    | THIS_KW                                      {$$ = createExpr(ThisType);}
+    | '(' expr ')'                                 {$$ = $2; $$->insideParens = 1;}
+    | '[' expr_list_empty ']'                      {$$ = createListLiteralExpr($2, NULL);}
+    | '<' type '>' '[' expr_list_empty ']'         {$$ = createListLiteralExpr($5, $2);}
+    | assignable_expr INC                          {$$ = createPostfixUnExpr(IncPostfixType, $1);}   /* x++ */
+    | assignable_expr DEC                          {$$ = createPostfixUnExpr(DecPostfixType, $1);}   /* x-- */
+    | expr '.' ID                                  {$$ = createAccessFieldExpr($1, $3);}             /* x.y */
+    | THIS_KW '(' argument_list_empty ')'          {$$ = createThisFuncExpr($3);}                    /* this(...) */
+    | ID '(' argument_list_empty ')'               {$$ = createFuncCallExpr($1, $3);}                /* x(...) */
+    | NEW_KW ID '(' argument_list_empty ')'        {$$ = createNewClass($2, NULL, $4);}              /* new x(...) */
+    | NEW_KW ID '.' ID '(' argument_list_empty ')' {$$ = createNewClass($2, $4, $6);}                /* new x.y(...) */
+    | expr '.' ID '(' argument_list_empty ')'      {$$ = createMethodCallExpr($1, $3, $5);}          /* x.y(...) */
+    | expr '[' expr ']'                            {$$ = createAccessArrElementExpr($1, $3);}        /* x[i] */
+    | INC expr %prec UMINUS                        {if(!isAssignable($2)){yyerror(""); YYERROR;} $$ = createPrefixUnExpr(IncPrefixType, $2);}     /*++x*/
+    | DEC expr %prec UMINUS                        {if(!isAssignable($2)){yyerror(""); YYERROR;} $$ = createPrefixUnExpr(DecPrefixType, $2);}     /*--x*/ 
+    | '-' expr %prec UMINUS                        {$$ = createPrefixUnExpr(UminusType, $2);}        /*-x*/
+    | '!' expr                                     {$$ = createPrefixUnExpr(NotType, $2);}           /*!x*/
+    | expr '*' expr                                {$$ = createBinExpr(MulType, $1, $3);}            /* x*y */ 
+    | expr '/' expr                                {$$ = createBinExpr(DivType, $1, $3);}            /* x/y */
+    | expr '%' expr                                {$$ = createBinExpr(ModType, $1, $3);}            /* x%y */
+    | expr INTDIV expr                             {$$ = createBinExpr(IntDivType, $1, $3);}         /* x~/y */
+    | expr '+' expr                                {$$ = createBinExpr(AddType, $1, $3);}            /* x+y */
+    | expr '-' expr                                {$$ = createBinExpr(MinusType, $1, $3);}          /* x-y */
+    | expr '<' expr                                {$$ = createBinExpr(LessType, $1, $3);}           /* x<y */
+    | expr '>' expr                                {$$ = createBinExpr(GreaterType, $1, $3);}        /* x>y */
+    | expr LEQ expr                                {$$ = createBinExpr(LEqType, $1, $3);}            /* x<=y */
+    | expr GEQ expr                                {$$ = createBinExpr(GEqType, $1, $3);}            /* x>=y */
+    | expr IS_KW type                              {$$ = createOperationTypeExpr(IsType, $1, $3);}   /* x is y */
+    | expr AS_KW type                              {$$ = createOperationTypeExpr(AsType, $1, $3);}   /* x as y */
+    | expr IS_KW '!' type %prec IS_KW              {$$ = createOperationTypeExpr(NIsType, $1, $4);}  /* x is! */
+    | expr EQ expr                                 {$$ = createBinExpr(EqEqType, $1, $3);}           /* x==y */
+    | expr NEQ expr                                {$$ = createBinExpr(NEqType, $1, $3);}            /* x!=y */
+    | expr LOG_AND expr                            {$$ = createBinExpr(LogAndType, $1, $3);}         /* x&&y */
+    | expr LOG_OR expr                             {$$ = createBinExpr(LogOrType, $1, $3);}          /* x||y */
+    | expr '?' expr ':' expr                       {$$ = createTernaryOperatorExpr($1, $3, $5);}
+    | expr ADD_ASSIGN expr                         {$$ = createBinExpr(AddAssignType, $1, $3);}      /* x+=y */
+    | expr SUB_ASSIGN expr                         {$$ = createBinExpr(SubAssignType, $1, $3);}      /* x-=y */
+    | expr MUL_ASSIGN expr                         {$$ = createBinExpr(MulAssignType, $1, $3);}      /* x*=y */
+    | expr DIV_ASSIGN expr                         {$$ = createBinExpr(DivAssignType, $1, $3);}      /* x/=y */
+    | expr MOD_ASSIGN expr                         {$$ = createBinExpr(ModAssignType, $1, $3);}      /* x%=y */
+    | expr INTDIV_ASSIGN expr                      {$$ = createBinExpr(IntDivAssignType, $1, $3);}   /* x~/=y */
+    | expr '=' expr                                {$$ = createBinExpr(EqType, $1, $3);}             /* x=y */
+;
+
+
+assignable_expr:
+      ID                {$$ = createIDExpr($1);}
+    | expr '.' ID       {$$ = createAccessFieldExpr($1, $3);}
+    | expr '[' expr ']' {$$ = createAccessArrElementExpr($1, $3);}
+;
+
+
+type:
+      ID                    {$$ = createIdType($1);}
+    | LIST_KW '<' type '>'  {$$ = createArrayType($3);}
+;
+
+
+argument:
+      expr          {$$ = createArg(NULL, $1);}
+    | ID ':' expr   {$$ = createArg($1, $3);}
+;
+
+
+argument_list:
+      argument                     {$$ = $1;}
+    | argument_list ',' argument   {$$ = addArgToList($1, $3);}
+;
+
+
+argument_list_empty:
+      argument_list         {$$ = $1;}
+    | argument_list ','     {$$ = $1;}
+    | /*empty*/             {$$ = NULL;}
+;
+
+
+expr_list_empty:
+      expr_list             {$$ = $1;}
+    | expr_list ','         {$$ = $1;}
+    | /*empty*/             {$$ = NULL;}
+;
+
+
+expr_list:
+      expr                  {$$ = $1;}
+    | expr_list ',' expr    {$$ = addExprToListExpr($1, $3);}
+;
+
+
+/* БЛОК stmt */
+
+
+if_stmt: /* оператор if */ 
+      IF_KW '(' expr ')' stmt               {$$ = createIfStmt($3, $5, NULL);}
+    | IF_KW '(' expr ')' stmt ELSE_KW stmt  {$$ = createIfStmt($3, $5, $7);}
+;
+
+
+while_stmt: /* оператор while */
+      WHILE_KW '(' expr ')' stmt            {$$ = createWhileStmt(WhileType, $3, $5);}
+;
+
+
+do_while_stmt: /* оператор do while */
+      DO_KW stmt WHILE_KW '(' expr ')' ';'  {$$ = createWhileStmt(DoWhileType, $5, $2);}
+;
+
+
+return_stmt:
+      RETURN_KW ';'       {$$ = createReturnStmt(NULL);}
+    | RETURN_KW expr ';'  {$$ = createReturnStmt($2);}
+;
+
+
+for_stmt: /* оператор for */
+      FOR_KW '(' for_init ';' for_expr ';' expr_list_empty ')' stmt   {$$ = createForStmt($3, $5, $7, $9);}
+    | FOR_KW '(' for_in_decl IN_KW expr ')' stmt                      {$$ = createForInStmt($3, $5, $7);}
+;
+
+
+for_in_decl: /* объявление в for-in */ 
+      ID                  {$$ = createForInVar(ExistingVarType, NULL, $1, NoModifier);}
+    | type ID             {$$ = createForInVar(DeclVarType, $1, $2, NoModifier);}
+    | VAR_KW ID           {$$ = createForInVar(DeclVarType, NULL, $2, NoModifier);}
+    | FINAL_KW type ID    {$$ = createForInVar(DeclVarType, $2, $3, FinalModifier);}
+;
+
+
+for_expr: /* условие в for */
+      /* empty */   {$$ = NULL;}
+    | expr          {$$ = $1;}
+;
+
+
+for_init: /* блок инициализации for*/
+      /* empty */   {$$ = NULL;}
+    | var_decl      {$$ = createVarDeclStmt($1);}
+    | expr          {$$ = createExprStmt($1);}
+;
+
+
+var_decl: /* полное объявление переменных, потом придумать всему блоку норм названия */
+      type var_declarator_list                    {$$ = createVarDecl(NoModifier, $1, $2);}
+    | VAR_KW initialized_var_declarator_list      {$$ = createVarDecl(NoModifier, NULL, $2);}
+    | CONST_KW var_declarator_list                {$$ = createVarDecl(ConstModifier, NULL, $2);}
+    | CONST_KW type var_declarator_list           {$$ = createVarDecl(ConstModifier, $2, $3);}
+    | FINAL_KW type var_declarator_list           {$$ = createVarDecl(FinalModifier, $2, $3);}
+;
+
+
+var_declarator: /* объявление переменной */
+      ID          {$$ = createVarDeclarator($1, NULL);}
+    | ID '=' expr {$$ = createVarDeclarator($1, $3);}
+;
+
+
+var_declarator_list: /* объявление нескольких переменных */
+      var_declarator                          {$$ = $1;}
+    | var_declarator_list ',' var_declarator  {$$ = addVarDeclaratorToList($1, $3);}
+;
+
+
+initialized_var_declarator_list:
+      ID '=' expr                                       {$$ = createVarDeclarator($1, $3);}
+    | initialized_var_declarator_list ',' ID '=' expr   {$$ = addVarDeclaratorToList($1, createVarDeclarator($3, $5));}
+;
+
+
+
+
+/* БЛОК ФУНКЦИЙ */
+
+
+func_decl:
+      type ID '(' param_list_em ')' stmt_block        {$$ = createFuncDecl($1, $2, $4, $6);}
+    | VOID_TYPE ID '(' param_list_em ')' stmt_block   {$$ = createFuncDecl(createVoidType(), $2, $4, $6);}
+;
+
+
+param_list_em:
+      /* empty */                                         {$$ = NULL;}
+    | required_param_list ','                             {$$ = $1;}
+    | required_param_list                                 {$$ = $1;}
+    | optional_pos_param_group                            {$$ = $1;}
+    | named_param_group                                   {$$ = $1;}
+    | required_param_list ',' optional_pos_param_group    {$$ = addParamToList($1, $3);}
+    | required_param_list ',' named_param_group           {$$ = addParamToList($1, $3);}
+;
+
+
+required_param_list:
+      type ID                           {$$ = createParam($1, $2, RequiredPositionalType, NULL);}
+    | required_param_list ',' type ID   {$$ = addParamToList($1, createParam($3, $4, RequiredPositionalType, NULL));}
+;
+
+
+optional_pos_param_group:
+      '[' optional_pos_param_list ',' ']'   {$$ = $2;}
+    | '[' optional_pos_param_list ']'       {$$ = $2;}
+;
+
+
+optional_pos_param:
+      type ID           {$$ = createParam($1, $2, OptionalPositionType, NULL);}
+    | type ID '=' expr  {$$ = createParam($1, $2, OptionalPositionType, $4);}
+;
+
+
+optional_pos_param_list:
+      optional_pos_param                                {$$ = $1;}
+    | optional_pos_param_list ',' optional_pos_param    {$$ = addParamToList($1, $3);}
+;
+
+
+named_param_group:
+      '{' named_param_list ',' '}'    {$$ = $2;}
+    | '{' named_param_list '}'        {$$ = $2;}
+;
+
+
+named_param:
+      type ID               {$$ = createParam($1, $2, OptionalNamedType, NULL);}
+    | type ID '=' expr      {$$ = createParam($1, $2, OptionalNamedType, $4);}
+    | REQUIRED_KW type ID   {$$ = createParam($2, $3, RequiredNamedType, NULL);}
+;
+
+
+named_param_list:
+      named_param                       {$$ = $1;}
+    | named_param_list ',' named_param  {$$ = addParamToList($1, $3);}
+;
+
+
+getter_method_decl:
+      type GET_KW ID stmt_block                       {$$ = createFuncDecl($1, $3, NULL, $4);}
+;
+
+
+setter_method_decl:
+      SET_KW ID '(' type ID ')' stmt_block            {$$ = createFuncDecl(createVoidType(), $2, createParam($4, $5, RequiredPositionalType, NULL), $7);}
+    | VOID_TYPE SET_KW ID '(' type ID ')' stmt_block  {$$ = createFuncDecl(createVoidType(), $3, createParam($5, $6, RequiredPositionalType, NULL), $8);}
+;
+
+
+static_method_decl:
+      STATIC_KW func_decl           {$$ = createMethodMember(MethodMemberType, 1, $2);}
+    | STATIC_KW getter_method_decl  {$$ = createMethodMember(GetterMemberType, 1, $2);}
+    | STATIC_KW setter_method_decl  {$$ = createMethodMember(SetterMemberType, 1, $2);}
+;
+
+
+abstract_method_decl:
+      type ID '(' param_list_em ')' ';'         {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl($1, $2, $4, NULL));}
+    | VOID_TYPE ID '(' param_list_em ')' ';'    {$$ = createMethodMember(MethodMemberType, 0, createFuncDecl(createVoidType(), $2, $4, NULL));}
+    | type GET_KW ID ';'                        {$$ = createMethodMember(GetterMemberType, 0, createFuncDecl($1, $3, NULL, NULL));}
+    | SET_KW ID '(' type ID ')' ';'             {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $2, createParam($4, $5, RequiredPositionalType, NULL), NULL));}
+    | VOID_TYPE SET_KW ID '(' type ID ')' ';'   {$$ = createMethodMember(SetterMemberType, 0, createFuncDecl(createVoidType(), $3, createParam($5, $6, RequiredPositionalType, NULL), NULL));}
+;
+
+
+/* БЛОК КЛАССОВ */
+
+
+class_decl:
+      class_modifiers_em CLASS_KW ID extend_em '{' class_member_list_em '}'   {$$ = createClassDecl($1, $3, $4, $6);}
+;
+
+
+class_modifiers_em:
+      /* empty */           {$$ = NoClassModifier;}
+    | ABSTRACT_KW           {$$ = AbstractClassModifier;}
+    | FINAL_KW              {$$ = FinalClassModifier;}
+    | ABSTRACT_KW FINAL_KW  {$$ = AbstractFinalClassModifier;}
+;
+
+
+extend_em:
+      /* empty */     {$$ = NULL;}
+    | EXTENDS_KW ID   {$$ = $2;}
+;
+
+
+class_member:
+      var_decl ';'            {$$ = createFieldMember(0, $1);}
+    | STATIC_KW var_decl ';'  {$$ = createFieldMember(1, $2);}
+    | func_decl               {$$ = createMethodMember(MethodMemberType, 0, $1);}
+    | getter_method_decl      {$$ = createMethodMember(GetterMemberType, 0, $1);}
+    | setter_method_decl      {$$ = createMethodMember(SetterMemberType, 0, $1);}
+    | static_method_decl      {$$ = $1;}
+    | abstract_method_decl    {$$ = $1;}
+    | constructor_decl        {$$ = createConstructorMember($1);}
+;
+
+
+class_member_list:
+      class_member                    {$$ = $1;}
+    | class_member_list class_member  {$$ = addClassMemberToList($1, $2);}
+;
+
+
+class_member_list_em:
+      /* empty */         {$$ = NULL;}
+    | class_member_list   {$$ = $1;}
+;
+
+
+constructor_decl:
+      ID '(' param_list_em ')' super_constructor_em stmt_block          {$$ = createConstructorDecl($1, NULL, $3, $5, $6);}
+    | ID '(' param_list_em ')' super_constructor_em ';'                 {$$ = createConstructorDecl($1, NULL, $3, $5, NULL);}
+    | ID '.' ID '(' param_list_em ')' super_constructor_em stmt_block   {$$ = createConstructorDecl($1, $3, $5, $7, $8);}
+    | ID '.' ID '(' param_list_em ')' super_constructor_em ';'          {$$ = createConstructorDecl($1, $3, $5, $7, NULL);}
+;
+
+
+super_constructor_em:
+      /* empty */                                       {$$ = NULL;}
+    | ':' SUPER_KW '(' argument_list_empty ')'          {$$ = createSuperConstructor(NULL, $4);}
+    | ':' SUPER_KW '.' ID '(' argument_list_empty ')'   {$$ = createSuperConstructor($4, $6);}
+;
+
+
+%%
+
+void yyerror(char const * s) {
+       printf("%s\n", s);
+}
+
+
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        printf("Usage: program <file path>.\n");
+        return -1;
+    }
+
+    yyin = fopen(argv[1], "r");
+    if (!yyin) {
+        printf("Failed to read file at path: \"%s\"\n", argv[1]);
+        return -1;
+    }
+
+    yyparse();
+    fclose(yyin);
+
+    if (!result) {
+        printf("Failed to parse file at path: \"%s\"\n", argv[1]);
+        return -1;
+    }
+
+    printProgramDot(result);
+    return 0;
+}

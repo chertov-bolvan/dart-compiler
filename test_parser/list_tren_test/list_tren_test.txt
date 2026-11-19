@@ -1,0 +1,23 @@
+void main() {
+  int a = 3;
+  int b = 2;
+
+  List<int> list = [1, 2, 3];
+  print(list[(1.2+0.9).toInt()]);
+
+  List<List<int>> list2 = [[]];
+  
+  list2[0].add(1);
+  list2.add([2]);
+  
+  print(list2[0][0]);
+  
+  print(list2);
+
+  a = false ? b = 2 : b = 24;
+
+  a = false ? b++ : b--;
+
+  print("a: " + a.toString());
+  print("b: " + b.toString());
+}

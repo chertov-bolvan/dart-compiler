@@ -1,0 +1,259 @@
+#include "expr_nodes.h"
+
+ExprNode* createIntExpr(int value) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = IntType;
+    result->intValue = value;
+
+    return result;
+}
+
+
+ExprNode* createBoolExpr(int value) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = BoolType;
+    result->boolValue = value;
+
+    return result;
+}
+
+
+ExprNode* createDoubleExpr(double value) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = DoubleType;
+    result->doubleValue = value;
+
+    return result;
+}
+
+
+ExprNode* createStringExpr(char* value) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = StringType;
+    result->strValue = value;
+
+    return result;
+}
+
+
+ExprNode* createIDExpr(char* value) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = IdType;
+    result->id = value;
+
+    return result;
+}
+
+
+ExprNode* createExpr(ExprNodeType type) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = type;
+
+    return result;
+}
+
+
+ExprNode* createListLiteralExpr(ExprNode* expr, TypeNode* type) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = ListLiteralType;
+    result->left = expr;
+    result->typeNode = type;
+
+    return result;
+}
+
+
+ExprNode* createOperationTypeExpr(ExprNodeType type, ExprNode* left, TypeNode* typeNode) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = type;
+    result->left = left;
+    result->typeNode = typeNode;
+
+    return result;
+}
+
+
+ExprNode* createBinExpr(ExprNodeType type, ExprNode* left, ExprNode* right) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = type;
+    result->left = left;
+    result->right = right;
+
+    return result;
+}
+
+
+ExprNode* createPrefixUnExpr(ExprNodeType type, ExprNode* expr) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = type;
+    result->right = expr;
+
+    return result;
+}
+
+
+
+ExprNode* createPostfixUnExpr(ExprNodeType type, ExprNode* expr) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = type;
+    result->left = expr;
+
+    return result;
+}
+
+
+ExprNode* createAccessFieldExpr(ExprNode* expr, char* fieldId) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = AccessFieldType;
+    result->left = expr;
+    result->id = fieldId;
+
+    return result;
+}
+
+
+ExprNode* createMethodCallExpr(ExprNode* expr, char* methodId, ArgNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = MethodType;
+    result->left = expr;
+    result->id = methodId;
+    result->args = arguments;
+
+    return result;
+}
+
+
+ExprNode* createFuncCallExpr(char* funcId, ArgNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = FuncType;
+    result->id = funcId;
+    result->args = arguments;
+
+    return result;
+}
+
+
+ExprNode* createTernaryOperatorExpr(ExprNode* left, ExprNode* center, ExprNode* right) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = TernaryOperatorType;
+    result->left = left;
+    result->center = center;
+    result->right = right;
+
+    return result;
+}
+
+
+ExprNode* createAccessArrElementExpr(ExprNode* left, ExprNode* right) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = AccessArrElementType;
+    result->left = left;
+    result->right = right;
+
+    return result;
+}
+
+
+ExprNode* createThisFuncExpr(ArgNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = ThisFuncType;
+    result->args = arguments;
+
+    return result;
+}
+
+
+ExprNode* createSuperFuncExpr(ArgNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = SuperFuncType;
+    result->args = arguments;
+
+    return result;
+}
+
+ExprNode* createNewClass(char* classId, char* constructName, ArgNode* arguments) {
+    ExprNode* result = calloc(1, sizeof(ExprNode));
+
+    result->nodeId = globalId++;
+    result->type = NewClassType;
+    result->id = classId;
+    result->constructName = constructName;
+    result->args = arguments;
+
+    return result;
+}
+
+
+ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem) {
+    ExprNode* result = list;
+
+    while (list->next != NULL)
+        list = list->next;
+    list->next = elem;
+
+    return result;
+}
+
+
+ArgNode* createArg(char* name, ExprNode* value) {
+    ArgNode* result = calloc(1, sizeof(ArgNode));
+
+    result->nodeId = globalId++;
+    result->name = name;
+    result->value = value;
+
+    return result;
+}
+
+
+ArgNode* addArgToList(ArgNode* list, ArgNode* elem) {
+    ArgNode* result = list;
+
+    while (list->next != NULL)
+        list = list->next;
+    list->next = elem;
+
+    return result;
+}
+
+
+int isAssignable(ExprNode* node) {
+    return node->type == IdType || node->type == AccessArrElementType 
+    || node->type == AccessFieldType;
+}

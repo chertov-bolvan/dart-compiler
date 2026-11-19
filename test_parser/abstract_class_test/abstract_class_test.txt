@@ -1,0 +1,15 @@
+abstract class A {
+  void funcVoid() {
+    print("gfjoisd");
+  }
+  void bob();
+}
+
+class B extends A {
+  void bob() {}
+}
+
+void main() {
+  B bClass1 = B();
+  bClass1.funcVoid();
+}

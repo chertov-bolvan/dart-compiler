@@ -1,0 +1,6 @@
+void main() { 
+  var a = 1;
+  const b = 2;
+  const int c = 3;
+  final int e = 5;
+}

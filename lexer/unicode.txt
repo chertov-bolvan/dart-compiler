@@ -1,0 +1,18 @@
+// unicode_escapes.dart
+void main() {
+  // \uXXXX — 4 hex-цифры
+  String u1 = "Latin A: \u0041";
+  String u2 = "Cyrillic \u0416";
+  String u3 = "Euro \u20AC";
+  String u4 = "Smile \u263A";
+
+  // \u{...} — расширенный Unicode
+  String u5 = "Emoji \u{1F600}";
+  String u6 = "Emoji \u{1F4A9}";
+  String u7 = "CJK \u{4E2D}\u{6587}";
+  String u8 = "Music \u{1D11E}";
+
+  // В одинарных кавычках
+  String u9 = 'Latin A: \u0041';
+  String u10 = 'Emoji \u{1F600}';
+}

@@ -1,0 +1,6 @@
+void main() {
+  int a = 1;
+  print("a $a b");
+  print("a1 ${"a2 $a b2"} b1");
+  print("${"a3 $a b3"}");
+}
