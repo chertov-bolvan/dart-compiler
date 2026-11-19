@@ -252,3 +252,7 @@ ArgNode* addArgToList(ArgNode* list, ArgNode* elem) {
     return result;
 }
 
+
+bool isAssignable(ExprNode* node) {
+    return node->type == IdType || node->type == GetPropertyType || node->type == AccessingArrayElementType;
+}

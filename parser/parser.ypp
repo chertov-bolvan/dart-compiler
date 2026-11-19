@@ -181,8 +181,8 @@ expr:
     | NEW_KW ID '.' ID '(' argument_list_empty ')' {$$ = createNewClass($2, $4, $6);}                /* new x.y(...) */
     | expr '.' ID '(' argument_list_empty ')'      {$$ = createMethodCallExpr($1, $3, $5);}          /* x.y(...) */
     | expr '[' expr ']'                            {$$ = createAccessArrElementExpr($1, $3);}        /* x[i] */
-    | INC assignable_expr %prec UMINUS             {$$ = createPrefixUnExpr(IncPrefixType, $2);}     /*++x*/
-    | DEC assignable_expr %prec UMINUS             {$$ = createPrefixUnExpr(DecPrefixType, $2);}     /*--x*/ 
+    | INC expr %prec UMINUS                        {if(!isAssignable($2)){yyerror(""); YYERROR;} $$ = createPrefixUnExpr(IncPrefixType, $2);}     /*++x*/
+    | DEC expr %prec UMINUS                        {if(!isAssignable($2)){yyerror(""); YYERROR;} $$ = createPrefixUnExpr(DecPrefixType, $2);}     /*--x*/ 
     | '-' expr %prec UMINUS                        {$$ = createPrefixUnExpr(UminusType, $2);}        /*-x*/
     | '!' expr                                     {$$ = createPrefixUnExpr(NotType, $2);}           /*!x*/
     | expr '*' expr                                {$$ = createBinExpr(MulType, $1, $3);}            /* x*y */ 

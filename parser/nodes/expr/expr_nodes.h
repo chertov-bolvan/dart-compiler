@@ -83,3 +83,5 @@ ExprNode* addExprToListExpr(ExprNode* list, ExprNode* elem);
 
 ArgNode* createArg(char* name, ExprNode* value);
 ArgNode* addArgToList(ArgNode* list, ArgNode* elem);
+
+bool isAssignable(ExprNode* node);
