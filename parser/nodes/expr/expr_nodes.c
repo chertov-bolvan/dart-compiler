@@ -253,6 +253,7 @@ ArgNode* addArgToList(ArgNode* list, ArgNode* elem) {
 }
 
 
-bool isAssignable(ExprNode* node) {
-    return node->type == IdType || node->type == GetPropertyType || node->type == AccessingArrayElementType;
+int isAssignable(ExprNode* node) {
+    return node->type == IdType || node->type == AccessArrElementType 
+    || node->type == AccessFieldType;
 }
