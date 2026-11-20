@@ -2,6 +2,19 @@
 #include "std_ds.h"
 
 
+typedef struct ConstantsTable {
+    JvmConstant* values = NULL;
+
+} ConstantsTable;
+
+    uint16_t add_CT(JvmConstant* constant);
+    uint16_t addUtf8_CT(char* str);
+    uint16_t addClass_CT(char* className);
+    uint16_t addStr_CT(char* strConstant);
+    uint16_t addFref_CT(char* className, char* name, char* descriptor);
+    uint16_t addMref_CT(char* className, char* name, char* descriptor);
+
+
 typedef enum JvmConstantType {
     UTF8 = 1,
     INT = 3,
@@ -28,6 +41,7 @@ typedef struct JvmConstant {
 } JvmConstant;
 
     JvmConstant utf8(char* str);
+    JvmConstant int32(int32_t value);
     JvmConstant int64(int64_t value);
     JvmConstant double64(double value);
     JvmConstant str(uint16_t strConstNum);
@@ -35,16 +49,3 @@ typedef struct JvmConstant {
     JvmConstant nt(uint16_t nameConstNum, uint16_t descriptorConstNum);
     JvmConstant fref(uint16_t classConstNum, uint16_t ntConstNum);
     JvmConstant mref(uint16_t classConstNum, uint16_t ntConstNum);
-
-
-typedef struct ConstantsTable {
-    JvmConstant* values = NULL;
-    
-} ConstantsTable;
-
-    uint16_t add_CT(JvmConstant* constant);
-    uint16_t addUtf8_CT(char* str);
-    uint16_t addClass_CT(char* className);
-    uint16_t addStr_CT(char* strConstant);
-    uint16_t addFref_CT(char* className, char* name, char* descriptor);
-    uint16_t addMref_CT(char* className, char* name, char* descriptor);
