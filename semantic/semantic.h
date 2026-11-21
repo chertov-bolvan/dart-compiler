@@ -11,6 +11,7 @@ typedef struct ConstantsTable {
     uint16_t addUtf8_CT(char* str);
     uint16_t addClass_CT(char* className);
     uint16_t addStr_CT(char* strConstant);
+    uint16_t addNt_CT(char* name, char* descriptor);
     uint16_t addFref_CT(char* className, char* name, char* descriptor);
     uint16_t addMref_CT(char* className, char* name, char* descriptor);
 

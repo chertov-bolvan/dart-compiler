@@ -22,23 +22,21 @@ uint16_t addStr_CT(char* strConstant) {
     return add_CT(str(strConstNum));
 }
 
-uint16_t addFref_CT(char* className, char* name, char* descriptor) {
-    uint16_t classConstNum = addClass_CT(className);
-
+uint16_t addNt_CT(char* name, char* descriptor) {
     uint16_t nameConstNum = addUtf8_CT(name);
     uint16_t descriptorConstNum = addUtf8_CT(descriptor);
-    uint16_t ntConstNum = add_CT(nt(nameConstNum, descriptorConstNum));
+    return add_CT(nt(nameConstNum, descriptorConstNum));
+}
 
+uint16_t addFref_CT(char* className, char* name, char* descriptor) {
+    uint16_t classConstNum = addClass_CT(className);
+    uint16_t ntConstNum = addNt_CT(char* name, char* descriptor);
     return add_CT(fref(classConstNum, ntConstNum));
 }
 
 uint16_t addMref_CT(char* className, char* name, char* descriptor) {
     uint16_t classConstNum = addClass_CT(className);
-
-    uint16_t nameConstNum = addUtf8_CT(name);
-    uint16_t descriptorConstNum = addUtf8_CT(descriptor);
-    uint16_t ntConstNum = add_CT(nt(nameConstNum, descriptorConstNum));
-
+    uint16_t ntConstNum = addNt_CT(char* name, char* descriptor);
     return add_CT(mref(classConstNum, ntConstNum));
 }
 
