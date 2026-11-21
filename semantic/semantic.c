@@ -116,3 +116,15 @@ JvmConstant mref(uint16_t classConstNum, uint16_t ntConstNum) {
 
     return result;
 }
+
+int equalsJC(JvmConstant constant1, JvmConstant constant2) {
+    return (constant1.type == constant2.type &&
+    (constant1.utf8Value == constant2.utf8Value ||
+    constant1.utf8Value != NULL && constant2.utf8Value != NULL &&
+    strcmp(constant1.utf8Value, constant2.utf8Value) == 0) &&
+    constant1.intValue == constant2.intValue &&
+    constant1.longValue == constant2.longValue &&
+    constant1.doubleValue == constant2.doubleValue &&
+    constant1.constNum1 == constant2.constNum1 &&
+    constant1.constNum2 == constant2.constNum2);
+}

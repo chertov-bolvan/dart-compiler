@@ -1,5 +1,6 @@
 // потом нормально заинклюдить
 #include "std_ds.h"
+#include "string.h"
 
 
 typedef struct ConstantsTable {
@@ -50,3 +51,5 @@ typedef struct JvmConstant {
     JvmConstant nt(uint16_t nameConstNum, uint16_t descriptorConstNum);
     JvmConstant fref(uint16_t classConstNum, uint16_t ntConstNum);
     JvmConstant mref(uint16_t classConstNum, uint16_t ntConstNum);
+
+    int equalsJC(JvmConstant constant1, JvmConstant constant2);
