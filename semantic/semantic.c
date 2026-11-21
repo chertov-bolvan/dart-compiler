@@ -9,27 +9,41 @@ uint16_t add_CT(JvmConstant* constant) {
 }
 
 uint16_t addUtf8_CT(char* str) {
-
+    return add_CT(utf8(str));
 }
 
 uint16_t addClass_CT(char* className) {
-
+    uint16_t classConstNum = add_CT(utf8(className));
+    return add_CT(classConst(classConstNum));
 }
 
 uint16_t addStr_CT(char* strConstant) {
-        
+    uint16_t strConstNum = add_CT(utf8(strConstant));
+    return add_CT(str(strConstNum));
 }
 
 uint16_t addFref_CT(char* className, char* name, char* descriptor) {
+    uint16_t classConstNum = addClass_CT(className);
 
+    uint16_t nameConstNum = addUtf8_CT(name);
+    uint16_t descriptorConstNum = addUtf8_CT(descriptor);
+    uint16_t ntConstNum = add_CT(nt(nameConstNum, descriptorConstNum));
+
+    return add_CT(fref(classConstNum, ntConstNum));
 }
 
 uint16_t addMref_CT(char* className, char* name, char* descriptor) {
+    uint16_t classConstNum = addClass_CT(className);
 
+    uint16_t nameConstNum = addUtf8_CT(name);
+    uint16_t descriptorConstNum = addUtf8_CT(descriptor);
+    uint16_t ntConstNum = add_CT(nt(nameConstNum, descriptorConstNum));
+
+    return add_CT(mref(classConstNum, ntConstNum));
 }
 
 
-// ---- Реализация функций для ConstantsTable ----
+// ---- Реализация функций для JvmConstant ----
 
 JvmConstant utf8(char* str) {
     JvmConstant result = {0};
