@@ -8,7 +8,7 @@ typedef struct ConstantsTable {
 
 } ConstantsTable;
 
-    uint16_t add_CT(JvmConstant* constant);
+    uint16_t add_CT(ConstantsTable* table, JvmConstant* constant);
     uint16_t addUtf8_CT(char* str);
     uint16_t addClass_CT(char* className);
     uint16_t addStr_CT(char* strConstant);

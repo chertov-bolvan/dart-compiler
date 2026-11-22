@@ -4,8 +4,17 @@
 
 // ---- Реализация функций для ConstantsTable ----
 
-uint16_t add_CT(JvmConstant* constant) {
+uint16_t add_CT(ConstantsTable* table, JvmConstant* constant) {
+    uint16_t index = 0;
+    for (;i < arrlen(table->values); i++) {
+        if (equalsJC(table->value[i], constant))
+            break;
+    }
 
+    if (i == arrlen(table->values))
+        arrput(table->values, constant);
+
+    return i+1;
 }
 
 uint16_t addUtf8_CT(char* str) {
