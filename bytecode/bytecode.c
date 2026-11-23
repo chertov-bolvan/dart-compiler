@@ -33,13 +33,13 @@ void appendFourByte_B(Bytes* bytes, uint32_t value) {
     appendByte_B(bytes, value1);
 }
 
-void append(Bytes* this, Bytes* bytes) {
+void append_B(Bytes* this, Bytes* bytes) {
     for (int i = 0; i < arrlen(bytes->values); i++) {
         arrput(this->values, bytes->values);
     }
 }
 
-void write(Bytes bytes, FILE* file) {
+void write_B(Bytes bytes, FILE* file) {
     for (int i = 0; i < arrlen(bytes->values); i++) {
         fprintf(file, "%c", bytes->values[i]);
     }
