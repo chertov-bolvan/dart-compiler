@@ -7,6 +7,19 @@
 
 
 
+void constUtf8(FILE* file, char* str);
+void classInt(FILE* file, int value);
+void classLong(FILE* file, long long value);
+void classDouble(FILE* file, double value);
+void constClass(FILE* file, uint16_t classNameConstNum);
+void constStr(FILE* file, uint16_t strConstNum);
+void constNt(FILE* file, uint16_t nameConstNum, uint16_t typeConstNum);
+void constFref(FILE* file, uint16_t classConstNum, uint16_t ntConstNum);
+void constMref(FILE* file, uint16_t classConstNum, uint16_t ntConstNum);
+
+
+
+
 void iconst_J(Bytes* bytes, int8_t value);
 
 void bipush_J(Bytes* bytes, int8_t value);
@@ -71,8 +84,13 @@ void areturn_J(Bytes* bytes);
 void return_J(Bytes* bytes);
 
 
+void appendByte_BC(FILE* file, uint8_t value);
+void appendTwoByte_BC(FILE* file, uint16_t value);
+void appendFourByte_BC(FILE* file, uint32_t value);
+
+
 typedef struct Bytes {
-    uint8_t values = NULL;
+    uint8_t* values = NULL;
 } Bytes;
 
 int size_B(Bytes bytes);

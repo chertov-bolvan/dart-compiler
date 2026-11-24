@@ -222,6 +222,29 @@ void return_J(Bytes* bytes) {
 }
 
 
+void appendByte_BC(FILE* file, uint8_t value) {
+    fprintf(file, "%c", value);
+}
+
+void appendTwoByte_BC(FILE* file, uint16_t value) {
+    uint8_t value1 = value;
+    uint8_t value2 = (value >> 8);
+
+    fprintf(file, "%c%c", value2, value1);
+}
+
+void appendFourByte_BC(FILE* file, uint32_t value) {
+    uint8_t value1 = value;
+    uint8_t value2 = (value >> 8);
+    uint8_t value3 = (value >> 16);
+    uint8_t value4 = (value >> 24);
+
+    fprintf(file, "%c%c%c%c", value4, value3, value2, value1);
+}
+
+
+
+
 
 int size_B(Bytes bytes){
     return arrlen(bytes->values);
