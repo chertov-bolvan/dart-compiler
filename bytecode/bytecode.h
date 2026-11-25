@@ -147,4 +147,4 @@ void appendEightByte_B(Bytes* bytes, uint64_t value);
 // добавляет в конец все байты из bytes в this
 void append_B(Bytes* this, Bytes* bytes);
 // записывает в файл все байты из буфера
-void write__B(Bytes bytes, FILE* file);
+void write_B(Bytes bytes, FILE* file);
