@@ -22,8 +22,8 @@ int octavia_stage1(SemanticProgram* semantic) {
             semanticFunc->type = SemanticFunction;
             semanticFunc->func = funcDecl;
 
-            if(!mapInsert(&semantic->functions, funcDecl->id, semanticFunc)) {
-                fprintf(stderr, "Error: Function '%s' is already defined.\n", funcDecl->id);
+            if(mapGet(&semantic->globalVars, funcDecl->id) != NULL || !mapInsert(&semantic->functions, funcDecl->id, semanticFunc)) {
+                fprintf(stderr, "Error: Global name '%s' is already defined.\n", funcDecl->id);
 
                 free(semanticFunc);
                 success = 0;
