@@ -1,6 +1,57 @@
 #include "semantic.h"
 
 
+// ЭТАПЫ
+
+int octavia_stage1(SemanticProgram* semantic) {
+
+    int success = 1;
+
+    for (TopLevelDeclNode* node = semantic->program->topLevelDeclNode; 
+        node != NULL; 
+        node = node->next) {
+        
+        if (node->type == TopLevelFuncDeclType) {
+            FuncDeclNode* funcDecl = node->funcDeclNode;
+            
+            SemanticFunc* semanticFunc = calloc(1, sizeof(SemanticFunc));
+
+
+            // ПОТОМ: Прописать ли овнера как класс Main?
+            semanticFunc->name = funcDecl->id;
+            semanticFunc->type = SemanticFunction;
+            semanticFunc->func = funcDecl;
+
+            if(!mapInsert(&semantic->functions, funcDecl->id, semanticFunc)) {
+                fprintf(stderr, "Error: Function '%s' is already defined.\n", funcDecl->id);
+
+                free(semanticFunc);
+                success = 0;
+            }
+
+        }
+        else if (node->type == TopLevelVarDeclType) {
+
+        }
+        else if (node->type == TopLevelClassDeclType) {
+
+        }
+    }
+
+
+    return success;
+}
+
+void octavia_stock(SemanticProgram* semantic) { //semantic_free
+    for (size_t i = 0; i < mapSize(&semantic->functions); i++) {
+        SemanticFunc* func = mapValueAt(&semantic->functions, i);
+        free(func);
+    }
+
+    mapFree(&semantic->functions);
+}
+
+
 
 // ---- Реализация функций для ConstantsTable ----
 
