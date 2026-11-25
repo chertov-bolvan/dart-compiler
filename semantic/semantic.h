@@ -121,4 +121,5 @@ int equalsJC(JvmConstant constant1, JvmConstant constant2);
 
 // Здесь могла быть реклама вашего автосервиса
 int octavia_stage1(SemanticProgram* semantic);
+void octavia_stock(SemanticProgram* semantic);
 

@@ -22,8 +22,8 @@ int octavia_stage1(SemanticProgram* semantic) {
             semanticFunc->type = SemanticFunction;
             semanticFunc->func = funcDecl;
 
-            if(!mapInsert(&semantic->functions, funcDecl->id, semanticFunc)) {
-                fprintf(stderr, "Error: Function '%s' is already defined.\n", funcDecl->id);
+            if(mapGet(&semantic->globalVars, funcDecl->id) != NULL || !mapInsert(&semantic->functions, funcDecl->id, semanticFunc)) {
+                fprintf(stderr, "Error: Global name '%s' is already defined.\n", funcDecl->id);
 
                 free(semanticFunc);
                 success = 0;
@@ -31,7 +31,22 @@ int octavia_stage1(SemanticProgram* semantic) {
 
         }
         else if (node->type == TopLevelVarDeclType) {
+            VarDeclNode* varDecl = node->varDeclNode;
 
+            for (VarDeclaratorNode* varDeclarator = varDecl->declarators; varDeclarator != NULL; varDeclarator = varDeclarator->next) {
+                SemanticVar* semanticVar = calloc(1, sizeof(SemanticVar));
+
+                semanticVar->varDecl = varDeclarator;
+                semanticVar->declType = varDecl->type;
+                semanticVar->modifier = varDecl->modifier;
+
+                if (mapGet(&semantic->functions, varDeclarator->id) != NULL || !mapInsert(&semantic->globalVars, varDeclarator->id, semanticVar)) {
+                    fprintf(stderr, "Error: Global name '%s' is already defined.\n", varDeclarator->id);
+
+                    free(semanticVar);
+                    success = 0;
+                }
+            }
         }
         else if (node->type == TopLevelClassDeclType) {
 
@@ -48,7 +63,13 @@ void octavia_stock(SemanticProgram* semantic) { //semantic_free
         free(func);
     }
 
+    for (size_t i = 0; i < mapSize(&semantic->globalVars); i++) {
+        SemanticVar* var = mapValueAt(&semantic->globalVars, i);
+        free(var);
+    }
+
     mapFree(&semantic->functions);
+    mapFree(&semantic->globalVars);
 }
 
 
