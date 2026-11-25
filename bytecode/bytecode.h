@@ -6,6 +6,19 @@
 #include "std_ds.h"
 
 
+// версия джава
+#define MINOR_VERSION 0x0000
+#define MAJOR_VERSION 0x0031
+
+
+// Модификаторы доступа к классам и свойствам
+#define ACC_PUBLIC  0x0001
+#define ACC_PRIVATE 0x0002
+#define ACC_STATIC  0x0008
+#define ACC_FINAL   0x0010
+
+
+
 // запись в файл строки в utf8
 void constUtf8(FILE* file, char* str);
 // запись в файл 4-байтного числа
